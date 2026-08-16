@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From AI Fundamentals to Agents in Production</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="eyebrow">AI Learning Path · Banking</div>
+      <h1>From AI Fundamentals to Agents in Production</h1>
+    </div>
+    <div class="overall">
+      <div class="num" id="overallPct">0%</div>
+      <div class="lbl">Resources viewed</div>
+      <div class="bar"><div id="overallBar"></div></div>
+    </div>
+    <div class="level-card" id="levelCard"></div>
+    <div class="last-saved" id="lastSavedNote"></div>
+    <nav class="navlist" id="navlist"></nav>
+  </aside>
+
+  <div class="main">
+    <div class="menu-toggle" id="menuToggle">☰ &nbsp;Path index</div>
+
+    <div class="disclaimer">
+      <span class="disclaimer-icon">ⓘ</span>
+      <span>This learning path was generated with AI assistance. Links point to public third-party resources (DeepLearning.AI, Anthropic, OpenAI, Google, YouTube, regulatory bodies, etc.); always verify the content and each provider's terms before using it. Link status is checked automatically when the page loads — see the legend at the end. Most content is in English (recommended level ~B2); each resource shows its language.</span>
+    </div>
+
+    <div class="hero">
+      <div class="eyebrow">AI Learning Path · Data &amp; Analytics in Banking</div>
+      <h1>From AI Fundamentals to Agents in Production</h1>
+      <p>From AI concepts and how LLMs work, through prompting, RAG, and agent-building with real frameworks, to evaluation, governance, and enterprise integration. Free courses and public sources, with a dedicated banking module you can toggle on when you need it.</p>
+      <div class="meta">
+        <div>Topics<b id="modCount">–</b></div>
+        <div>Complete path<b>~45–60 h</b></div>
+        <div>Executive path<b>~12–15 h</b></div>
+        <div>Available paths<b>4</b></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="controls-title">Choose your path</div>
+      <div class="route-grid" id="routeGrid"></div>
+      <div class="bank-toggle-row">
+        <button type="button" class="toggle on" id="bankToggle" aria-label="Toggle banking module"></button>
+        <div class="bank-toggle-text"><b>Banking module</b> — turns on topic 8-bis (model risk), the pre-production gate, and the banking mini-cases in topic 11. Turn it off for a generic path.</div>
+      </div>
+    </div>
+
+    <div class="content" id="content"></div>
+
+    <div class="legend" id="legend"></div>
+
+    <footer>
+      ai-learning-path-banking · progress and notes are saved locally in this browser, privately for whoever opens it · link status is checked live and is best-effort only
+    </footer>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
