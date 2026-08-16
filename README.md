@@ -9,6 +9,7 @@ An interactive, self-hosted learning tracker for Generative AI, LLMs, and agents
 - A role-based learning path (Complete / Executive / Builder / Governance) covering generative AI and LLM fundamentals through applied agent-building, with a capstone project based on the Kaggle Home Credit Default Risk dataset.
 - Progress is saved per person (by name) in a Supabase database, so it can be picked up from any device.
 - Banking-specific regulatory content is toggleable, so the path stays useful outside a banking context.
+- A Markdown reference version of the path (`assets/itinerario-ia-agentes.md`) is included for reading, printing, or reviewing offline — the HTML tracker remains the source of truth for day-to-day use.
 
 ## Structure
 
@@ -22,8 +23,10 @@ An interactive, self-hosted learning tracker for Generative AI, LLMs, and agents
 │   │                      user-identity modal
 │   └── app.js             Rendering, interactions, and app initialization
 └── assets/
-    └── ai-learning-path-banking.single-file.html   Standalone copy (no build steps,
-                                                       works offline, kept in sync manually)
+    ├── ai-learning-path-banking.single-file.html   Standalone copy (no build steps,
+    │                                                  works offline, kept in sync manually)
+    └── itinerario-ia-agentes.md                    Markdown reference version of the path,
+                                                       for reading/printing/reviewing offline
 ```
 
 ## Local development
