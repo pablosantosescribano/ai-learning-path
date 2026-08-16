@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From AI Fundamentals to Agents in Production</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1220;
+    --surface:#121B2E;
+    --surface-alt:#17223A;
+    --border:#263252;
+    --text:#E7ECF7;
+    --muted:#8D9AB8;
+    --amber:#F0B429;
+    --teal:#5FD8C8;
+    --violet:#9B8AFB;
+    --sage:#8FBF9F;
+    --dim:#4A5578;
+    --danger:#E2685B;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif; margin:0; letter-spacing:-0.01em;}
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* ---------- Layout shell ---------- */
+  .shell{display:flex; min-height:100vh;}
+  .sidebar{
+    width:290px; flex-shrink:0;
+    border-right:1px solid var(--border);
+    background:var(--surface);
+    position:sticky; top:0; height:100vh; overflow-y:auto;
+    padding:22px 16px 40px;
+  }
+  .brand{padding:6px 10px 20px;}
+  .brand .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.12em; color:var(--teal); text-transform:uppercase;}
+  .brand h1{font-size:16px; line-height:1.3; margin-top:8px; font-weight:600;}
+  .overall{margin:16px 10px 14px; padding:12px; background:var(--surface-alt); border:1px solid var(--border); border-radius:var(--radius);}
+  .overall .num{font-family:'Space Grotesk'; font-size:26px; font-weight:700; color:var(--teal);}
+  .overall .lbl{font-size:11px; color:var(--muted); font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.08em;}
+  .overall .bar{height:5px; border-radius:3px; background:var(--border); margin-top:10px; overflow:hidden;}
+  .overall .bar > div{height:100%; background:linear-gradient(90deg,var(--teal),var(--amber)); width:0%; transition:width .4s ease;}
+
+  /* level widget */
+  .level-card{margin:0 10px 20px; padding:14px; background:var(--surface-alt); border:1px solid var(--border); border-radius:var(--radius);}
+  .level-top{display:flex; align-items:center; gap:10px;}
+  .level-badge{width:34px; height:34px; flex-shrink:0;}
+  .level-name{font-family:'Space Grotesk'; font-size:14px; font-weight:600;}
+  .level-sub{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--muted); margin-top:2px;}
+  .level-next{font-size:11px; color:var(--dim); margin-top:10px; line-height:1.5;}
+  .last-saved{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--dim); margin:6px 10px 0; letter-spacing:.02em;}
+  .last-saved.saving{color:var(--teal);}
+
+  /* --- Identity modal (Supabase user identification) --- */
+  .idmodal-overlay{
+    position:fixed; inset:0; background:rgba(6,10,18,0.82); backdrop-filter:blur(3px);
+    display:flex; align-items:center; justify-content:center; z-index:9999; padding:20px;
+  }
+  .idmodal-box{
+    width:100%; max-width:420px; background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); padding:22px 22px 18px;
+  }
+  .idmodal-title{font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:600; color:var(--text); margin-bottom:8px;}
+  .idmodal-desc{font-size:12.5px; color:var(--muted); line-height:1.5; margin-bottom:10px;}
+  .idmodal-warning{
+    font-size:11.5px; color:var(--amber); line-height:1.5; background:rgba(240,180,41,0.08);
+    border:1px solid rgba(240,180,41,0.3); border-radius:8px; padding:9px 11px; margin-bottom:16px;
+  }
+  .idmodal-existing{
+    background:var(--surface-alt); border:1px solid var(--border); border-radius:8px;
+    padding:12px; margin-bottom:14px;
+  }
+  .idmodal-existing p{font-size:12px; color:var(--text); margin:0 0 10px;}
+  .idmodal-existing strong{color:var(--teal); font-family:'IBM Plex Mono',monospace;}
+  .idmodal-input{
+    width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--border);
+    background:var(--bg); color:var(--text); font-family:'IBM Plex Mono',monospace; font-size:13px;
+    margin-bottom:12px;
+  }
+  .idmodal-input:focus{outline:none; border-color:var(--teal);}
+  .idmodal-actions{display:flex; gap:8px; flex-wrap:wrap;}
+  .idmodal-btn{
+    flex:1; padding:9px 12px; border-radius:8px; border:1px solid var(--border);
+    background:var(--bg); color:var(--muted); font-family:'IBM Plex Mono',monospace; font-size:11.5px;
+    cursor:pointer; text-align:center; min-width:120px;
+  }
+  .idmodal-btn:hover{border-color:var(--teal); color:var(--teal);}
+  .idmodal-btn-primary{background:var(--teal); color:#08131A; border-color:var(--teal); font-weight:600;}
+  .idmodal-btn-primary:hover{opacity:.9; color:#08131A;}
+  .idmodal-error{font-size:11px; color:var(--danger); margin-top:8px; min-height:14px;}
+  .copy-btn{
+    margin-top:10px; width:100%; padding:8px 10px; border-radius:8px; border:1px solid var(--border);
+    background:var(--bg); color:var(--teal); font-family:'IBM Plex Mono',monospace; font-size:11px;
+    cursor:pointer; transition:border-color .15s;
+  }
+  .copy-btn:hover{border-color:var(--teal);}
+  .copy-btn.copied{color:var(--sage); border-color:var(--sage);}
+
+  nav.navlist{display:flex; flex-direction:column; gap:2px;}
+  nav.navlist a{
+    display:flex; align-items:center; gap:10px;
+    padding:9px 10px; border-radius:8px; text-decoration:none;
+    color:var(--muted); font-size:13.5px;
+    border:1px solid transparent;
+  }
+  nav.navlist a:hover{background:var(--surface-alt); color:var(--text);}
+  nav.navlist a.active{background:var(--surface-alt); color:var(--text); border-color:var(--border);}
+  nav.navlist a.dimmed{opacity:.4;}
+  nav.navlist .n{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dim);
+    width:22px; flex-shrink:0;
+  }
+  nav.navlist .dot{
+    margin-left:auto; width:7px; height:7px; border-radius:50%; background:var(--dim); flex-shrink:0;
+  }
+  nav.navlist .dot.full{background:var(--teal);}
+  nav.navlist .dot.partial{background:var(--amber);}
+  nav.navlist .dot.skipped{background:var(--violet);}
+  nav.navlist a.group-parent{font-weight:600;}
+  nav.navlist a.bank-item{border-left:2px solid var(--sage); margin-left:-2px; padding-left:8px;}
+  .sublist{
+    display:flex; flex-direction:column; gap:1px;
+    margin:2px 4px 8px 22px; padding-left:10px; border-left:1px solid var(--border);
+  }
+  .sublist a{font-size:12.5px !important; padding:6px 8px !important;}
+  .sublist a .n{width:18px;}
+  .nav-block-label{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.1em;
+    color:var(--dim); padding:14px 10px 4px;
+  }
+  .nav-block-label:first-child{padding-top:2px;}
+
+  .main{flex:1; min-width:0;}
+  .disclaimer{
+    display:flex; align-items:flex-start; gap:10px;
+    margin:18px 48px 0; padding:12px 16px;
+    background:rgba(240,180,41,0.07); border:1px solid rgba(240,180,41,0.28);
+    border-radius:8px; font-size:12.5px; color:var(--muted); line-height:1.5;
+  }
+  .disclaimer-icon{color:var(--amber); font-size:14px; flex-shrink:0; line-height:1.4;}
+
+  .legend{
+    margin:8px 48px 28px; padding:12px 16px;
+    background:var(--surface); border:1px solid var(--border); border-radius:8px;
+    display:flex; flex-wrap:wrap; gap:16px; align-items:center;
+  }
+  .legend-title{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--dim); width:100%;}
+  .legend-item{display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted);}
+
+  .hero{
+    padding:36px 48px 30px; border-bottom:1px solid var(--border);
+    background:
+      radial-gradient(600px 240px at 85% -10%, rgba(95,216,200,0.10), transparent 60%),
+      var(--bg);
+  }
+  .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; color:var(--amber); text-transform:uppercase;}
+  .hero h1{font-size:30px; margin-top:10px; max-width:820px; font-weight:700;}
+  .hero p{color:var(--muted); max-width:680px; margin-top:14px; font-size:15px;}
+  .hero .meta{display:flex; gap:28px; margin-top:22px; flex-wrap:wrap;}
+  .hero .meta div{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted);}
+  .hero .meta div b{display:block; color:var(--text); font-size:15px; font-family:'Space Grotesk'; font-weight:600; margin-top:2px;}
+
+  /* ---------- Route selector ---------- */
+  .controls{padding:26px 48px 8px; border-bottom:1px solid var(--border);}
+  .controls-title{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:14px;}
+  .route-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(190px,1fr)); gap:12px; max-width:920px;}
+  .route-card{
+    padding:14px; border-radius:12px; border:1.5px solid var(--border); background:var(--surface);
+    cursor:pointer; transition:border-color .15s, background .15s; text-align:left;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .route-card:hover{border-color:var(--dim);}
+  .route-card.selected{background:var(--surface-alt);}
+  .route-card .shield{width:56px; height:64px;}
+  .route-card .route-name{font-family:'Space Grotesk'; font-weight:600; font-size:14px;}
+  .route-card .route-hours{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);}
+  .route-best-for{font-size:11.5px; color:var(--muted); line-height:1.45; text-align:center; margin-top:2px;}
+  .route-blocks{display:flex; flex-direction:column; gap:3px; width:100%; margin-top:4px;}
+  .route-blocks .rb{display:flex; align-items:center; gap:6px; font-size:10.5px; color:var(--dim);}
+  .route-blocks .rb .sw{width:8px; height:8px; border-radius:2px; flex-shrink:0;}
+  .route-blocks .rb.on{color:var(--muted);}
+
+  .bank-toggle-row{display:flex; align-items:center; gap:12px; margin-top:20px; padding:12px 14px; max-width:920px; background:var(--surface); border:1px solid var(--border); border-radius:10px;}
+  .toggle{
+    width:40px; height:22px; border-radius:12px; background:var(--border); position:relative; cursor:pointer; flex-shrink:0; border:none; padding:0;
+    transition:background .15s;
+  }
+  .toggle::after{content:''; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:var(--muted); transition:transform .15s, background .15s;}
+  .toggle.on{background:rgba(143,191,159,0.25);}
+  .toggle.on::after{transform:translateX(18px); background:var(--sage);}
+  .bank-toggle-text{font-size:12.5px; color:var(--muted);}
+  .bank-toggle-text b{color:var(--text); font-weight:600;}
+
+  .content{padding:8px 48px 120px;}
+
+  /* ---------- Module ---------- */
+  .module{padding:44px 0; border-bottom:1px solid var(--border); scroll-margin-top:20px; transition:opacity .2s;}
+  .module:last-child{border-bottom:none;}
+  .module.collapsed-for-route{opacity:.45;}
+  .module.hidden-bank{display:none;}
+  .group-children{margin-top:8px;}
+  .group-children .module{
+    border-bottom:1px dashed var(--border);
+    border-left:2px solid var(--border);
+    margin-left:6px;
+    padding:28px 0 28px 24px;
+  }
+  .group-children .module:last-child{border-bottom:none;}
+  .group-children .mod-num{font-size:24px; min-width:42px;}
+  .group-children .mod-num.setup{font-size:15px;}
+  .mod-head{display:flex; align-items:flex-start; gap:18px;}
+  .mod-num{
+    font-family:'Space Grotesk'; font-weight:700; font-size:34px; color:var(--dim);
+    min-width:56px;
+  }
+  .mod-num.setup{font-size:20px; color:var(--dim); font-family:'IBM Plex Mono',monospace;}
+  .mod-title-block{flex:1;}
+  .mod-tag-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .mod-tag{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--teal);}
+  .bank-pill{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--sage); border:1px solid rgba(143,191,159,0.4); border-radius:20px; padding:2px 8px;
+  }
+  .optional-pill{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--muted); border:1px solid var(--border); border-radius:20px; padding:2px 8px;
+  }
+  .mod-title-block h2{font-size:23px; margin-top:6px; font-weight:600;}
+  .mod-duration{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted); margin-top:8px;}
+  .mod-objective{color:var(--muted); font-size:14.5px; margin-top:14px; max-width:760px;}
+  .mod-result{
+    margin-top:16px; padding:12px 14px; border-left:2px solid var(--amber);
+    background:var(--surface); border-radius:0 8px 8px 0; font-size:13.5px; color:var(--text);
+    max-width:760px;
+  }
+  .mod-result b{color:var(--amber); font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:4px;}
+
+  /* skip test */
+  .skip-test{
+    margin-top:16px; padding:10px 14px; max-width:760px; display:flex; align-items:center; gap:10px;
+    background:rgba(155,138,251,0.06); border:1px solid rgba(155,138,251,0.25); border-radius:8px;
+  }
+  .skip-test input{width:16px; height:16px; accent-color:var(--violet); flex-shrink:0; cursor:pointer;}
+  .skip-test label{font-size:12.5px; color:var(--muted); cursor:pointer;}
+  .skip-test.checked{background:rgba(155,138,251,0.12);}
+  .skip-test.checked label{color:var(--text);}
+
+  /* signal strip */
+  .signal{display:flex; gap:3px; margin-top:20px;}
+  .signal span{height:4px; flex:1; background:var(--border); border-radius:2px; transition:background .3s;}
+  .signal span.on{background:var(--teal);}
+
+  /* resources */
+  .resources{margin-top:24px; display:flex; flex-direction:column; gap:10px;}
+  .resource{
+    display:flex; gap:14px; align-items:flex-start;
+    padding:14px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  }
+  .resource.seen{border-color:rgba(95,216,200,0.4); background:linear-gradient(180deg, rgba(95,216,200,0.06), var(--surface) 40%);}
+  .chk{
+    width:20px; height:20px; border-radius:5px; border:1.5px solid var(--dim);
+    flex-shrink:0; cursor:pointer; margin-top:2px; position:relative; background:transparent;
+    transition:all .15s; padding:0;
+  }
+  .chk.checked{background:var(--teal); border-color:var(--teal);}
+  .chk.checked::after{
+    content:''; position:absolute; left:5px; top:2px; width:5px; height:9px;
+    border:solid var(--bg); border-width:0 2px 2px 0; transform:rotate(45deg);
+  }
+  .res-body{flex:1; min-width:0;}
+  .res-top{display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+  .res-title{font-weight:600; font-size:14.5px; margin-right:2px;}
+  .res-title a{text-decoration:none; border-bottom:1px dotted var(--dim);}
+  .res-title a:hover{border-bottom-color:var(--text);}
+  .res-desc{color:var(--muted); font-size:13.5px; margin-top:7px;}
+  .res-url{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dim); margin-top:6px; word-break:break-all;}
+  .ic-row{display:flex; align-items:center; gap:4px; margin-left:2px;}
+  .ic-sep{width:1px; height:14px; background:var(--border); margin:0 2px;}
+
+  /* icon buttons + tooltip */
+  .icwrap{position:relative; display:inline-flex;}
+  .ic{
+    width:21px; height:21px; border-radius:50%; border:1px solid var(--border);
+    background:var(--surface-alt); color:var(--muted);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; padding:0; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600;
+    transition:border-color .15s, color .15s;
+  }
+  .ic svg{width:12px; height:12px;}
+  .ic:hover{border-color:var(--muted);}
+  .status-ic.status-verified{color:var(--teal); border-color:rgba(95,216,200,0.4);}
+  .status-ic.status-unavailable{color:var(--amber); border-color:rgba(240,180,41,0.4);}
+  .status-ic.status-unknown{color:var(--dim);}
+  .status-ic.status-checking{color:var(--dim); animation:pulse 1.2s infinite ease-in-out;}
+  .status-ic.status-nolink{color:var(--dim);}
+  .device-ic{color:var(--muted);}
+  .lang-ic{color:var(--muted); font-size:9.5px; letter-spacing:0;}
+  @keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+
+  .tip{
+    position:absolute; bottom:calc(100% + 9px); left:50%; transform:translateX(-50%) translateY(4px);
+    background:#060B15; border:1px solid var(--border); color:var(--text);
+    font-family:'IBM Plex Sans',sans-serif; font-size:11.5px; line-height:1.45; font-weight:400;
+    padding:9px 11px; border-radius:8px; width:210px;
+    box-shadow:0 12px 28px rgba(0,0,0,.45);
+    opacity:0; pointer-events:none; transition:opacity .15s ease, transform .15s ease;
+    z-index:40; text-align:left;
+  }
+  .tip::after{
+    content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+    border:6px solid transparent; border-top-color:#060B15;
+  }
+  .icwrap.open .tip{opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto;}
+  @media (hover:hover){
+    .icwrap:hover .tip{opacity:1; transform:translateX(-50%) translateY(0);}
+  }
+
+  .legend-item .ic{cursor:default;}
+
+  /* notes */
+  .notes-block{margin-top:26px; padding:18px; background:var(--surface-alt); border:1px solid var(--border); border-radius:var(--radius);}
+  .notes-block h3{font-size:13px; font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:500;}
+  .notes-block textarea{
+    width:100%; margin-top:12px; min-height:90px; resize:vertical;
+    background:var(--bg); border:1px solid var(--border); border-radius:8px;
+    color:var(--text); font-family:'IBM Plex Sans',sans-serif; font-size:13.5px; padding:12px;
+  }
+  .notes-block textarea:focus{outline:1px solid var(--teal); border-color:var(--teal);}
+  .save-hint{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--dim); margin-top:6px; height:14px;}
+
+  .attach-row{display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;}
+  .attach-row input{
+    background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text);
+    font-size:13px; padding:9px 11px; font-family:'IBM Plex Sans',sans-serif;
+  }
+  .attach-row input[name="alabel"]{flex:1; min-width:140px;}
+  .attach-row input[name="alink"]{flex:2; min-width:180px;}
+  .attach-row button{
+    background:var(--teal); border:none; color:#08221E; font-weight:600; font-size:12.5px;
+    padding:9px 14px; border-radius:8px; cursor:pointer; font-family:'IBM Plex Sans',sans-serif;
+  }
+  .attach-row button:hover{filter:brightness(1.08);}
+  .attach-hint{font-size:11.5px; color:var(--dim); margin-top:8px; line-height:1.5;}
+  .attachments{margin-top:12px; display:flex; flex-direction:column; gap:6px;}
+  .attachment{
+    display:flex; align-items:center; gap:8px; font-size:13px; padding:8px 10px;
+    background:var(--bg); border:1px solid var(--border); border-radius:7px;
+  }
+  .attachment a{text-decoration:none; color:var(--teal); border-bottom:1px dotted transparent;}
+  .attachment a:hover{border-bottom-color:var(--teal);}
+  .attachment .rm{margin-left:auto; cursor:pointer; color:var(--dim); font-family:'IBM Plex Mono',monospace; font-size:11px; background:none; border:none;}
+  .attachment .rm:hover{color:var(--danger);}
+
+  .closing-text{color:var(--muted); font-size:14.5px; max-width:760px; margin-top:16px;}
+  .closing-text p{margin:0 0 12px;}
+
+  .checkpoint{
+    margin-top:24px; padding:16px 18px; max-width:760px;
+    background:rgba(240,180,41,0.06); border:1px solid rgba(240,180,41,0.3); border-radius:var(--radius);
+  }
+  .checkpoint-label{
+    display:flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--amber); font-weight:600; margin-bottom:8px;
+  }
+  .checkpoint-title{font-size:14.5px; font-weight:600; color:var(--text); margin-bottom:6px;}
+  .checkpoint-text{font-size:13.5px; color:var(--muted); line-height:1.55;}
+  .checkpoint-piece{margin-top:10px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--dim);}
+
+  .no-checkpoint{
+    margin-top:22px; padding:12px 16px; max-width:760px;
+    border-left:2px dashed var(--dim); font-size:12.5px; color:var(--dim); font-style:italic; line-height:1.5;
+  }
+
+  /* checklist (gate) */
+  .checklist{margin-top:22px; display:flex; flex-direction:column; gap:8px; max-width:760px;}
+  .check-item{display:flex; align-items:flex-start; gap:10px; padding:10px 12px; background:var(--surface); border:1px solid var(--border); border-radius:8px;}
+  .check-item input{width:17px; height:17px; margin-top:2px; accent-color:var(--sage); cursor:pointer; flex-shrink:0;}
+  .check-item label{font-size:13px; color:var(--text); cursor:pointer; line-height:1.5;}
+  .gate-banner{
+    max-width:760px; margin-top:18px; padding:14px 16px; border-radius:10px;
+    background:rgba(226,104,91,0.08); border:1px solid rgba(226,104,91,0.3); font-size:13px; color:var(--muted);
+  }
+  .gate-banner.pass{background:rgba(143,191,159,0.1); border-color:rgba(143,191,159,0.35); color:var(--sage);}
+
+  .project-intro{color:var(--muted); font-size:14.5px; margin-top:14px; max-width:760px;}
+  .project-idea{
+    margin-top:16px; padding:14px 16px; max-width:760px;
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+    font-size:13.5px; color:var(--text); line-height:1.6;
+  }
+  .project-note{color:var(--muted); font-size:13.5px; margin-top:16px; max-width:760px;}
+  .project-table{width:100%; max-width:760px; margin-top:20px; border-collapse:collapse; font-size:13px;}
+  .project-table th{
+    text-align:left; font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--dim); padding:0 14px 8px 0; border-bottom:1px solid var(--border); font-weight:500;
+  }
+  .project-table td{
+    padding:11px 14px 11px 0; border-bottom:1px solid var(--border); color:var(--muted); vertical-align:top;
+  }
+  .project-table td:first-child{color:var(--teal); font-family:'IBM Plex Mono',monospace; font-size:12px; white-space:nowrap;}
+  .project-table tr:last-child td{border-bottom:none;}
+
+  .dataset-card{
+    max-width:760px; margin-top:20px; padding:16px 18px; background:var(--surface); border:1px solid rgba(155,138,251,0.3); border-radius:var(--radius);
+  }
+  .dataset-card h4{font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--violet); margin-bottom:8px;}
+  .dataset-card p{font-size:13px; color:var(--muted); margin:6px 0;}
+  .dataset-table-tag{
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11px; padding:3px 9px; border-radius:20px;
+    background:rgba(155,138,251,0.12); color:var(--violet); margin:4px 6px 4px 0;
+  }
+
+  /* capstone aggregation */
+  .capstone-agg{max-width:760px; margin-top:24px; display:flex; flex-direction:column; gap:10px;}
+  .agg-item{padding:14px 16px; background:var(--surface); border:1px solid var(--border); border-radius:10px;}
+  .agg-item h4{font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--teal); margin-bottom:8px;}
+  .agg-item .agg-body{font-size:13px; color:var(--text); white-space:pre-wrap; line-height:1.6;}
+  .agg-item .agg-empty{font-size:12.5px; color:var(--dim); font-style:italic;}
+  .refresh-btn{
+    margin-top:16px; padding:8px 14px; border-radius:8px; border:1px solid var(--border); background:var(--bg);
+    color:var(--teal); font-family:'IBM Plex Mono',monospace; font-size:11.5px; cursor:pointer;
+  }
+  .refresh-btn:hover{border-color:var(--teal);}
+
+  /* glossary */
+  .glossary-grid{max-width:760px; margin-top:20px; display:flex; flex-direction:column; gap:14px;}
+  .gloss-item{padding-bottom:12px; border-bottom:1px dashed var(--border);}
+  .gloss-item:last-child{border-bottom:none;}
+  .gloss-term{font-family:'Space Grotesk'; font-weight:600; font-size:14.5px; color:var(--teal);}
+  .gloss-def{font-size:13.5px; color:var(--muted); margin-top:4px; line-height:1.55;}
+
+  /* adoption block */
+  .adopt-grid{max-width:760px; margin-top:20px; display:flex; flex-direction:column; gap:12px;}
+  .adopt-item{padding:14px 16px; background:var(--surface); border:1px solid var(--border); border-radius:10px;}
+  .adopt-item .a-title{font-weight:600; font-size:13.5px;}
+  .adopt-item .a-desc{font-size:13px; color:var(--muted); margin-top:5px; line-height:1.5;}
+  .levels-strip{max-width:760px; margin-top:22px; display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;}
+  .level-tile{padding:14px; background:var(--surface); border:1px solid var(--border); border-radius:10px; text-align:center;}
+  .level-tile .lt-emoji{font-size:22px;}
+  .level-tile .lt-name{font-family:'Space Grotesk'; font-weight:600; font-size:13px; margin-top:6px;}
+  .level-tile .lt-req{font-size:11px; color:var(--muted); margin-top:6px; line-height:1.5;}
+
+  footer{padding:36px 48px 60px; color:var(--dim); font-size:12px; font-family:'IBM Plex Mono',monospace; border-top:1px solid var(--border);}
+
+  .menu-toggle{display:none;}
+
+  @media (max-width: 900px){
+    .sidebar{
+      position:fixed; z-index:20; left:0; top:0; height:100vh; transform:translateX(-100%);
+      transition:transform .25s ease; box-shadow:20px 0 40px rgba(0,0,0,0.4);
+    }
+    .sidebar.open{transform:translateX(0);}
+    .menu-toggle{
+      display:flex; align-items:center; gap:8px; position:sticky; top:0; z-index:10;
+      background:var(--surface); border-bottom:1px solid var(--border);
+      padding:14px 20px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--teal);
+      cursor:pointer;
+    }
+    .hero, .content, .controls{padding-left:22px; padding-right:22px;}
+    footer{padding-left:22px; padding-right:22px;}
+    .disclaimer, .legend{margin-left:14px; margin-right:14px;}
+    .mod-num{font-size:24px; min-width:40px;}
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="eyebrow">AI Learning Path · Banking</div>
+      <h1>From AI Fundamentals to Agents in Production</h1>
+    </div>
+    <div class="overall">
+      <div class="num" id="overallPct">0%</div>
+      <div class="lbl">Resources viewed</div>
+      <div class="bar"><div id="overallBar"></div></div>
+    </div>
+    <div class="level-card" id="levelCard"></div>
+    <div class="last-saved" id="lastSavedNote"></div>
+    <nav class="navlist" id="navlist"></nav>
+  </aside>
+
+  <div class="main">
+    <div class="menu-toggle" id="menuToggle">☰ &nbsp;Path index</div>
+
+    <div class="disclaimer">
+      <span class="disclaimer-icon">ⓘ</span>
+      <span>This learning path was generated with AI assistance. Links point to public third-party resources (DeepLearning.AI, Anthropic, OpenAI, Google, YouTube, regulatory bodies, etc.); always verify the content and each provider's terms before using it. Link status is checked automatically when the page loads — see the legend at the end. Most content is in English (recommended level ~B2); each resource shows its language.</span>
+    </div>
+
+    <div class="hero">
+      <div class="eyebrow">AI Learning Path · Data &amp; Analytics in Banking</div>
+      <h1>From AI Fundamentals to Agents in Production</h1>
+      <p>From AI concepts and how LLMs work, through prompting, RAG, and agent-building with real frameworks, to evaluation, governance, and enterprise integration. Free courses and public sources, with a dedicated banking module you can toggle on when you need it.</p>
+      <div class="meta">
+        <div>Topics<b id="modCount">–</b></div>
+        <div>Complete path<b>~45–60 h</b></div>
+        <div>Executive path<b>~12–15 h</b></div>
+        <div>Available paths<b>4</b></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="controls-title">Choose your path</div>
+      <div class="route-grid" id="routeGrid"></div>
+      <div class="bank-toggle-row">
+        <button type="button" class="toggle on" id="bankToggle" aria-label="Toggle banking module"></button>
+        <div class="bank-toggle-text"><b>Banking module</b> — turns on topic 8-bis (model risk), the pre-production gate, and the banking mini-cases in topic 11. Turn it off for a generic path.</div>
+      </div>
+    </div>
+
+    <div class="content" id="content"></div>
+
+    <div class="legend" id="legend"></div>
+
+    <footer>
+      ai-learning-path-banking · progress and notes are saved locally in this browser, privately for whoever opens it · link status is checked live and is best-effort only
+    </footer>
+  </div>
+</div>
+
+<script>
+/* ============ ICONS ============ */
+const SVG = {
+  mobile: '<svg viewBox="0 0 24 24" fill="none"><rect x="7" y="2" width="10" height="20" rx="2" stroke="currentColor" stroke-width="1.7"/><line x1="10" y1="18" x2="14" y2="18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+  tablet: '<svg viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.7"/><line x1="10" y1="18" x2="14" y2="18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+  desktop: '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="12" rx="1.5" stroke="currentColor" stroke-width="1.7"/><line x1="8" y1="20" x2="16" y2="20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="12" y1="16" x2="12" y2="20" stroke="currentColor" stroke-width="1.7"/></svg>'
+};
+const DEVICE_TIP = {
+  mobile: 'Comfortable on mobile.',
+  tablet: 'Works well on tablet.',
+  desktop: 'Best on desktop: recommended when notebooks or code are involved.'
+};
+const LANG_TIP = {
+  EN: 'Content in English.',
+  ES: 'Content in Spanish.',
+  MULTI: 'Available in several languages.'
+};
+const STATUS_LABEL = {checking:'⋯', verified:'✓', unavailable:'!', unknown:'?', nolink:'–'};
+const STATUS_TIP = {
+  checking: 'Checking link status…',
+  verified: 'Verified — it responded when the page loaded.',
+  unavailable: 'Temporarily unavailable — it did not respond when the page loaded. It may still work; try opening it directly.',
+  unknown: 'Could not verify automatically — the browser or environment blocked the check.',
+  nolink: 'No direct link — reference mentioned in the path.'
+};
+
+/* ============ ROUTE DEFINITIONS ============ */
+const ROUTES = {
+  complete:   {name:'Complete',   hours:'~45–60 h', color:'var(--teal)',   emoji:'⭐', blocks:{A:'full',B:'full',C:'full',D:'full'}, bestFor:'Best for: hands-on technical roles with 6–8 weeks to invest who want the full picture, start to finish.'},
+  executive:  {name:'Executive',  hours:'~12–15 h', color:'var(--amber)',  emoji:'💼', blocks:{A:'full',B:'partial',C:'full',D:'full'}, bestFor:'Best for: managers and decision-makers who want to understand what AI can do, its risks, and governance — without writing code.'},
+  builder:    {name:'Builder',hours:'~30–35 h', color:'var(--violet)',emoji:'🔧', blocks:{A:'full',B:'full',C:'partial',D:'none'}, bestFor:'Best for: engineers/analysts who already know the AI basics and want to focus on hands-on building — agents, RAG, tool use.'},
+  governance: {name:'Governance', hours:'~15–18 h', color:'var(--sage)',  emoji:'⚖',  blocks:{A:'none',B:'none',C:'full',D:'partial'}, bestFor:'Best for: risk, compliance, legal, or DPO roles focused on governance and regulation, with little interest in the technical build.'}
+};
+const BLOCK_NAMES = {A:'Foundations', B:'Building', C:'Trust', D:'Business'};
+let currentRoute = 'complete';
+let bankOn = true;
+
+function shieldSVG(routeKey, size){
+  const r = ROUTES[routeKey];
+  const uid = 'clip-'+routeKey+'-'+Math.random().toString(36).slice(2,7);
+  const col = (level) => level==='full' ? r.color : (level==='partial' ? r.color : 'var(--border)');
+  const op = (level) => level==='full' ? '1' : (level==='partial' ? '0.4' : '1');
+  const shieldPath = 'M50 4 L92 18 L92 58 C92 92 70 112 50 118 C30 112 8 92 8 58 L8 18 Z';
+  return `
+  <svg class="shield" viewBox="0 0 100 120" width="${size||56}" height="${size*1.14||64}">
+    <defs><clipPath id="${uid}"><path d="${shieldPath}"/></clipPath></defs>
+    <g clip-path="url(#${uid})">
+      <rect x="0" y="0" width="50" height="60" fill="${col(r.blocks.A)}" opacity="${op(r.blocks.A)}"/>
+      <rect x="50" y="0" width="50" height="60" fill="${col(r.blocks.B)}" opacity="${op(r.blocks.B)}"/>
+      <rect x="0" y="60" width="50" height="60" fill="${col(r.blocks.C)}" opacity="${op(r.blocks.C)}"/>
+      <rect x="50" y="60" width="50" height="60" fill="${col(r.blocks.D)}" opacity="${op(r.blocks.D)}"/>
+    </g>
+    <path d="${shieldPath}" fill="none" stroke="var(--border)" stroke-width="2.5"/>
+    <text x="50" y="68" font-size="30" text-anchor="middle" dominant-baseline="middle">${r.emoji}</text>
+  </svg>`;
+}
+
+/* ============ DATA ============ */
+const ALL3 = ['mobile','tablet','desktop'];
+const DESKTOP_ONLY = ['desktop'];
+
+/* route status per block letter is defined in ROUTES; modules reference their block.
+   governance/builder etc. collapse (dim) modules whose block is 'none' for the selected route. */
+
+const MODULES = [
+  {
+    id:'m0', block:null, num:null, tag:'Setup', title:'Accounts and prerequisites', notesOn:false,
+    duration:null,
+    objective:'Only resources that require signing up or setting something up are listed here. Everything else is open content — see the "Other resources of interest" section at the end.',
+    resources:[
+      {id:'r0-1', title:'DeepLearning.AI — create an account', url:'https://learn.deeplearning.ai', desc:'Free account (email or Google). Notebooks run in the browser, no install needed, with API keys already included.', devices:ALL3, lang:'EN'},
+      {id:'r0-2', title:'Anthropic Console — developer account', url:'https://console.anthropic.com', desc:'Needed for the comparison exercise in topic 5.2: create your own account, with a few cents of testing cost, on at least two of Anthropic, OpenAI and Google.', devices:ALL3, lang:'EN'},
+      {id:'r0-3', title:'OpenAI Platform — developer account', url:'https://platform.openai.com', desc:'One of the accounts needed for the topic 5.2 comparison.', devices:ALL3, lang:'EN'},
+      {id:'r0-4', title:'Google AI Studio (Gemini) — developer account', url:'https://ai.google.dev/', desc:'Generous free tier. One of the accounts needed for the topic 5.2 comparison.', devices:ALL3, lang:'EN'}
+    ]
+  },
+  {
+    id:'m0-1', block:null, num:null, tag:'New', title:'Minimal Python to read notebooks', notesOn:false, optionalTag:'optional',
+    duration:'5–8 h · optional',
+    objective:'For anyone who doesn\'t code fluently — without this, topics 4-7 and 9 get hard. Only start here if you need it.',
+    skipTest:'Can you read a for loop, a function, and a JSON without effort?',
+    result:'You can read and edit the course notebooks without getting stuck on the code.',
+    resources:[
+      {id:'r0b-1', title:'Kaggle Learn — Python', url:'https://www.kaggle.com/learn/python', desc:'Free, with a certificate, exercises in the browser.', devices:ALL3, lang:'EN'}
+    ]
+  },
+
+  {
+    id:'mA', type:'group', block:'A', num:null, tag:'Block A', title:'Foundations',
+    objective:'Vocabulary, a mental model, and the basics so you don\'t get lost later.',
+    children:[
+    {
+      id:'m1', block:'A', num:1, tag:'AI Foundations', title:'General AI concepts', notesOn:true,
+      duration:'2–3 days',
+      objective:'Get the big picture before diving into LLMs: what machine learning is, types of learning, neural networks, and where LLMs fit in.',
+      skipTest:'Can you explain the difference between supervised and unsupervised learning, and what a neural network is?',
+      result:'A mental map of AI (types of learning, what a neural network is, where LLMs fit in) before the technical detail of topic 2.',
+      resources:[
+        {id:'r1-1', title:'Elements of AI', url:'https://www.elementsofai.com/', desc:'University of Helsinki, free, 2018. The world\'s most popular intro AI course: what AI is, machine learning, neural networks, no coding required. Also available in Spanish.', devices:ALL3, lang:'EN'},
+        {id:'r1-2', title:'For non-technical/manager profiles: AI for Everyone', url:'https://www.deeplearning.ai/courses/ai-for-everyone/', desc:'Andrew Ng. What AI can and can\'t do, in business language — a good alternative if you prefer a non-technical approach.', devices:ALL3, lang:'EN'},
+        {id:'r1-3', title:'🎥 But what is a neural network? | Deep Learning chapter 1', url:'https://www.youtube.com/watch?v=aircAruvnKk', desc:'3Blue1Brown, 2017. The most-recommended visual explanation of how a neural network works.', devices:ALL3, lang:'EN'}
+      ]
+    },
+    {
+      id:'m2', block:'A', num:2, tag:'LLM Fundamentals', title:'LLM fundamentals', notesOn:true,
+      duration:'3–4 days',
+      objective:'How LLMs work under the hood before building anything — transformer architecture, attention, tokenization.',
+      skipTest:'Can you explain what a token is, what the context window is, and why an LLM hallucinates?',
+      result:'You understand how an LLM predicts the next token and why that explains hallucinations, context, and cost.',
+      resources:[
+        {id:'r2-1', title:'How Transformer LLMs Work', url:'https://www.deeplearning.ai/courses/how-transformer-llms-work', desc:'Jay Alammar and Maarten Grootendorst, 2025. The transformer architecture explained visually, no advanced math needed.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r2-2', title:'Building Effective Agents (reading)', url:'https://www.anthropic.com/engineering/building-effective-agents', desc:'Anthropic, 2024. Lays the groundwork for how an LLM is orchestrated within a system. Reread in topic 5.0.', devices:ALL3, lang:'EN'},
+        {id:'r2-3', title:'🎥 Stanford CS229 | Building Large Language Models', url:'https://www.youtube.com/watch?v=9vM4p9NN0Ts', desc:'Yann Dubois, Stanford, 2024. Pretraining and post-training (SFT/RLHF), and common data, algorithm, and evaluation practices.', devices:ALL3, lang:'EN'},
+        {id:'r2-4', title:'🎥 Transformers, the tech behind LLMs | Chapter 5', url:'https://www.youtube.com/watch?v=wjZofJX0v4M', desc:'3Blue1Brown, 2024. A visual walkthrough of the transformer architecture.', devices:ALL3, lang:'EN'}
+      ]
+    },
+    {
+      id:'m3', block:'A', num:3, tag:'Prompting', title:'Prompting and context engineering', notesOn:true,
+      duration:'2–3 days',
+      objective:'Practical prompting techniques, reusable patterns, real use cases. Entry point for the Builder path.',
+      skipTest:'Do you already use few-shot, chain-of-thought, and structured prompts with good judgment on a daily basis?',
+      result:'You master the core prompting patterns and know that managing context (not just the prompt) is the key skill.',
+      resources:[
+        {id:'r3-1', title:'ChatGPT Prompt Engineering for Developers', url:'https://www.deeplearning.ai/courses/chatgpt-prompt-eng', desc:'DeepLearning.AI + OpenAI, 2023. Fundamentals: principles, summarizing, inferring, transforming, expanding. Uses older models in the examples, but the principles still hold.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r3-2', title:'Prompt Engineering Guide', url:'https://www.promptingguide.ai/', desc:'DAIR.AI, an ongoing reference since 2022. A catalog of techniques (chain-of-thought, few-shot, ReAct…) to consult as needed.', devices:ALL3, lang:'EN'},
+        {id:'r3-3', title:'Anthropic Academy', url:'https://www.anthropic.com/learn', desc:'Free, up-to-date courses on prompting and evaluation with Claude.', devices:ALL3, lang:'EN'},
+        {id:'r3-4', title:'Reading: context engineering guides', url:'https://www.anthropic.com/engineering', desc:'Anthropic\'s engineering blog. The discipline that replaces plain "prompting" once you\'re working with agents.', devices:ALL3, lang:'EN'},
+        {id:'r3-5', title:'🎥 AI prompt engineering: A deep dive', url:'https://www.youtube.com/watch?v=T9aRN5JkmL8', desc:'Anthropic, 2024. Anthropic\'s own prompt engineering team walks through what actually works in practice.', devices:ALL3, lang:'EN'}
+      ],
+      checkpoint:{
+        title:'Design the risk-analysis prompt',
+        text:'Take a realistic excerpt from a consumer credit file and, using just a chat interface (no code), write and iterate on a prompt that turns the data into a readable summary: what risk signals stand out, what\'s missing, what you\'d recommend reviewing. This piece is reused as-is in the topic 5 agent and in the capstone.',
+        piece:'Capstone piece → "Production prompt"'
+      }
+    }
+    ]
+  },
+
+  {
+    id:'mB', type:'group', block:'B', num:null, tag:'Block B', title:'Building',
+    objective:'Hands on the keyboard: RAG, agents, and tool use. Notebooks hosted by DeepLearning.AI — nothing to install.',
+    children:[
+    {
+      id:'m4', block:'B', num:4, tag:'RAG', title:'RAG — Retrieval-Augmented Generation', notesOn:true,
+      duration:'4–5 days',
+      objective:'Connecting the LLM to your own data — the technical foundation before building agents that use RAG.',
+      skipTest:'Can you explain chunking, hybrid search, and groundedness, and have you built a RAG pipeline?',
+      result:'You can design and evaluate a basic RAG pipeline over your own data.',
+      resources:[
+        {id:'r4-1', title:'Retrieval Augmented Generation (RAG)', url:'https://www.deeplearning.ai/courses/retrieval-augmented-generation', desc:'DeepLearning.AI, 2025, the most current: vector DBs, hybrid search, chunking, cost, and latency.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r4-2', title:'Building and Evaluating Advanced RAG', url:'https://www.deeplearning.ai/courses/building-evaluating-advanced-rag', desc:'With LlamaIndex, 2023. Advanced retrieval techniques and evaluation metrics (context relevance, groundedness).', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r4-3', title:'🎥 What is Retrieval-Augmented Generation (RAG)?', url:'https://www.youtube.com/watch?v=T-D1OfcDW1M', desc:'IBM Technology, 2023. A concise explainer of the RAG framework and why it reduces hallucinations.', devices:ALL3, lang:'EN'}
+      ],
+      checkpoint:{
+        title:'Decide whether RAG applies to the credit data',
+        text:'The capstone data (consumer credit files, Home Credit dataset) is structured — rows and columns across related tables — not free text. Use this topic to understand why classic embedding-based RAG isn\'t the right tool here, and document the decision: the right pattern is "give the agent tools that query and combine tables", not "embed and retrieve chunks".',
+        piece:'Capstone piece → "Architecture justification"'
+      }
+    },
+    {
+      id:'m5', block:'B', num:5, tag:'Agents', title:'Agents and function calling / tool use', notesOn:true,
+      duration:'1–1.5 weeks',
+      objective:'Build systems that act (not just respond), and understand how each provider implements tool calling.',
+      skipTest:'Can you explain how an LLM decides to invoke a tool, and have you built at least one agent?',
+      result:'You\'ve built an agent with the raw API and with frameworks, you have your own view on the providers, and you know when NOT to use an agent.',
+      resources:[
+        {id:'r5-0', title:'5.0 · The agent by hand, first', url:'https://www.anthropic.com/engineering/building-effective-agents', desc:'Before touching frameworks: reread Building Effective Agents and implement the agent + tools loop with the raw API. This is how you learn what frameworks do under the hood.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r5-0b', title:'Claude Cookbooks (formerly Anthropic Cookbook)', url:'https://github.com/anthropics/claude-cookbooks', desc:'Practical examples with the raw API, including tool use and agent loops. The repo was renamed from "anthropic-cookbook" to "claude-cookbooks".', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r5-0c', title:'anthropics/courses (repo)', url:'https://github.com/anthropics/courses', desc:'Official Anthropic courses in notebook format, including one specifically on tool use — complements the Cookbook for the by-hand agent exercise.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r5-1', title:'Agentic AI', url:'https://www.deeplearning.ai/courses/agentic-ai', desc:'Andrew Ng, 2025. The most current and best-reviewed agents course in the catalog. Teaches the four patterns (reflection, tool use, planning, multi-agent collaboration) before touching any specific library.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r5-2', title:'Functions, Tools and Agents with LangChain', url:'https://www.deeplearning.ai/courses/functions-tools-agents-langchain', desc:'2023. How an LLM decides to invoke tools.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r5-3', title:'AI Agents in LangGraph', url:'https://www.deeplearning.ai/courses/ai-agents-in-langgraph', desc:'2024. Orchestration with state graphs.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r5-4', title:'Building Agentic RAG with LlamaIndex', url:'https://www.deeplearning.ai/courses/building-agentic-rag-with-llamaindex', desc:'2024. Combines RAG (topic 4) with agentic reasoning.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r5-5', title:'Optional: Multi AI Agent Systems with crewAI', url:'https://www.deeplearning.ai/courses/multi-ai-agent-systems-with-crewai', desc:'2024. Coordination between multiple agents with specialized roles.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r5-6', title:'Tool use — Anthropic (Claude)', url:'https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview', desc:'5.2 · Hands-on comparison: implement the same agent across all three providers and compare. Anthropic version.', devices:ALL3, lang:'EN'},
+        {id:'r5-7', title:'Function calling — OpenAI (GPT)', url:'https://platform.openai.com/docs/guides/function-calling', desc:'Same comparison, OpenAI version.', devices:ALL3, lang:'EN'},
+        {id:'r5-8', title:'Function calling — Google (Gemini)', url:'https://ai.google.dev/gemini-api/docs/function-calling', desc:'Same comparison, Gemini version.', devices:ALL3, lang:'EN'},
+        {id:'r5-9', title:'Arena', url:'https://arena.ai/', desc:'Formerly LMArena/Chatbot Arena, free, no signup, since 2023. Blind model comparison via human voting.', devices:ALL3, lang:'EN'},
+        {id:'r5-10', title:'🎥 What are AI Agents?', url:'https://www.youtube.com/watch?v=F8NKVhkZZWI', desc:'IBM Technology, 2024. What makes a system "agentic" versus a plain chatbot.', devices:ALL3, lang:'EN'}
+      ],
+      checkpoint:{
+        title:'Build the first risk-analysis agent',
+        text:'Using the patterns from Agentic AI (or LangChain, if you want to go framework-first), build an agent with one tool: read an excerpt of the application + bureau tables from the Home Credit dataset, compute risk signals with pandas, and pass the result to the topic 3 prompt. This is the core of the capstone — everything after this is an upgrade.',
+        piece:'Capstone piece → "Agent core"'
+      },
+      dataset:{
+        title:'Capstone dataset — first delivery',
+        tables:['application', 'bureau'],
+        text:'From this topic on, the project uses the public Home Credit Default Risk dataset (Kaggle), reduced to two tables: application (application data) and bureau (history with other institutions). Enough for a realistic first agent without the overhead of the original dataset\'s seven full tables.',
+        url:'https://www.kaggle.com/c/home-credit-default-risk/data'
+      }
+    },
+    {
+      id:'m5-3', block:'B', num:'5.3', tag:'Judgment', title:'Anti-hype exercise', notesOn:true, isSubExercise:true,
+      duration:'included in topic 5',
+      objective:'Pick 2 use cases from the bank and justify in writing whether they need an autonomous agent or whether a deterministic workflow is enough, using the criteria from Building Effective Agents.',
+      result:'The right answer is often "you don\'t need an agent" — and knowing how to say that is as valuable as knowing how to build one.',
+      resources:[],
+      checkpoint:{
+        title:'Agent vs. workflow',
+        text:'Document the justification for your 2 chosen cases. This piece is reused in the capstone as an explicit design criterion.',
+        piece:'Capstone piece → "Design criterion"'
+      }
+    },
+    {
+      id:'m6', block:'B', num:6, tag:'Fine-tuning', title:'Fine-tuning and customization', notesOn:true, optionalTag:'optional',
+      duration:'3–4 days · optional',
+      objective:'When fine-tuning makes sense versus prompting or RAG, and how it works in practice.',
+      skipTest:'Is reading the course summary enough for you to decide "prompting vs. RAG vs. fine-tuning"?',
+      result:'You know when to use fine-tuning versus prompt engineering or RAG, and what that means for cost and data.',
+      resources:[
+        {id:'r6-1', title:'Fine-tuning & RL for LLMs: Intro to Post-training', url:'https://www.deeplearning.ai/courses/fine-tuning-and-reinforcement-learning-for-llms-intro-to-post-training', desc:'Sharon Zhou, 2025, the most current: fine-tuning, RLHF, LoRA, evaluating fine-tuned models.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r6-2', title:'Shorter alternative: Finetuning Large Language Models', url:'https://www.deeplearning.ai/courses/finetuning-large-language-models', desc:'2023. Basic fundamentals, a shorter course.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r6-3', title:'🎥 Fine Tuning LLM Explained Simply', url:'https://www.youtube.com/watch?v=ezdIOLbUSWg', desc:'codebasics, 2025. A plain-language explanation of what fine-tuning does and when to use it.', devices:ALL3, lang:'EN'}
+      ],
+      noCheckpointNote:'No project checkpoint here — the risk agent is a good example of a case that does NOT need fine-tuning: good prompting + tool use already solves it. Honest note: in 2026 fine-tuning is rarely done before mastering prompting, RAG, and evals.'
+    }
+    ]
+  },
+
+  {
+    id:'mC', type:'group', block:'C', num:null, tag:'Block C', title:'Trust: evaluation, security and governance',
+    objective:'What separates a demo from something defensible in front of Risk, the DPO, and the supervisor. This block comes before integrating anything.',
+    children:[
+    {
+      id:'m7', block:'C', num:7, tag:'Evaluation', title:'Evaluation, safety and limitations', notesOn:true,
+      duration:'3–5 days',
+      objective:'Hallucinations, bias, and how to measure the quality and safety of an LLM system — key before production.',
+      skipTest:'Do you already have your own criteria for measuring quality and risk before deploying something?',
+      result:'Criteria for measuring quality and risk beyond "it works in the demo". You know that an agent with tools is an attack surface.',
+      resources:[
+        {id:'r7-1', title:'Red Teaming LLM Applications', url:'https://www.deeplearning.ai/courses/red-teaming-llm-applications', desc:'With Giskard, 2024. Attacking real chatbots: prompt injection, information leaks.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r7-2', title:'OWASP Top 10 for LLM Applications', url:'https://owasp.org/www-project-top-10-for-large-language-model-applications/', desc:'The reference risk catalog, including prompt injection via tools/agents.', devices:ALL3, lang:'EN'},
+        {id:'r7-3', title:'Evaluation guides on docs.claude.com', url:'https://docs.claude.com', desc:'How to define success criteria, build test datasets, and use LLM-as-judge. Evals aren\'t a topic — they\'re a habit that runs through everything from topic 3 onward.', devices:ALL3, lang:'EN'},
+        {id:'r7-4', title:'🎥 Why Large Language Models Hallucinate', url:'https://www.youtube.com/watch?v=cfqtFvWOfg0', desc:'IBM Technology, 2023. Why hallucinations happen and how to reduce them.', devices:ALL3, lang:'EN'}
+      ],
+      checkpoint:{
+        title:'Build a mini evaluation set',
+        text:'Pick 5-10 known facts from a real record in the dataset (e.g. "declared income = X") and check that the agent gets them right. Then try to trick it: ask for a variable that isn\'t in the data and see whether it makes one up instead of saying it\'s missing. Also review the agent\'s design against the OWASP LLM Top 10.',
+        piece:'Capstone piece → "Evaluation set"'
+      }
+    },
+    {
+      id:'m8', block:'C', num:8, tag:'Governance', title:'Data governance, ethics and the AI Act', notesOn:true,
+      duration:'4–5 days',
+      objective:'The ethical, legal, and operational implications of deploying AI within an organization. Entry point for the Governance path.',
+      skipTest:'Do you already know the AI Act risk categories and the basic ethical principles applied to AI?',
+      result:'You understand what it means to deploy AI responsibly and how it connects to the data governance you already know.',
+      resources:[
+        {id:'r8-1', title:'Ethics of AI', url:'https://ethics-of-ai.mooc.fi/', desc:'University of Helsinki, free, same team as Elements of AI, 2020. Ethical principles applied to AI. Also available in Spanish.', devices:ALL3, lang:'EN'},
+        {id:'r8-2', title:'AI Act — official European Commission page', url:'https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai', desc:'Adopted 2024, continuously updated. Authoritative reference on risk categories, obligations, and timeline.', devices:ALL3, lang:'EN'},
+        {id:'r8-3', title:'Optional: AI Governance Foundations', url:'https://ethicalogic.com/ai-course-access/', desc:'Ethicalogic, free, no signup. Connects the AI Act with the NIST AI RMF and ISO/IEC 42001.', devices:ALL3, lang:'EN'},
+        {id:'r8-4', title:'🎥 The EU\'s AI Act, Explained', url:'https://www.youtube.com/watch?v=i5iZNH2lCGU', desc:'WSJ Tech News Briefing, 2023. An accessible summary of what the AI Act covers.', devices:ALL3, lang:'EN'}
+      ]
+    },
+    {
+      id:'m8b', block:'C', num:'8-bis', tag:'Banking', title:'Model risk and banking supervision', notesOn:true, bank:true,
+      duration:'4–6 h',
+      objective:'The supervisor doesn\'t examine you against the AI Act in the abstract, but against the bank\'s model risk framework. Every agent is a "model" that needs to be inventoried, validated, and documented.',
+      result:'You know how to map a generative AI system onto the bank\'s model lifecycle and anticipate what Validation, the DPO, and the supervisor will look at.',
+      resources:[
+        {id:'r8b-1', title:'Fed SR 11-7 — Guidance on Model Risk Management', url:'https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm', desc:'Still the global reference for model risk management (MRM).', devices:ALL3, lang:'EN'},
+        {id:'r8b-2', title:'DORA — EU Regulation 2022/2554', url:'https://finance.ec.europa.eu/regulation-and-supervision/financial-services-legislation/implementing-and-delegated-acts/digital-operational-resilience-regulation_en', desc:'Your AI providers are ICT providers: registration, contracts, exit strategy, concentration risk.', devices:ALL3, lang:'EN'},
+        {id:'r8b-3', title:'NIST AI Risk Management Framework', url:'https://www.nist.gov/itl/ai-risk-management-framework', desc:'Includes the specific generative AI profile.', devices:ALL3, lang:'EN'},
+        {id:'r8b-4', title:'AEPD — Agentic AI from a data protection perspective', url:'https://www.aepd.es/guias/orientaciones-ia-agentica.pdf', desc:'Spain\'s data protection authority, guidance from February 2026 on AI agents and GDPR: what changes when a system decides and acts, not just responds. Very relevant from topic 5 onward.', devices:ALL3, lang:'ES'},
+        {id:'r8b-5', title:'EBA — guidelines on ICT risk and outsourcing', url:'https://www.eba.europa.eu/', desc:'Along with ECB publications on the use of AI in banking.', devices:ALL3, lang:'EN'},
+        {id:'r8b-6', title:'Governing AI Agents', url:'https://www.deeplearning.ai/short-courses/governing-ai-agents/', desc:'DeepLearning.AI with Databricks, taught by Amber Roberts, 2025. The most hands-on resource in this block: applies the four pillars of agent governance (lifecycle, risk, security, observability) to a real dataset in Databricks, with Unity Catalog for least-privilege access and observability. Very aligned with a Data & Analytics role.', devices:DESKTOP_ONLY, lang:'EN'}
+      ]
+    },
+    {
+      id:'mgate', block:'C', num:null, tag:'🚧 Gate', title:'Pre-production gate', notesOn:false, bank:true, isGate:true,
+      duration:'before connecting any agent to real data or systems',
+      objective:'No agent touches real bank data without passing through here. A minimal checklist, not just another reading.',
+      resources:[],
+      checklist:[
+        {id:'g1', text:'OWASP LLM Top 10 read and applied to the design (especially prompt injection via tools).'},
+        {id:'g2', text:'Your own evaluation set built (not just "I tried it and it works").'},
+        {id:'g3', text:'AI Act classification of the use case documented.'},
+        {id:'g4', text:'Data: DPIA if personal data is involved, DPA with the provider, third-party risk approval.'},
+        {id:'g5', text:'Human-in-the-loop defined: what the machine decides and what a person signs off on.'},
+        {id:'g6', text:'Sign-off from Model Risk, DPO, and Security.'}
+      ]
+    }
+    ]
+  },
+
+  {
+    id:'mD', type:'group', block:'D', num:null, tag:'Block D', title:'Integration, business and capstone',
+    objective:'From notebook to enterprise architecture and business value.',
+    children:[
+    {
+      id:'m9', block:'D', num:9, tag:'Integration', title:'Integrating with other systems (MCP)', notesOn:true,
+      duration:'3–4 days',
+      objective:'How an AI system connects to the rest of an organization\'s stack — the golden rule on data applies here especially if it\'s against real sources.',
+      skipTest:'Do you know what MCP solves versus building a custom connector for every system?',
+      result:'You understand how an AI system connects to the rest of the stack, and why a standard protocol simplifies (and concentrates) integration risk.',
+      resources:[
+        {id:'r9-1', title:'MCP: Build Rich-Context AI Apps with Anthropic', url:'https://www.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic', desc:'DeepLearning.AI with Anthropic, 2025. The open standard for connecting LLMs to external systems without a custom connector per combination.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r9-2', title:'Official MCP documentation', url:'https://modelcontextprotocol.io/', desc:'Includes security best practices: permissions, isolation, trust in third-party servers.', devices:ALL3, lang:'EN'},
+        {id:'r9-3', title:'🎥 Why we built—and donated—the MCP', url:'https://www.youtube.com/watch?v=PLyCki2K0Lg', desc:'Anthropic, 2025. Why the protocol exists and where it\'s headed.', devices:ALL3, lang:'EN'}
+      ],
+      checkpoint:{
+        title:'From "upload a file" to "read from a new folder/table"',
+        text:'Replace the manual upload from topic 5 with an MCP source (filesystem or similar) and extend the dataset with the previous_application table (history of prior applications with the same institution). Now the agent combines an external source (bureau) and an internal one (previous_application) on its own.',
+        piece:'Capstone piece → "Integration"'
+      },
+      dataset:{
+        title:'Capstone dataset — second delivery',
+        tables:['previous_application'],
+        text:'The previous_application table is added, representing the history of prior applications with the same institution — an "internal vs. external" contrast with the bureau table from topic 5.',
+        url:'https://www.kaggle.com/c/home-credit-default-risk/data'
+      }
+    },
+    {
+      id:'m10', block:'D', num:10, tag:'Reference', title:'Tools and frameworks', notesOn:false, isReference:true,
+      duration:'ongoing reference, not a block',
+      objective:'A cheat sheet of what\'s already used in topics 4, 5, 6, and 9, in one place.',
+      resources:[
+        {id:'r10-1', title:'LangChain', url:null, desc:'Orchestration, used in topics 4 and 5.'},
+        {id:'r10-2', title:'LlamaIndex', url:null, desc:'RAG-focused, used in topic 4 and in the agentic RAG of topic 5.'},
+        {id:'r10-3', title:'crewAI', url:null, desc:'Multi-agent coordination, used in topic 5.'},
+        {id:'r10-4', title:'MCP', url:'https://modelcontextprotocol.io/', desc:'Integration protocol used in topic 9.', devices:ALL3, lang:'EN'},
+        {id:'r10-5', title:'API — Anthropic', url:'https://platform.claude.com/docs', desc:'Direct reference to go deeper than the courses.', devices:ALL3, lang:'EN'},
+        {id:'r10-6', title:'API — OpenAI', url:'https://platform.openai.com/docs', desc:'Direct reference to go deeper than the courses.', devices:ALL3, lang:'EN'},
+        {id:'r10-7', title:'API — Google Gemini', url:'https://ai.google.dev/gemini-api/docs', desc:'Direct reference to go deeper than the courses.', devices:ALL3, lang:'EN'}
+      ]
+    },
+    {
+      id:'m11', block:'D', num:11, tag:'Business', title:'Business cases and real-world cost', notesOn:true,
+      duration:'4–5 days',
+      objective:'From "it works in a notebook" to thinking about production systems for real Data & Analytics projects.',
+      skipTest:'Can you already justify model, orchestrator, cost, and latency for a real project in your organization?',
+      result:'Architecture and business judgment: model, orchestrator, governance, cost/latency, and when to build nothing at all.',
+      resources:[
+        {id:'r11-1', title:'Full Stack Deep Learning — LLM Bootcamp', url:'https://fullstackdeeplearning.com/llm-bootcamp/', desc:'Free, 2023. System design for LLMs: expensive vs. cheap models, cost, latency, evaluation, monitoring. The design principles hold up; the specific model details don\'t.', devices:ALL3, lang:'EN'},
+        {id:'r11-2', title:'API latency and cost documentation', url:'https://platform.openai.com/docs/guides/latency', desc:'How prompt size, tokens, and model choice affect real production cost.', devices:ALL3, lang:'EN'},
+        {id:'r11-2b', title:'Modern cost: prompt caching, batch API and structured outputs', url:'https://docs.claude.com', desc:'An update on the latency guide: prompt caching and batch API on docs.claude.com can cut the cost of repeated context by ~90% — more current than the 2023 latency guide.', devices:ALL3, lang:'EN'},
+        {id:'r11-3', title:'🎥 LLMOps (LLM Bootcamp)', url:'https://www.youtube.com/watch?v=Fquj2u7ay40', desc:'Full Stack Deep Learning, 2023. Choosing, testing, deploying, and monitoring LLM applications in production.', devices:ALL3, lang:'EN'},
+        {id:'r11-4', title:'Sector context: AI-in-finance reports from the BIS and FSB', url:'https://www.bis.org/', desc:'Free reports on AI adoption in the financial sector.', devices:ALL3, lang:'EN'}
+      ],
+      checkpoint:{
+        title:'Close the loop: cost and build vs. buy',
+        text:'Think through what it would take to hand the agent to the team: which model tier is worth it for occasional use, where it would live (Slack? internal chat?), and what governance from topic 8/8-bis would apply. You don\'t need to build it — document the decisions as if you were really proposing it. Include a short build-vs-buy memo (TCO, lock-in, DORA concentration risk, exit clauses).',
+        piece:'Capstone piece → "Business case"'
+      },
+      bankExtra:{
+        title:'Banking mini-cases',
+        text:'Analyze 4 internal cases — fraud, onboarding/KYC, customer service, regulatory reporting — and for each one: AI Act classification, explainability requirement, personal data yes/no, workflow vs. agent, and estimated annual cost (tokens × volume × model).'
+      }
+    }
+    ]
+  },
+
+  {
+    id:'mCapstone', block:null, num:null, tag:'★ Capstone', title:'Capstone project', notesOn:true, isCapstone:true,
+    duration:'~8–12 h · mandatory on technical paths',
+    objective:'Without a deliverable, the path produces certificates, not capability. The capstone assembles the pieces you already built at each checkpoint — not a new exercise from scratch.',
+    projectIntro:'An end-to-end banking use case with public synthetic consumer-credit data (Home Credit Default Risk dataset): a risk-analysis agent + your own eval set + AI Act classification + a one-page business case. Presented to the team (20 min). Completion criterion: capstone defended, not courses completed.',
+    projectTable:[
+      {topic:'3 — Prompting', checkpoint:'Risk-analysis prompt'},
+      {topic:'4 — RAG', checkpoint:'Architecture justification (why not classic RAG)'},
+      {topic:'5 — Agents', checkpoint:'Agent core (application + bureau)'},
+      {topic:'5.3 — Anti-hype', checkpoint:'Design criterion (agent vs. workflow)'},
+      {topic:'9 — Integration/MCP', checkpoint:'Integration (+ previous_application)'},
+      {topic:'7 — Evaluation', checkpoint:'Own evaluation set + OWASP review'},
+      {topic:'8-bis / Gate — Banking', checkpoint:'AI Act classification + gate checklist'},
+      {topic:'11 — Business', checkpoint:'One-page business case'}
+    ],
+    dataset:{
+      title:'Full capstone dataset',
+      tables:['application','bureau','previous_application','installments_payments (optional)'],
+      text:'Home Credit Default Risk (Kaggle). The first three tables are added in stages throughout the path (topics 5 and 9); installments_payments (actual payment behavior) is an optional extension for anyone going deeper on the Builder path.',
+      url:'https://www.kaggle.com/c/home-credit-default-risk/data'
+    },
+    resources:[]
+  },
+
+  {
+    id:'mE', block:null, num:null, tag:'Block E', title:'Daily practice and gamification', notesOn:false, isAdoption:true,
+    duration:'ongoing, from week 1',
+    objective:'Courses give knowledge; this builds the habit. Without daily use, nothing is left after 3 months. Runs on each person\'s personal computer, due to corporate network restrictions.',
+    adoptItems:[
+      {title:'AI in your real work, every week', desc:'~1-2 h/week during normal hours: 3 real tasks per week using the AI tool approved by the bank. Not a separate exercise — it\'s your usual work, with AI. Only with approved tools and no customer data in personal tools.'},
+      {title:'Team prompt library', desc:'Shared repository (wiki/SharePoint) where everyone uploads prompts that work for them, organized by process. No real data in the prompts you upload.'},
+      {title:'Weekly challenge (30-60 min)', desc:'A rotating mini-challenge: "automate a step of your reporting", "have the AI critique your presentation"…'},
+      {title:'Friday demo (15 min)', desc:'One person shows something that worked for them (or that failed — that counts too). Feeds the "AI wins" channel with estimated time saved.'}
+    ],
+    resources:[]
+  },
+
+  {
+    id:'mGloss', block:null, num:null, tag:'Reference', title:'Quick glossary', notesOn:false, isGlossary:true,
+    duration:'for non-technical profiles',
+    objective:'Terms that come up constantly in this path, explained in one sentence.',
+    glossary:[
+      {term:'LLM', def:'Large language model: the engine that predicts text (Claude, GPT, Gemini).'},
+      {term:'Token', def:'The smallest unit of text the model processes (~¾ of a word). You pay per token.'},
+      {term:'RAG', def:'The model looks up your own documents before answering, instead of relying only on its memory.'},
+      {term:'Agent', def:'An LLM that decides on its own which tools to use (search, query a database, write) to achieve a goal.'},
+      {term:'Tool use / function calling', def:'The mechanism by which the model invokes external tools.'},
+      {term:'Orchestration', def:'Coordinating the steps, tools, and models of an AI system (LangGraph, etc.).'},
+      {term:'Fine-tuning', def:'Partially retraining a model on your own data. Expensive and almost never the first step.'},
+      {term:'Evals', def:'Systematic, repeatable tests of an AI system\'s quality. No evals, no production.'},
+      {term:'Prompt injection', def:'An attack that sneaks malicious instructions into the text the model reads — critical if the agent has tools.'},
+      {term:'MCP', def:'A standard protocol for connecting models to external systems (databases, APIs, applications).'},
+      {term:'Vector DB / chunking', def:'How documents are split (chunking) and indexed so RAG can find what\'s relevant.'},
+      {term:'Prompt caching', def:'Reusing repeated context across calls to pay up to ~90% less for it.'}
+    ],
+    resources:[]
+  },
+
+  {
+    id:'m12', block:null, num:null, tag:'Wrap-up', title:'Wrapping up', notesOn:true, isClosing:true,
+    closingText:[
+      'You\'ve gone from AI and LLM fundamentals, through prompting, RAG, and agent-building with real frameworks, to the harder architectural questions: when to fine-tune, how to evaluate and secure a system, how to handle governance and regulation, and how to integrate AI into the rest of the stack — all while building the same credit-risk-analysis agent from start to finish, not with disconnected toy examples.',
+      'To keep this picture current, subscribe to The Batch, DeepLearning.AI\'s weekly newsletter.'
+    ],
+    resources:[
+      {id:'r12-1', title:'The Batch — subscribe to the newsletter', url:'https://www.deeplearning.ai/the-batch/', desc:'DeepLearning.AI\'s free weekly newsletter. Summarizes what matters without the noise.', devices:ALL3, lang:'EN'}
+    ]
+  },
+  {
+    id:'m13', block:null, num:null, tag:'Reference', title:'Other resources of interest', notesOn:false, isReference:true,
+    duration:'no account needed',
+    objective:'Everything below is freely accessible, no account or setup needed — keep it as reference, not as a checklist.',
+    resources:[
+      {id:'r13-1', title:'Elements of AI (topic 1, 2018)', url:'https://www.elementsofai.com/', desc:'Free account only needed if you want to track progress or get a certificate.', devices:ALL3, lang:'EN'},
+      {id:'r13-2', title:'Anthropic — Building Effective Agents (topic 2, 2024)', url:'https://www.anthropic.com/engineering/building-effective-agents', desc:'Open-access article, no signup.', devices:ALL3, lang:'EN'},
+      {id:'r13-3', title:'Prompt Engineering Guide (topic 3)', url:'https://www.promptingguide.ai/', desc:'DAIR.AI reference catalog, no signup.', devices:ALL3, lang:'EN'},
+      {id:'r13-4', title:'Arena (topic 5)', url:'https://arena.ai/', desc:'No account, no cost.', devices:ALL3, lang:'EN'},
+      {id:'r13-5', title:'Official MCP documentation (topic 9)', url:'https://modelcontextprotocol.io/', desc:'Conceptual reference, no signup.', devices:ALL3, lang:'EN'},
+      {id:'r13-6', title:'Ethics of AI (topic 8, 2020)', url:'https://ethics-of-ai.mooc.fi/', desc:'Free account only needed for a certificate.', devices:ALL3, lang:'EN'},
+      {id:'r13-7', title:'AI Act — official European Commission page', url:'https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai', desc:'Open content, continuously updated.', devices:ALL3, lang:'EN'},
+      {id:'r13-8', title:'AI Governance Foundations, Ethicalogic (topic 8)', url:'https://ethicalogic.com/ai-course-access/', desc:'Free, no signup.', devices:ALL3, lang:'EN'},
+      {id:'r13-9', title:'API documentation — Anthropic (reading)', url:'https://platform.claude.com/docs', desc:'No account needed to read; an account is only needed for the topic 5 exercise.', devices:ALL3, lang:'EN'},
+      {id:'r13-10', title:'API documentation — OpenAI (reading)', url:'https://platform.openai.com/docs', desc:'No account needed to read.', devices:ALL3, lang:'EN'},
+      {id:'r13-11', title:'API documentation — Google Gemini (reading)', url:'https://ai.google.dev/gemini-api/docs', desc:'No account needed to read.', devices:ALL3, lang:'EN'},
+      {id:'r13-12', title:'The Batch, DeepLearning.AI\'s newsletter', url:'https://www.deeplearning.ai/the-batch/', desc:'Free, summarizes what matters without the noise.', devices:ALL3, lang:'EN'},
+      {id:'r13-13', title:'Kaggle — Home Credit Default Risk (capstone dataset)', url:'https://www.kaggle.com/c/home-credit-default-risk/data', desc:'Public dataset used as the base of this path\'s capstone project.', devices:ALL3, lang:'EN'}
+    ]
+  }
+];
+
+/* ============ STORAGE HELPERS ============ */
+/* Priority: Supabase (cross-device, per person) > window.storage (Claude.ai artifact host)
+   > localStorage (same device/browser only) > in-memory (last resort). No console noise on
+   the expected fallback paths. */
+
+const SUPABASE_URL = 'https://uoiozrdywglvartkearf.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_EJsoi1vsDZ8vynj79-RYag_75xWmv3_';
+
+const memoryStore = {};
+const hasWindowStorage = typeof window !== 'undefined' && !!window.storage;
+let localStorageOK = false;
+try{
+  const testKey = '__storage_test__';
+  window.localStorage.setItem(testKey, '1');
+  window.localStorage.removeItem(testKey);
+  localStorageOK = true;
+}catch(e){ localStorageOK = false; }
+
+const supabaseConfigured = SUPABASE_URL.indexOf('TU-PROYECTO') === -1 && SUPABASE_ANON_KEY.indexOf('TU-ANON-KEY') === -1;
+let supabaseClient = null;
+let supabaseUserId = null;
+let supabaseCache = null;       // full jsonb blob for this user, loaded once
+let lastSavedAt = null;         // Date of the last successful write to Supabase
+
+if(supabaseConfigured && typeof window !== 'undefined' && window.supabase){
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+/* ---- Identity modal: asks who is using the tracker, explains why, warns against
+   personal data, and offers to continue with a name already saved on this device. ---- */
+function getSavedLocalName(){
+  try{ return window.localStorage.getItem('itin:whoami'); }catch(e){ return null; }
+}
+function setSavedLocalName(name){
+  try{ window.localStorage.setItem('itin:whoami', name); }catch(e){}
+}
+async function fetchProgressForUser(name){
+  try{
+    const { data, error } = await supabaseClient
+      .from('path_progress')
+      .select('data')
+      .eq('user_id', name)
+      .maybeSingle();
+    if(error) throw error;
+    return (data && data.data) ? data.data : {};
+  }catch(e){
+    return {};
+  }
+}
+function showIdentityModal(){
+  return new Promise((resolve)=>{
+    const existing = getSavedLocalName();
+    const overlay = document.createElement('div');
+    overlay.className = 'idmodal-overlay';
+    overlay.innerHTML = `
+      <div class="idmodal-box">
+        <div class="idmodal-title">Who's tracking progress?</div>
+        <div class="idmodal-desc">Pick a name so your progress on this learning path can be saved and found again later, from any device.</div>
+        <div class="idmodal-warning">⚠ Please don't use personal data (e.g. your full legal name or email) — use a nickname or initials instead. This name is stored, as entered, in a shared database.</div>
+        ${existing ? `
+          <div class="idmodal-existing">
+            <p>This browser last used: <strong>${existing.replace(/</g,'&lt;')}</strong></p>
+            <div class="idmodal-actions">
+              <button type="button" class="idmodal-btn idmodal-btn-primary" id="idContinueBtn">Continue as "${existing.replace(/</g,'&lt;')}"</button>
+              <button type="button" class="idmodal-btn" id="idSwitchBtn">Use a different name</button>
+            </div>
+          </div>
+          <div id="idSwitchBox" style="display:none;">
+        ` : ''}
+        <input type="text" class="idmodal-input" id="idNameInput" placeholder="e.g. jm23 or explorer-ana" maxlength="40" ${existing ? '' : 'autofocus'}>
+        <div class="idmodal-actions">
+          <button type="button" class="idmodal-btn idmodal-btn-primary" id="idConfirmBtn">Start / continue</button>
+        </div>
+        <div class="idmodal-error" id="idError"></div>
+        ${existing ? `</div>` : ''}
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const finish = (name)=>{
+      document.body.removeChild(overlay);
+      resolve(name);
+    };
+
+    if(existing){
+      const switchBox = overlay.querySelector('#idSwitchBox');
+      overlay.querySelector('#idContinueBtn').addEventListener('click', ()=> finish(existing));
+      overlay.querySelector('#idSwitchBtn').addEventListener('click', ()=>{
+        switchBox.style.display = 'block';
+        overlay.querySelector('#idNameInput').focus();
+      });
+    }
+    const input = overlay.querySelector('#idNameInput');
+    const errEl = overlay.querySelector('#idError');
+    const confirm = ()=>{
+      const v = (input.value || '').trim().toLowerCase();
+      if(!v){ errEl.textContent = 'Please enter a name.'; return; }
+      if(v.length < 2){ errEl.textContent = 'Name is too short.'; return; }
+      finish(v);
+    };
+    overlay.querySelector('#idConfirmBtn').addEventListener('click', confirm);
+    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') confirm(); });
+  });
+}
+async function identifySupabaseUser(){
+  if(!supabaseClient) return;
+  const name = await showIdentityModal();
+  supabaseUserId = name;
+  setSavedLocalName(name);
+  supabaseCache = await fetchProgressForUser(name);
+}
+
+function renderLastSaved(){
+  const el = document.getElementById('lastSavedNote');
+  if(!el) return;
+  if(!supabaseClient){ el.textContent = ''; return; }
+  if(!lastSavedAt){ el.textContent = supabaseUserId ? `Signed in as ${supabaseUserId} · not saved yet` : ''; return; }
+  const time = lastSavedAt.toLocaleString('en-GB', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  el.textContent = `Signed in as ${supabaseUserId} · last saved ${time}`;
+}
+
+async function supabasePersist(){
+  if(!supabaseClient || !supabaseUserId || !supabaseCache) return;
+  try{
+    const { error } = await supabaseClient.from('path_progress').upsert({
+      user_id: supabaseUserId,
+      data: supabaseCache,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id' });
+    if(error) throw error;
+    lastSavedAt = new Date();
+    renderLastSaved();
+  }catch(e){ /* offline or RLS issue: value still lives in supabaseCache for this session */ }
+}
+
+async function storeGet(key){
+  if(supabaseClient){
+    if(supabaseCache && Object.prototype.hasOwnProperty.call(supabaseCache, key)){
+      return supabaseCache[key];
+    }
+  }
+  if(hasWindowStorage){
+    try{
+      const r = await window.storage.get(key, false);
+      return r ? JSON.parse(r.value) : null;
+    }catch(e){ /* fall through to other backends */ }
+  }
+  if(localStorageOK){
+    try{
+      const v = window.localStorage.getItem('itin:'+key);
+      return v !== null ? JSON.parse(v) : null;
+    }catch(e){ return null; }
+  }
+  return Object.prototype.hasOwnProperty.call(memoryStore, key) ? memoryStore[key] : null;
+}
+async function storeSet(key, value){
+  if(supabaseClient){
+    supabaseCache = supabaseCache || {};
+    supabaseCache[key] = value;
+    await supabasePersist();
+    return;
+  }
+  if(hasWindowStorage){
+    try{ await window.storage.set(key, JSON.stringify(value), false); return; }
+    catch(e){ /* fall through to other backends */ }
+  }
+  if(localStorageOK){
+    try{ window.localStorage.setItem('itin:'+key, JSON.stringify(value)); return; }
+    catch(e){ /* fall through to memory */ }
+  }
+  memoryStore[key] = value;
+}
+
+const seenState = {};
+const notesState = {};
+const attachState = {};
+const skipState = {};
+const gateState = {};
+
+/* ============ HELPERS: leaf iteration ============ */
+function leafModules(){
+  let leaves = [];
+  MODULES.forEach(m=>{
+    if(m.children) leaves = leaves.concat(m.children);
+    else leaves.push(m);
+  });
+  return leaves;
+}
+function allModulesFlat(){
+  const out = [];
+  MODULES.forEach(m=>{ out.push(m); if(m.children) out.push(...m.children); });
+  return out;
+}
+/* A module counts toward progress only if it's relevant to the currently selected route
+   (its block isn't marked 'none' for that route) and, if it's banking-only content, only
+   when the banking toggle is on. Modules with no block (setup, capstone, reference, etc.)
+   are always relevant regardless of route. */
+function isModuleRelevant(m){
+  if(m.bank && !bankOn) return false;
+  if(m.block && ROUTES[currentRoute].blocks[m.block] === 'none') return false;
+  return true;
+}
+function relevantLeafModules(){
+  return leafModules().filter(isModuleRelevant);
+}
+function totalResources(){
+  let t = 0;
+  relevantLeafModules().forEach(m => t += (m.resources||[]).filter(r=>r.url).length);
+  return t;
+}
+function seenCount(){
+  let c = 0;
+  relevantLeafModules().forEach(m => (m.resources||[]).forEach(r=>{ if(r.url && seenState[r.id]) c++; }));
+  return c;
+}
+function moduleProgress(m){
+  if(!isModuleRelevant(m)) return null;
+  const list = m.children ? m.children.filter(isModuleRelevant).reduce((acc,c)=>acc.concat(c.resources||[]), []) : (m.resources||[]);
+  const withUrl = list.filter(r=>r.url);
+  if(withUrl.length===0) return null;
+  const seen = withUrl.filter(r=>seenState[r.id]).length;
+  return {seen, total: withUrl.length};
+}
+
+/* ============ LEVEL SYSTEM ============ */
+function computeLevel(){
+  const total = totalResources();
+  const seen = seenCount();
+  const pct = total ? seen/total : 0;
+  const skipped = Object.values(skipState).filter(Boolean).length;
+  const checkpointsFilled = allModulesFlat().filter(m=>m.checkpoint && notesState[m.id] && notesState[m.id].trim().length>10).length;
+  if(pct >= 0.95 && checkpointsFilled >= 5) return {emoji:'🏗', name:'Builder', idx:2};
+  if(pct >= 0.5) return {emoji:'🛠', name:'Practitioner', idx:1};
+  if(pct > 0 || skipped>0) return {emoji:'🧭', name:'Explorer', idx:0};
+  return {emoji:'·', name:'Not started', idx:-1};
+}
+
+function renderLevelCard(){
+  const lvl = computeLevel();
+  const total = totalResources();
+  const seen = seenCount();
+  const pct = total ? Math.round(seen/total*100) : 0;
+  const card = document.getElementById('levelCard');
+  card.innerHTML = `
+    <div class="level-top">
+      <span class="level-badge" style="font-size:28px; display:flex; align-items:center; justify-content:center;">${lvl.emoji}</span>
+      <div>
+        <div class="level-name">${lvl.name}</div>
+        <div class="level-sub">${ROUTES[currentRoute].name} path · ${pct}%</div>
+      </div>
+    </div>
+    <div class="level-next">Progress, level, and path are saved in this browser. Use "Copy summary" to bring it to your shared team table.</div>
+    <button type="button" class="copy-btn" id="copyLevelBtn">Copy summary</button>
+  `;
+  document.getElementById('copyLevelBtn').addEventListener('click', (e)=>{
+    const txt = `${lvl.emoji} ${lvl.name} — ${ROUTES[currentRoute].name} path · ${pct}% complete · ${new Date().toLocaleDateString('en-GB')}`;
+    navigator.clipboard.writeText(txt).then(()=>{
+      e.target.textContent = 'Copied ✓';
+      e.target.classList.add('copied');
+      setTimeout(()=>{ e.target.textContent='Copy summary'; e.target.classList.remove('copied'); }, 1800);
+    }).catch(()=>{});
+  });
+}
+
+/* ============ ROUTE SELECTOR ============ */
+function renderRouteGrid(){
+  const grid = document.getElementById('routeGrid');
+  grid.innerHTML = '';
+  Object.keys(ROUTES).forEach(key=>{
+    const r = ROUTES[key];
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'route-card' + (currentRoute===key ? ' selected' : '');
+    card.style.borderColor = currentRoute===key ? r.color : '';
+    card.innerHTML = `
+      ${shieldSVG(key, 56)}
+      <div class="route-name">${r.name}</div>
+      <div class="route-hours">${r.hours}</div>
+      <div class="route-best-for">${r.bestFor}</div>
+      <div class="route-blocks">
+        ${Object.keys(BLOCK_NAMES).map(b=>{
+          const lvl = r.blocks[b];
+          const swColor = lvl==='none' ? 'var(--dim)' : r.color;
+          const swOp = lvl==='full' ? '1' : (lvl==='partial' ? '0.45' : '0.3');
+          return `<div class="rb ${lvl!=='none'?'on':''}"><span class="sw" style="background:${swColor}; opacity:${swOp};"></span>${b} · ${BLOCK_NAMES[b]}${lvl==='partial' ? ' (partial)' : (lvl==='none' ? ' (not included)' : '')}</div>`;
+        }).join('')}
+      </div>
+    `;
+    card.addEventListener('click', async ()=>{
+      currentRoute = key;
+      await storeSet('route', currentRoute);
+      renderRouteGrid();
+      applyRouteVisuals();
+      updateOverall();
+      renderLevelCard();
+    });
+    grid.appendChild(card);
+  });
+}
+
+function applyRouteVisuals(){
+  const r = ROUTES[currentRoute];
+  allModulesFlat().forEach(m=>{
+    const sec = document.getElementById(m.id);
+    if(!sec || !m.block) return;
+    const level = r.blocks[m.block];
+    sec.classList.toggle('collapsed-for-route', level==='none');
+  });
+  document.querySelectorAll('nav.navlist a[data-block]').forEach(a=>{
+    const b = a.getAttribute('data-block');
+    if(!b) return;
+    const level = r.blocks[b];
+    a.classList.toggle('dimmed', level==='none');
+  });
+}
+
+/* ============ BANK TOGGLE ============ */
+function applyBankVisuals(){
+  allModulesFlat().forEach(m=>{
+    if(!m.bank) return;
+    const sec = document.getElementById(m.id);
+    if(sec) sec.classList.toggle('hidden-bank', !bankOn);
+    const navA = document.querySelector('nav.navlist a[href="#'+m.id+'"]');
+    if(navA) navA.style.display = bankOn ? '' : 'none';
+  });
+  document.querySelectorAll('.bank-extra').forEach(el=>{
+    el.style.display = bankOn ? '' : 'none';
+  });
+}
+document.getElementById('bankToggle').addEventListener('click', async ()=>{
+  bankOn = !bankOn;
+  document.getElementById('bankToggle').classList.toggle('on', bankOn);
+  await storeSet('bankOn', bankOn);
+  applyBankVisuals();
+  updateOverall();
+  renderLevelCard();
+});
+
+/* ============ RENDER NAV ============ */
+const navlist = document.getElementById('navlist');
+const contentEl = document.getElementById('content');
+
+function renderNav(){
+  navlist.innerHTML = '';
+  MODULES.forEach(m=>{
+    if(m.children){
+      const label = document.createElement('div');
+      label.className = 'nav-block-label';
+      label.textContent = m.tag + ' · ' + m.title;
+      navlist.appendChild(label);
+      m.children.forEach(c=>{
+        const ca = document.createElement('a');
+        ca.href = '#'+c.id;
+        if(c.block) ca.setAttribute('data-block', c.block);
+        if(c.bank) ca.classList.add('bank-item');
+        ca.innerHTML = '<span class="n">'+(c.num!==null ? String(c.num).padStart(2,'0') : '·')+'</span>'
+          + '<span>'+c.title+'</span>'
+          + '<span class="dot" data-mod="'+c.id+'"></span>';
+        ca.addEventListener('click', (e)=>{ e.preventDefault(); goToSection(c.id); });
+        navlist.appendChild(ca);
+      });
+    }else{
+      const a = document.createElement('a');
+      a.href = '#'+m.id;
+      if(m.bank) a.classList.add('bank-item');
+      a.innerHTML = '<span class="n">'+(m.num!==null ? String(m.num).padStart(2,'0') : '·')+'</span>'
+        + '<span>'+m.title+'</span>'
+        + '<span class="dot" data-mod="'+m.id+'"></span>';
+      a.addEventListener('click', (e)=>{ e.preventDefault(); goToSection(m.id); });
+      navlist.appendChild(a);
+    }
+  });
+}
+
+function goToSection(id){
+  const target = document.getElementById(id);
+  if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+/* ============ ICON HELPERS ============ */
+function statusIconHtml(rid, state){
+  return `<span class="icwrap status-wrap" data-rid="${rid}"><button type="button" class="ic status-ic status-${state}" data-tip="${STATUS_TIP[state]}">${STATUS_LABEL[state]}</button></span>`;
+}
+function deviceIconsHtml(devices){
+  if(!devices || !devices.length) return '';
+  return devices.map(d => `<span class="icwrap"><button type="button" class="ic device-ic" data-tip="${DEVICE_TIP[d]}">${SVG[d]}</button></span>`).join('');
+}
+function langIconHtml(lang){
+  if(!lang) return '';
+  return `<span class="icwrap"><button type="button" class="ic lang-ic" data-tip="${LANG_TIP[lang]||''}">${lang}</button></span>`;
+}
+
+/* ============ RESOURCE ROW ============ */
+function resourceRow(r){
+  const seen = !!seenState[r.id];
+  const div = document.createElement('div');
+  div.className = 'resource' + (seen ? ' seen' : '');
+  const initialStatus = r.url ? 'checking' : 'nolink';
+  div.innerHTML = `
+    <button class="chk ${seen?'checked':''}" data-rid="${r.id}" aria-label="Mark as viewed"></button>
+    <div class="res-body">
+      <div class="res-top">
+        <span class="res-title">${r.url ? `<a href="${r.url}" target="_blank" rel="noopener">${r.title}</a>` : r.title}</span>
+        ${statusIconHtml(r.id, initialStatus)}
+        ${r.lang ? '<span class="ic-sep"></span>'+langIconHtml(r.lang) : ''}
+        ${r.url && r.devices ? '<span class="ic-sep"></span>' : ''}
+        <span class="ic-row">${deviceIconsHtml(r.devices)}</span>
+      </div>
+      <div class="res-desc">${r.desc}</div>
+      ${r.url ? `<div class="res-url">${r.url}</div>` : ''}
+    </div>
+  `;
+  div.querySelector('.chk').addEventListener('click', async (e)=>{
+    const btn = e.currentTarget;
+    const now = !seenState[r.id];
+    seenState[r.id] = now;
+    btn.classList.toggle('checked', now);
+    div.classList.toggle('seen', now);
+    await storeSet('seen:'+r.id, now);
+    updateOverall();
+    renderLevelCard();
+  });
+  return div;
+}
+
+/* ============ DATASET CARD ============ */
+function datasetCardHtml(ds){
+  return `
+    <div class="dataset-card">
+      <h4>📊 ${ds.title}</h4>
+      <p>${ds.text}</p>
+      <div>${ds.tables.map(t=>`<span class="dataset-table-tag">${t}</span>`).join('')}</div>
+      ${ds.url ? `<p style="margin-top:10px;"><a href="${ds.url}" target="_blank" rel="noopener" style="color:var(--violet); text-decoration:none; border-bottom:1px dotted var(--violet);">${ds.url}</a></p>` : ''}
+    </div>
+  `;
+}
+
+/* ============ MODULE SECTION ============ */
+function moduleSection(m){
+  const sec = document.createElement('section');
+  sec.className = 'module';
+  sec.id = m.id;
+  if(m.isGate) sec.classList.add('gate-module');
+
+  const numClass = (m.num === null) ? ' setup' : '';
+  const pillsHtml = (m.bank ? '<span class="bank-pill bank-extra">🏦 Banking</span>' : '') + (m.optionalTag ? `<span class="optional-pill">${m.optionalTag}</span>` : '');
+  sec.innerHTML = `
+    <div class="mod-head">
+      <div class="mod-num${numClass}">${m.num!==null ? String(m.num).padStart(2,'0') : m.tag}</div>
+      <div class="mod-title-block">
+        <div class="mod-tag-row"><span class="mod-tag">${m.tag}</span>${pillsHtml}</div>
+        <h2>${m.title}</h2>
+        ${m.duration ? `<div class="mod-duration">Estimated duration · ${m.duration}</div>` : ''}
+        ${m.objective ? `<p class="mod-objective">${m.objective}</p>` : ''}
+        ${m.result ? `<div class="mod-result"><b>Expected outcome</b>${m.result}</div>` : ''}
+        ${!m.isReference && !m.isGate && (m.resources||[]).some(r=>r.url) ? `<div class="signal" data-mod="${m.id}">${Array.from({length:12}).map(()=>'<span></span>').join('')}</div>` : ''}
+      </div>
+    </div>
+  `;
+
+  if(m.skipTest){
+    const st = document.createElement('div');
+    st.className = 'skip-test';
+    st.innerHTML = `<input type="checkbox" id="skip-${m.id}"><label for="skip-${m.id}">${m.skipTest} If so, check it and skip this topic.</label>`;
+    const cb = st.querySelector('input');
+    cb.addEventListener('change', async ()=>{
+      skipState[m.id] = cb.checked;
+      st.classList.toggle('checked', cb.checked);
+      await storeSet('skip:'+m.id, cb.checked);
+      updateOverall();
+    });
+    sec.appendChild(st);
+  }
+
+  if(m.closingText){
+    const ct = document.createElement('div');
+    ct.className = 'closing-text';
+    ct.innerHTML = m.closingText.map(p=>`<p>${p}</p>`).join('');
+    sec.appendChild(ct);
+  }
+
+  if(m.isCapstone){
+    const pw = document.createElement('div');
+    pw.innerHTML = `
+      <p class="project-intro">${m.projectIntro}</p>
+      <table class="project-table">
+        <thead><tr><th>Checkpoint</th><th>Piece contributed</th></tr></thead>
+        <tbody>${m.projectTable.map(row => `<tr><td>${row.topic}</td><td>${row.checkpoint}</td></tr>`).join('')}</tbody>
+      </table>
+      ${m.dataset ? datasetCardHtml(m.dataset) : ''}
+      <div class="capstone-agg" id="capstoneAgg"></div>
+      <button type="button" class="refresh-btn" id="refreshAgg">↻ Refresh with my saved notes</button>
+    `;
+    sec.appendChild(pw);
+  }
+
+  if(m.isAdoption){
+    const aw = document.createElement('div');
+    aw.innerHTML = `
+      <div class="adopt-grid">
+        ${m.adoptItems.map(it => `<div class="adopt-item"><div class="a-title">${it.title}</div><div class="a-desc">${it.desc}</div></div>`).join('')}
+      </div>
+    `;
+    sec.appendChild(aw);
+  }
+
+  if(m.isGlossary){
+    const gw = document.createElement('div');
+    gw.className = 'glossary-grid';
+    gw.innerHTML = m.glossary.map(g => `<div class="gloss-item"><div class="gloss-term">${g.term}</div><div class="gloss-def">${g.def}</div></div>`).join('');
+    sec.appendChild(gw);
+  }
+
+  if(m.isGate){
+    const gateWrap = document.createElement('div');
+    gateWrap.className = 'checklist bank-extra';
+    m.checklist.forEach(item=>{
+      const row = document.createElement('div');
+      row.className = 'check-item';
+      row.innerHTML = `<input type="checkbox" id="gate-${item.id}"><label for="gate-${item.id}">${item.text}</label>`;
+      const cb = row.querySelector('input');
+      cb.addEventListener('change', async ()=>{
+        gateState[item.id] = cb.checked;
+        await storeSet('gate:'+item.id, cb.checked);
+        updateGateBanner(m);
+      });
+      gateWrap.appendChild(row);
+    });
+    sec.appendChild(gateWrap);
+    const banner = document.createElement('div');
+    banner.className = 'gate-banner bank-extra';
+    banner.id = 'gateBanner';
+    sec.appendChild(banner);
+  }
+
+  if((m.resources||[]).length > 0){
+    const resWrap = document.createElement('div');
+    resWrap.className = 'resources';
+    m.resources.forEach(r => resWrap.appendChild(resourceRow(r)));
+    sec.appendChild(resWrap);
+  }
+
+  if(m.dataset && !m.isCapstone){
+    const dw = document.createElement('div');
+    dw.innerHTML = datasetCardHtml(m.dataset);
+    sec.appendChild(dw);
+  }
+
+  if(m.checkpoint){
+    const cp = document.createElement('div');
+    cp.className = 'checkpoint';
+    cp.innerHTML = `
+      <div class="checkpoint-label">🔧 Project checkpoint</div>
+      <div class="checkpoint-title">${m.checkpoint.title}</div>
+      <div class="checkpoint-text">${m.checkpoint.text}</div>
+      ${m.checkpoint.piece ? `<div class="checkpoint-piece">${m.checkpoint.piece}</div>` : ''}
+    `;
+    sec.appendChild(cp);
+  }
+
+  if(m.bankExtra){
+    const be = document.createElement('div');
+    be.className = 'checkpoint bank-extra';
+    be.innerHTML = `
+      <div class="checkpoint-label">🏦 ${m.bankExtra.title}</div>
+      <div class="checkpoint-text">${m.bankExtra.text}</div>
+    `;
+    sec.appendChild(be);
+  }
+
+  if(m.noCheckpointNote){
+    const nc = document.createElement('div');
+    nc.className = 'no-checkpoint';
+    nc.textContent = m.noCheckpointNote;
+    sec.appendChild(nc);
+  }
+
+  if(m.notesOn){
+    const notes = document.createElement('div');
+    notes.className = 'notes-block';
+    notes.innerHTML = `
+      <h3>Notes for this topic</h3>
+      <textarea placeholder="Comments, ideas, open questions…" data-mod="${m.id}"></textarea>
+      <div class="save-hint" data-hint="${m.id}"></div>
+      <div class="attach-row">
+        <input type="text" name="alabel" placeholder="Resource or document name" />
+        <input type="text" name="alink" placeholder="Link (Drive, Notion, public PDF…)" />
+        <button type="button" data-attach="${m.id}">Add</button>
+      </div>
+      <div class="attach-hint">Files can\'t be uploaded: add a link (Drive, SharePoint, Notion…) and it will show up here.</div>
+      <div class="attachments" data-list="${m.id}"></div>
+    `;
+    sec.appendChild(notes);
+  }
+
+  return sec;
+}
+
+function groupSection(m){
+  const sec = document.createElement('section');
+  sec.className = 'module module-group';
+  sec.id = m.id;
+  if(m.block) sec.setAttribute('data-block', m.block);
+
+  sec.innerHTML = `
+    <div class="mod-head">
+      <div class="mod-num setup">${m.tag}</div>
+      <div class="mod-title-block">
+        <div class="mod-tag">${m.tag}</div>
+        <h2>${m.title}</h2>
+        ${m.objective ? `<p class="mod-objective">${m.objective}</p>` : ''}
+        <div class="signal" data-mod="${m.id}">${Array.from({length:12}).map(()=>'<span></span>').join('')}</div>
+      </div>
+    </div>
+  `;
+
+  const childrenWrap = document.createElement('div');
+  childrenWrap.className = 'group-children';
+  m.children.forEach(c => childrenWrap.appendChild(moduleSection(c)));
+  sec.appendChild(childrenWrap);
+
+  return sec;
+}
+
+function renderContent(){
+  contentEl.innerHTML = '';
+  let navCount = 0;
+  MODULES.forEach(m => {
+    navCount += 1;
+    if(m.children){
+      contentEl.appendChild(groupSection(m));
+      navCount += m.children.length;
+    }else{
+      contentEl.appendChild(moduleSection(m));
+    }
+  });
+  document.getElementById('modCount').textContent = navCount;
+}
+
+function renderLegend(){
+  const legend = document.getElementById('legend');
+  legend.innerHTML = `
+    <div class="legend-title">Legend</div>
+    <div class="legend-item">${statusIconHtml('legend-v','verified')}<span>Link verified</span></div>
+    <div class="legend-item">${statusIconHtml('legend-u','unavailable')}<span>Temporarily unavailable</span></div>
+    <div class="legend-item">${statusIconHtml('legend-x','unknown')}<span>Could not verify</span></div>
+    <div class="legend-item"><span class="icwrap"><button type="button" class="ic device-ic" data-tip="">${SVG.mobile}</button></span><span>Mobile</span></div>
+    <div class="legend-item"><span class="icwrap"><button type="button" class="ic device-ic" data-tip="">${SVG.tablet}</button></span><span>Tablet</span></div>
+    <div class="legend-item"><span class="icwrap"><button type="button" class="ic device-ic" data-tip="">${SVG.desktop}</button></span><span>Desktop</span></div>
+    <div class="legend-item"><span class="icwrap"><button type="button" class="ic lang-ic" data-tip="">EN</button></span><span>Resource language</span></div>
+    <div class="legend-item"><span class="bank-pill">🏦 Banking</span><span>Banking-specific module</span></div>
+  `;
+}
+
+function renderAttachments(modId){
+  const list = document.querySelector('.attachments[data-list="'+modId+'"]');
+  if(!list) return;
+  const items = attachState[modId] || [];
+  list.innerHTML = '';
+  items.forEach((it, idx)=>{
+    const row = document.createElement('div');
+    row.className = 'attachment';
+    row.innerHTML = `<span>📎</span><a href="${it.url}" target="_blank" rel="noopener">${it.label || it.url}</a><button class="rm" data-idx="${idx}" data-mod="${modId}">remove</button>`;
+    list.appendChild(row);
+  });
+}
+
+/* ============ GATE BANNER ============ */
+function updateGateBanner(gateModule){
+  const banner = document.getElementById('gateBanner');
+  if(!banner) return;
+  const total = gateModule.checklist.length;
+  const done = gateModule.checklist.filter(i=>gateState[i.id]).length;
+  const pass = done === total;
+  banner.classList.toggle('pass', pass);
+  banner.textContent = pass
+    ? '✓ Checklist complete — you can consider the case ready to discuss with Risk/DPO/Security.'
+    : `${done}/${total} completed — the agent shouldn\'t touch real bank data yet.`;
+}
+
+/* ============ CAPSTONE AGGREGATION ============ */
+async function renderCapstoneAgg(){
+  const wrap = document.getElementById('capstoneAgg');
+  if(!wrap) return;
+  const capstoneModule = MODULES.find(m=>m.isCapstone);
+  const pieces = capstoneModule.projectTable;
+  const moduleIdByTopic = {
+    '3 — Prompting':'m3', '4 — RAG':'m4', '5 — Agents':'m5', '5.3 — Anti-hype':'m5-3',
+    '9 — Integration/MCP':'m9', '7 — Evaluation':'m7', '8-bis / Gate — Banking':'m8b', '11 — Business':'m11'
+  };
+  wrap.innerHTML = '';
+  for(const row of pieces){
+    const modId = moduleIdByTopic[row.topic];
+    const note = notesState[modId];
+    const item = document.createElement('div');
+    item.className = 'agg-item';
+    item.innerHTML = `
+      <h4>${row.checkpoint}</h4>
+      <div class="agg-body">${note && note.trim() ? note.replace(/</g,'&lt;') : '<span class="agg-empty">No notes saved yet in topic "'+row.topic+'" — go to the checkpoint and write there.</span>'}</div>
+    `;
+    wrap.appendChild(item);
+  }
+}
+
+/* ============ LINK CHECKING ============ */
+function withTimeout(promise, ms){
+  return new Promise((resolve, reject)=>{
+    const t = setTimeout(()=>reject(new Error('timeout')), ms);
+    promise.then(v=>{ clearTimeout(t); resolve(v); }, e=>{ clearTimeout(t); reject(e); });
+  });
+}
+async function checkUrl(url){
+  try{
+    await withTimeout(fetch(url, {mode:'no-cors', cache:'no-store'}), 6000);
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+function setStatus(rid, state){
+  const wrap = document.querySelector('.status-wrap[data-rid="'+rid+'"]');
+  if(!wrap) return;
+  const btn = wrap.querySelector('.status-ic');
+  btn.className = 'ic status-ic status-'+state;
+  btn.setAttribute('data-tip', STATUS_TIP[state]);
+  btn.innerHTML = STATUS_LABEL[state];
+}
+async function runLinkChecks(){
+  const targets = [];
+  leafModules().forEach(m => (m.resources||[]).forEach(r => { if(r.url) targets.push(r); }));
+  const results = await Promise.all(targets.map(async r => ({id:r.id, ok: await checkUrl(r.url)})));
+  const successCount = results.filter(r=>r.ok).length;
+  const blocked = successCount === 0 && results.length >= 5;
+  results.forEach(r=>{
+    if(blocked){ setStatus(r.id, 'unknown'); }
+    else{ setStatus(r.id, r.ok ? 'verified' : 'unavailable'); }
+  });
+}
+
+/* ============ OVERALL PROGRESS ============ */
+function updateOverall(){
+  const total = totalResources();
+  const seen = seenCount();
+  const pct = total ? Math.round(seen/total*100) : 0;
+  document.getElementById('overallPct').textContent = pct + '%';
+  document.getElementById('overallBar').style.width = pct + '%';
+
+  allModulesFlat().forEach(m=>{
+    const dot = document.querySelector('.dot[data-mod="'+m.id+'"]');
+    if(!dot) return;
+    dot.classList.remove('full','partial','skipped');
+    if(skipState[m.id]){ dot.classList.add('skipped'); return; }
+    const p = moduleProgress(m);
+    if(p){
+      if(p.seen === p.total && p.total>0) dot.classList.add('full');
+      else if(p.seen>0) dot.classList.add('partial');
+    }
+    const strip = document.querySelectorAll('.signal[data-mod="'+m.id+'"] span');
+    if(strip.length && p){
+      const litCount = Math.round((p.seen/p.total)*strip.length);
+      strip.forEach((s,i)=> s.classList.toggle('on', i < litCount));
+    }
+  });
+}
+
+/* ============ EVENTS: tooltips ============ */
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.ic');
+  if(btn && btn.closest('.legend') === null){
+    const wrap = btn.closest('.icwrap');
+    const wasOpen = wrap.classList.contains('open');
+    document.querySelectorAll('.icwrap.open').forEach(w=>w.classList.remove('open'));
+    if(!wasOpen){
+      wrap.classList.add('open');
+      if(!wrap.querySelector('.tip')){
+        const tipText = btn.getAttribute('data-tip');
+        if(tipText){
+          const tipEl = document.createElement('span');
+          tipEl.className = 'tip';
+          tipEl.textContent = tipText;
+          wrap.appendChild(tipEl);
+        }
+      }
+    }
+    e.stopPropagation();
+    return;
+  }
+  document.querySelectorAll('.icwrap.open').forEach(w=>w.classList.remove('open'));
+});
+
+/* ============ EVENTS: notes + attachments ============ */
+let noteTimers = {};
+document.addEventListener('input', (e)=>{
+  if(e.target.matches('textarea[data-mod]')){
+    const modId = e.target.getAttribute('data-mod');
+    notesState[modId] = e.target.value;
+    clearTimeout(noteTimers[modId]);
+    const hint = document.querySelector('.save-hint[data-hint="'+modId+'"]');
+    if(hint) hint.textContent = 'Saving…';
+    noteTimers[modId] = setTimeout(async ()=>{
+      await storeSet('notes:'+modId, notesState[modId]);
+      if(hint) hint.textContent = 'Saved ✓';
+      setTimeout(()=>{ if(hint) hint.textContent=''; }, 1500);
+      renderLevelCard();
+    }, 600);
+  }
+});
+
+document.addEventListener('click', async (e)=>{
+  if(e.target.matches('button[data-attach]')){
+    const modId = e.target.getAttribute('data-attach');
+    const row = e.target.closest('.attach-row');
+    const label = row.querySelector('input[name="alabel"]').value.trim();
+    const link = row.querySelector('input[name="alink"]').value.trim();
+    if(!link) return;
+    if(!attachState[modId]) attachState[modId] = [];
+    attachState[modId].push({label, url: link});
+    await storeSet('attach:'+modId, attachState[modId]);
+    row.querySelector('input[name="alabel"]').value = '';
+    row.querySelector('input[name="alink"]').value = '';
+    renderAttachments(modId);
+  }
+  if(e.target.matches('button.rm')){
+    const modId = e.target.getAttribute('data-mod');
+    const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+    attachState[modId].splice(idx, 1);
+    await storeSet('attach:'+modId, attachState[modId]);
+    renderAttachments(modId);
+  }
+  if(e.target.id === 'refreshAgg'){
+    renderCapstoneAgg();
+  }
+});
+
+/* ============ scroll spy ============ */
+const sections = () => Array.from(document.querySelectorAll('.module'));
+const groupIdForChild = {};
+MODULES.filter(m=>m.children).forEach(m=> m.children.forEach(c=> groupIdForChild[c.id] = m.id));
+
+window.addEventListener('scroll', ()=>{
+  let current = null;
+  sections().forEach(s=>{
+    if(s.getBoundingClientRect().top < 140) current = s.id;
+  });
+  document.querySelectorAll('nav.navlist a').forEach(a=>{
+    const href = a.getAttribute('href').slice(1);
+    a.classList.toggle('active', href === current);
+  });
+}, {passive:true});
+
+/* ============ mobile menu ============ */
+document.getElementById('menuToggle').addEventListener('click', ()=>{
+  document.getElementById('sidebar').classList.toggle('open');
+});
+document.addEventListener('click', (e)=>{
+  const sb = document.getElementById('sidebar');
+  const mt = document.getElementById('menuToggle');
+  if(sb.classList.contains('open') && !sb.contains(e.target) && !mt.contains(e.target)){
+    sb.classList.remove('open');
+  }
+});
+
+/* ============ INIT ============ */
+async function init(){
+  renderLegend();
+  renderNav();
+  renderContent();
+  renderRouteGrid();
+
+  if(supabaseClient){
+    await identifySupabaseUser();
+  }
+
+  const savedRoute = await storeGet('route');
+  if(savedRoute && ROUTES[savedRoute]) currentRoute = savedRoute;
+  const savedBank = await storeGet('bankOn');
+  if(savedBank !== null) bankOn = !!savedBank;
+  document.getElementById('bankToggle').classList.toggle('on', bankOn);
+  renderRouteGrid();
+
+  const allModules = allModulesFlat();
+  for(const m of allModules){
+    const resources = m.resources || [];
+    for(const r of resources){
+      if(!r.url) continue;
+      const v = await storeGet('seen:'+r.id);
+      if(v) seenState[r.id] = true;
+    }
+    const note = await storeGet('notes:'+m.id);
+    if(note){
+      notesState[m.id] = note;
+      const ta = document.querySelector('textarea[data-mod="'+m.id+'"]');
+      if(ta) ta.value = note;
+    }
+    const att = await storeGet('attach:'+m.id);
+    if(att){ attachState[m.id] = att; renderAttachments(m.id); }
+    if(m.skipTest){
+      const sv = await storeGet('skip:'+m.id);
+      if(sv){
+        skipState[m.id] = true;
+        const cb = document.getElementById('skip-'+m.id);
+        if(cb){ cb.checked = true; cb.closest('.skip-test').classList.add('checked'); }
+      }
+    }
+  }
+
+  const gateModule = MODULES.find(mm => mm.children ? mm.children.some(c=>c.isGate) : mm.isGate) ;
+  let gateMod = null;
+  allModules.forEach(m=>{ if(m.isGate) gateMod = m; });
+  if(gateMod){
+    for(const item of gateMod.checklist){
+      const v = await storeGet('gate:'+item.id);
+      if(v){
+        gateState[item.id] = true;
+        const cb = document.getElementById('gate-'+item.id);
+        if(cb) cb.checked = true;
+      }
+    }
+    updateGateBanner(gateMod);
+  }
+
+  document.querySelectorAll('.chk').forEach(btn=>{
+    const rid = btn.getAttribute('data-rid');
+    if(seenState[rid]){
+      btn.classList.add('checked');
+      btn.closest('.resource').classList.add('seen');
+    }
+  });
+
+  applyRouteVisuals();
+  applyBankVisuals();
+  updateOverall();
+  renderLevelCard();
+  renderLastSaved();
+  renderCapstoneAgg();
+  runLinkChecks();
+}
+init();
+</script>
+</body>
+</html>
