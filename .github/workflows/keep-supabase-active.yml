@@ -1,0 +1,37 @@
+name: Keep Supabase active
+
+# Supabase's free tier auto-pauses a project after ~7 days with no API
+# activity. This pings the REST API every few days with a trivial read so
+# the project never sits idle long enough to trigger that. Reads the
+# project URL and anon key straight from js/config.js (already public
+# there) instead of duplicating them, so there's one place to update if
+# they ever change.
+
+on:
+  schedule:
+    - cron: '13 4 */3 * *' # ~every 3 days, safely under the 7-day pause window
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ping Supabase REST API
+        run: |
+          set -euo pipefail
+          SUPABASE_URL=$(grep -oP "(?<=SUPABASE_URL = ')[^']+" js/config.js)
+          SUPABASE_ANON_KEY=$(grep -oP "(?<=SUPABASE_ANON_KEY = ')[^']+" js/config.js)
+
+          STATUS=$(curl -s -o /dev/null -w '%{http_code}' \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            "${SUPABASE_URL}/rest/v1/path_progress?select=user_id&limit=1")
+
+          echo "Supabase REST API responded with HTTP ${STATUS}"
+          if [ "${STATUS}" -ge 400 ]; then
+            echo "::error::Supabase keep-alive ping failed with HTTP ${STATUS} — check that the table/RLS policy still allow anon reads, and that the project isn't already paused."
+            exit 1
+          fi
