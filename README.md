@@ -35,7 +35,18 @@ No build step — open `index.html` directly, or serve the folder with any stati
 
 ## Data & privacy note
 
-Progress is identified by a self-chosen display name, not a real identity. People are asked not to enter personal data (full name, email) when signing in, since the value is stored as-is in a shared Supabase table.
+Progress is identified by a self-chosen display name plus a password, not a real identity. People are asked not to enter personal data (full name, email) when signing in, since the name is stored as-is in a shared Supabase table. The password is hashed (SHA-256) client-side before being stored or compared — this stops the app's own UI from letting someone else continue under your name, but it's not high-security: it isn't enforced at the database level (Row Level Security), so treat it as a soft per-name lock, not a real login, and never reuse a password from elsewhere.
+
+### Database setup (Supabase)
+
+The `path_progress` table needs a `password_hash` column. If it doesn't exist yet, run this once in the Supabase SQL Editor:
+
+```sql
+alter table public.path_progress
+  add column if not exists password_hash text;
+```
+
+Existing rows will have `password_hash` as `null` — the app treats those as unclaimed and sets the password the next time each person signs in with that name.
 
 ## Updating content
 
