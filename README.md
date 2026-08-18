@@ -2,12 +2,12 @@
 
 An interactive, self-hosted learning tracker for Generative AI, LLMs, and agents — with an optional banking-specific regulatory module (SR 11-7, DORA, EBA/BCE, NIST AI RMF, AEPD).
 
-**Live site:** https://pablosantosescribano.github.io/ai_learning_path/ *(enable GitHub Pages — see below)*
+**Live site:** https://pablosantosescribano.github.io/ai-learning-path/
 
 ## What this is
 
 - A role-based learning path (Complete / Executive / Builder / Governance) covering generative AI and LLM fundamentals through applied agent-building, with a capstone project based on the Kaggle Home Credit Default Risk dataset.
-- Progress is saved per person (by name) in a Supabase database, so it can be picked up from any device.
+- Progress is saved per person (by name + password) in a Supabase database, so it can be picked up from any device.
 - Banking-specific regulatory content is toggleable, so the path stays useful outside a banking context.
 - A Markdown reference version of the path (`assets/itinerario-ia-agentes.md`) is included for reading, printing, or reviewing offline — the HTML tracker remains the source of truth for day-to-day use.
 
@@ -20,13 +20,16 @@ An interactive, self-hosted learning tracker for Generative AI, LLMs, and agents
 │   ├── config.js        Supabase project URL + public key
 │   ├── data.js           Learning path content (modules, routes, resources)
 │   ├── storage.js        Persistence layer (Supabase + local fallbacks) and the
-│   │                      user-identity modal
+│   │                      user-identity + password modal
 │   └── app.js             Rendering, interactions, and app initialization
-└── assets/
-    ├── ai-learning-path-banking.single-file.html   Standalone copy (no build steps,
-    │                                                  works offline, kept in sync manually)
-    └── itinerario-ia-agentes.md                    Markdown reference version of the path,
-                                                       for reading/printing/reviewing offline
+├── assets/
+│   ├── ai-learning-path-banking.single-file.html   Standalone copy (no build steps,
+│   │                                                  works offline, kept in sync manually)
+│   └── itinerario-ia-agentes.md                    Markdown reference version of the path,
+│                                                      for reading/printing/reviewing offline
+├── .github/workflows/keep-supabase-active.yml   Scheduled ping so the free-tier
+│                                                   Supabase project doesn't auto-pause
+└── .gitignore           OS/editor cruft and a defensive .env* rule
 ```
 
 ## Local development
@@ -54,11 +57,18 @@ Learning modules, resources, and routes live in `js/data.js`. Regulatory / banki
 
 ## GitHub Pages
 
-To serve `index.html` from the repo root:
+Already configured to serve `index.html` from the repo root — that's the live site linked at the top. To reconfigure it (e.g. after a fork):
 
 1. Go to **Settings → Pages**.
 2. Under **Build and deployment → Source**, select **Deploy from a branch**.
 3. Under **Branch**, select `main` and folder `/ (root)`, then **Save**.
-4. Wait a minute or two for the first deployment; the site will be published at the URL shown at the top of that page (typically `https://pablosantosescribano.github.io/ai_learning_path/`).
 
 No further configuration is needed — there's no build step, and `index.html` already links to `css/` and `js/` with relative paths.
+
+## Keeping the Supabase project awake
+
+Supabase's free tier auto-pauses a project after about a week with no API activity. `.github/workflows/keep-supabase-active.yml` runs every ~3 days and does a trivial read against `path_progress` to prevent that; it can also be triggered manually from **Actions → Keep Supabase active → Run workflow**. It reads the URL and anon key straight out of `js/config.js`, so there's nothing to configure separately.
+
+## Contributing / repo workflow
+
+`main` is a protected branch: all changes go through a pull request (no direct pushes, including from admins). There's no other CI beyond the Supabase keep-alive workflow above.
