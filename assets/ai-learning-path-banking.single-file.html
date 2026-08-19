@@ -1242,6 +1242,16 @@ function moduleProgress(m){
   const seen = withUrl.filter(r=>seenState[r.id]).length;
   return {seen, total: withUrl.length};
 }
+/* First relevant, non-skipped module that still has unseen resources — used to
+   jump a returning, signed-in user back to where they left off. */
+function findResumeModule(){
+  for(const m of relevantLeafModules()){
+    if(skipState[m.id]) continue;
+    const p = moduleProgress(m);
+    if(p && p.seen < p.total) return m;
+  }
+  return null;
+}
 
 /* ============ LEVEL SYSTEM ============ */
 function computeLevel(){
@@ -1956,6 +1966,11 @@ async function init(){
   renderLastSaved();
   renderCapstoneAgg();
   runLinkChecks();
+
+  if(supabaseClient && seenCount() > 0){
+    const resumeModule = findResumeModule();
+    if(resumeModule) goToSection(resumeModule.id);
+  }
 }
 init();
 </script>
