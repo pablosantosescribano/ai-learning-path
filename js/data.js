@@ -26,7 +26,7 @@ const MODULES = [
     ]
   },
   {
-    id:'m0-1', block:null, num:null, tag:'New', title:'Minimal Python to read notebooks', notesOn:false, optionalTag:'optional',
+    id:'m0-1', block:null, num:null, tag:'Skills check', title:'Minimal Python to read notebooks', notesOn:false, optionalTag:'optional',
     duration:'5–8 h · optional',
     objective:'For anyone who doesn\'t code fluently — without this, topics 4-7 and 9 get hard. Only start here if you need it.',
     skipTest:'Can you read a for loop, a function, and a JSON without effort?',
