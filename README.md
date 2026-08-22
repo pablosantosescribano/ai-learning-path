@@ -1,4 +1,4 @@
-# AI / LLM Learning Path (Banking)
+# AI / LLM Learning Path (with Banking-specific module)
 
 An interactive, self-hosted learning tracker for Generative AI, LLMs, and agents — with an optional banking-specific regulatory module (SR 11-7, DORA, EBA/BCE, NIST AI RMF, AEPD).
 
