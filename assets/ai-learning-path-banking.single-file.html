@@ -793,11 +793,12 @@ const MODULES = [
         {id:'r7-1', title:'Red Teaming LLM Applications', url:'https://www.deeplearning.ai/courses/red-teaming-llm-applications', desc:'With Giskard, 2024. Attacking real chatbots: prompt injection, information leaks.', devices:DESKTOP_ONLY, lang:'EN'},
         {id:'r7-2', title:'OWASP Top 10 for LLM Applications', url:'https://owasp.org/www-project-top-10-for-large-language-model-applications/', desc:'The reference risk catalog, including prompt injection via tools/agents.', devices:ALL3, lang:'EN'},
         {id:'r7-3', title:'Evaluation guides on docs.claude.com', url:'https://docs.claude.com', desc:'How to define success criteria, build test datasets, and use LLM-as-judge. Evals aren\'t a topic — they\'re a habit that runs through everything from topic 3 onward.', devices:ALL3, lang:'EN'},
-        {id:'r7-4', title:'🎥 Why Large Language Models Hallucinate', url:'https://www.youtube.com/watch?v=cfqtFvWOfg0', desc:'IBM Technology, 2023. Why hallucinations happen and how to reduce them.', devices:ALL3, lang:'EN'}
+        {id:'r7-4', title:'🎥 Why Large Language Models Hallucinate', url:'https://www.youtube.com/watch?v=cfqtFvWOfg0', desc:'IBM Technology, 2023. Why hallucinations happen and how to reduce them.', devices:ALL3, lang:'EN'},
+        {id:'r7-5', title:'OWASP Top 10 for Agentic Applications', url:'https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/', desc:'OWASP GenAI Security Project, December 2025. The companion to the LLM Top 10 for systems that plan, use tools, keep memory, and talk to other agents: goal hijacking, tool misuse, identity and privilege abuse, and more — built from real incidents. Read it as soon as your agent has more than one tool.', devices:ALL3, lang:'EN'}
       ],
       checkpoint:{
         title:'Build a mini evaluation set',
-        text:'Pick 5-10 known facts from a real record in the dataset (e.g. "declared income = X") and check that the agent gets them right. Then try to trick it: ask for a variable that isn\'t in the data and see whether it makes one up instead of saying it\'s missing. Also review the agent\'s design against the OWASP LLM Top 10.',
+        text:'Pick 5-10 known facts from a real record in the dataset (e.g. "declared income = X") and check that the agent gets them right. Then try to trick it: ask for a variable that isn\'t in the data and see whether it makes one up instead of saying it\'s missing. Also review the agent\'s design against the OWASP LLM Top 10 and the OWASP Top 10 for Agentic Applications.',
         piece:'Capstone piece → "Evaluation set"'
       }
     },
@@ -825,7 +826,10 @@ const MODULES = [
         {id:'r8b-3', title:'NIST AI Risk Management Framework', url:'https://www.nist.gov/itl/ai-risk-management-framework', desc:'Includes the specific generative AI profile.', devices:ALL3, lang:'EN'},
         {id:'r8b-4', title:'AEPD — Agentic AI from a data protection perspective', url:'https://www.aepd.es/guias/orientaciones-ia-agentica.pdf', desc:'Spain\'s data protection authority, guidance from February 2026 on AI agents and GDPR: what changes when a system decides and acts, not just responds. Very relevant from topic 5 onward.', devices:ALL3, lang:'ES'},
         {id:'r8b-5', title:'EBA — guidelines on ICT risk and outsourcing', url:'https://www.eba.europa.eu/', desc:'Along with ECB publications on the use of AI in banking.', devices:ALL3, lang:'EN'},
-        {id:'r8b-6', title:'Governing AI Agents', url:'https://www.deeplearning.ai/short-courses/governing-ai-agents/', desc:'DeepLearning.AI with Databricks, taught by Amber Roberts, 2025. The most hands-on resource in this block: applies the four pillars of agent governance (lifecycle, risk, security, observability) to a real dataset in Databricks, with Unity Catalog for least-privilege access and observability. Very aligned with a Data & Analytics role.', devices:DESKTOP_ONLY, lang:'EN'}
+        {id:'r8b-6', title:'Governing AI Agents', url:'https://www.deeplearning.ai/short-courses/governing-ai-agents/', desc:'DeepLearning.AI with Databricks, taught by Amber Roberts, 2025. The most hands-on resource in this block: applies the four pillars of agent governance (lifecycle, risk, security, observability) to a real dataset in Databricks, with Unity Catalog for least-privilege access and observability. Very aligned with a Data & Analytics role.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r8b-7', title:'ECB — "Technology is neutral, governance is not": AI adoption in the banking sector', url:'https://www.bankingsupervision.europa.eu/press/speeches/date/2026/html/ssm.sp260224~6c5b64a77a.en.html', desc:'ECB Banking Supervision speech, February 2026. The supervisor\'s current stance: over 85% of large euro-area banks already use AI, adoption is accelerating with generative and agentic AI, and AI governance and risk management are a 2026–28 supervisory priority.', devices:ALL3, lang:'EN'},
+        {id:'r8b-8', title:'Watch: Agent Payments Protocol (AP2)', url:'https://ap2-protocol.org/', desc:'Open protocol, launched by Google in 2025 and later moved to the FIDO Alliance, for agents that pay on a customer\'s behalf using cryptographically signed mandates within user-approved limits. Card networks have parallel schemes (Visa Trusted Agent Protocol, Mastercard Agent Pay). For a bank this is an authentication, fraud, and dispute question: who authorized the payment when the "customer" is software?', devices:ALL3, lang:'EN'},
+        {id:'r8b-9', title:'Watch: Personal Agent Protocol (PAP)', url:'https://sierra.ai/blog/introducing-personal-agent-protocol', desc:'Sierra and Meta, October 2026, early draft. A standard for a customer\'s personal agent to sign in to a business over OAuth with read-only or write access. Payments are planned as a later extension. Bank angle: strong customer authentication (PSD2) was written for a person approving a transaction, not for an agent acting on their behalf.', devices:ALL3, lang:'EN'}
       ]
     },
     {
@@ -834,7 +838,7 @@ const MODULES = [
       objective:'No agent touches real bank data without passing through here. A minimal checklist, not just another reading.',
       resources:[],
       checklist:[
-        {id:'g1', text:'OWASP LLM Top 10 read and applied to the design (especially prompt injection via tools).'},
+        {id:'g1', text:'OWASP LLM Top 10 and OWASP Top 10 for Agentic Applications read and applied to the design (especially prompt injection via tools and tool misuse).'},
         {id:'g2', text:'Your own evaluation set built (not just "I tried it and it works").'},
         {id:'g3', text:'AI Act classification of the use case documented.'},
         {id:'g4', text:'Data: DPIA if personal data is involved, DPA with the provider, third-party risk approval.'},
@@ -850,19 +854,24 @@ const MODULES = [
     objective:'From notebook to enterprise architecture and business value.',
     children:[
     {
-      id:'m9', block:'D', num:9, tag:'Integration', title:'Integrating with other systems (MCP)', notesOn:true,
-      duration:'3–4 days',
-      objective:'How an AI system connects to the rest of an organization\'s stack — the golden rule on data applies here especially if it\'s against real sources.',
-      skipTest:'Do you know what MCP solves versus building a custom connector for every system?',
-      result:'You understand how an AI system connects to the rest of the stack, and why a standard protocol simplifies (and concentrates) integration risk.',
+      id:'m9', block:'D', num:9, tag:'Integration', title:'Integrating with other systems (MCP and A2A)', notesOn:true,
+      duration:'4–5 days',
+      objective:'How an AI system connects to the rest of an organization\'s stack — and to other agents. MCP connects an agent to tools and data; A2A connects agents to each other. The golden rule on data applies here especially if it\'s against real sources.',
+      skipTest:'Do you know what MCP solves versus building a custom connector for every system, and when you would need A2A instead?',
+      result:'You understand how an AI system connects to the rest of the stack and to other agents, which open standard covers which link, and why a standard protocol simplifies (and concentrates) integration risk.',
       resources:[
         {id:'r9-1', title:'MCP: Build Rich-Context AI Apps with Anthropic', url:'https://www.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic', desc:'DeepLearning.AI with Anthropic, 2025. The open standard for connecting LLMs to external systems without a custom connector per combination.', devices:DESKTOP_ONLY, lang:'EN'},
         {id:'r9-2', title:'Official MCP documentation', url:'https://modelcontextprotocol.io/', desc:'Includes security best practices: permissions, isolation, trust in third-party servers.', devices:ALL3, lang:'EN'},
-        {id:'r9-3', title:'🎥 Why we built—and donated—the MCP', url:'https://www.youtube.com/watch?v=PLyCki2K0Lg', desc:'Anthropic, 2025. Why the protocol exists and where it\'s headed.', devices:ALL3, lang:'EN'}
+        {id:'r9-3', title:'🎥 Why we built—and donated—the MCP', url:'https://www.youtube.com/watch?v=PLyCki2K0Lg', desc:'Anthropic, 2025. Why the protocol exists and where it\'s headed.', devices:ALL3, lang:'EN'},
+        {id:'r9-4', title:'A2A: The Agent2Agent Protocol', url:'https://www.deeplearning.ai/courses/a2a-the-agent2agent-protocol', desc:'DeepLearning.AI with Google Cloud and IBM Research, 2025, ~1.5 h. Expose agents built with different frameworks (Google ADK, LangGraph, BeeAI) as A2A servers and orchestrate them. Shows how A2A complements MCP. Listed as a PRO course.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r9-5', title:'A2A specification', url:'https://a2a-protocol.org/latest/specification/', desc:'Official spec, v1.0 since March 2026. Start with Agent Cards: how an agent publishes what it can do and how to reach it.', devices:ALL3, lang:'EN'},
+        {id:'r9-6', title:'Agentic AI Foundation (Linux Foundation)', url:'https://aaif.io/', desc:'Founded December 2025. The neutral home of the main open agent standards — MCP, A2A, AGENTS.md, Agent Skills, and others. The quickest way to see which standards exist and who backs them.', devices:ALL3, lang:'EN'},
+        {id:'r9-7', title:'Optional: AG-UI protocol', url:'https://docs.ag-ui.com/', desc:'Open protocol (CopilotKit) for streaming an agent\'s messages, tool calls, and state to a user interface. Completes the picture: MCP = agent↔tools, A2A = agent↔agent, AG-UI = agent↔user. Useful for human-in-the-loop screens.', devices:ALL3, lang:'EN'},
+        {id:'r9-8', title:'Emerging: Personal Agent Protocol (PAP)', url:'https://sierra.ai/blog/introducing-personal-agent-protocol', desc:'Sierra and Meta, October 2026, early draft. How a customer\'s own personal agent signs in to a business (OAuth, guest vs. read-only vs. write access) — the business-facing side of agents. Worth following, not yet worth building on.', devices:ALL3, lang:'EN'}
       ],
       checkpoint:{
         title:'From "upload a file" to "read from a new folder/table"',
-        text:'Replace the manual upload from topic 5 with an MCP source (filesystem or similar) and extend the dataset with the previous_application table (history of prior applications with the same institution). Now the agent combines an external source (bureau) and an internal one (previous_application) on its own.',
+        text:'Replace the manual upload from topic 5 with an MCP source (filesystem or similar) and extend the dataset with the previous_application table (history of prior applications with the same institution). Now the agent combines an external source (bureau) and an internal one (previous_application) on its own. Optional extension (Builder): expose the risk agent as an A2A server and have a second "orchestrator" agent call it.',
         piece:'Capstone piece → "Integration"'
       },
       dataset:{
@@ -875,12 +884,15 @@ const MODULES = [
     {
       id:'m10', block:'D', num:10, tag:'Reference', title:'Tools and frameworks', notesOn:false, isReference:true,
       duration:'ongoing reference, not a block',
-      objective:'A cheat sheet of what\'s already used in topics 4, 5, 6, and 9, in one place.',
+      objective:'A cheat sheet of what\'s already used in topics 4, 5, 6, and 9, plus the main agent SDKs and open standards, in one place.',
       resources:[
         {id:'r10-1', title:'LangChain', url:null, desc:'Orchestration, used in topics 4 and 5.'},
         {id:'r10-2', title:'LlamaIndex', url:null, desc:'RAG-focused, used in topic 4 and in the agentic RAG of topic 5.'},
         {id:'r10-3', title:'crewAI', url:null, desc:'Multi-agent coordination, used in topic 5.'},
         {id:'r10-4', title:'MCP', url:'https://modelcontextprotocol.io/', desc:'Integration protocol used in topic 9.', devices:ALL3, lang:'EN'},
+        {id:'r10-8', title:'A2A', url:'https://a2a-protocol.org/', desc:'Agent-to-agent protocol, covered in topic 9.', devices:ALL3, lang:'EN'},
+        {id:'r10-9', title:'Agent SDKs', url:null, desc:'Each provider\'s own agent framework: Claude Agent SDK (Anthropic), OpenAI Agents SDK, Google ADK, and Microsoft Agent Framework (1.0 in April 2026, replacing AutoGen and Semantic Kernel). The natural next step after the by-hand agent of topic 5.0.'},
+        {id:'r10-10', title:'Agent Skills and AGENTS.md', url:'https://agentskills.io/', desc:'Open formats for packaging instructions and capabilities for agents: Agent Skills (a folder with a SKILL.md, loaded on demand) and AGENTS.md (https://agents.md, project instructions for coding agents). Both hosted by the Agentic AI Foundation.', devices:ALL3, lang:'EN'},
         {id:'r10-5', title:'API — Anthropic', url:'https://platform.claude.com/docs', desc:'Direct reference to go deeper than the courses.', devices:ALL3, lang:'EN'},
         {id:'r10-6', title:'API — OpenAI', url:'https://platform.openai.com/docs', desc:'Direct reference to go deeper than the courses.', devices:ALL3, lang:'EN'},
         {id:'r10-7', title:'API — Google Gemini', url:'https://ai.google.dev/gemini-api/docs', desc:'Direct reference to go deeper than the courses.', devices:ALL3, lang:'EN'}
@@ -922,7 +934,7 @@ const MODULES = [
       {topic:'4 — RAG', checkpoint:'Architecture justification (why not classic RAG)'},
       {topic:'5 — Agents', checkpoint:'Agent core (application + bureau)'},
       {topic:'5.3 — Anti-hype', checkpoint:'Design criterion (agent vs. workflow)'},
-      {topic:'9 — Integration/MCP', checkpoint:'Integration (+ previous_application)'},
+      {topic:'9 — Integration/MCP', checkpoint:'Integration (+ previous_application; optional A2A extension)'},
       {topic:'7 — Evaluation', checkpoint:'Own evaluation set + OWASP review'},
       {topic:'8-bis / Gate — Banking', checkpoint:'AI Act classification + gate checklist'},
       {topic:'11 — Business', checkpoint:'One-page business case'}
@@ -963,7 +975,9 @@ const MODULES = [
       {term:'Fine-tuning', def:'Partially retraining a model on your own data. Expensive and almost never the first step.'},
       {term:'Evals', def:'Systematic, repeatable tests of an AI system\'s quality. No evals, no production.'},
       {term:'Prompt injection', def:'An attack that sneaks malicious instructions into the text the model reads — critical if the agent has tools.'},
-      {term:'MCP', def:'A standard protocol for connecting models to external systems (databases, APIs, applications).'},
+      {term:'MCP', def:'A standard protocol for connecting models to external systems (databases, APIs, applications). Agent↔tools.'},
+      {term:'A2A', def:'Agent2Agent: a standard protocol for agents to discover each other and delegate tasks, even across vendors and frameworks. Agent↔agent.'},
+      {term:'Agent Card', def:'A2A\'s public description of an agent: what it can do, how to reach it, and how to authenticate.'},
       {term:'Vector DB / chunking', def:'How documents are split (chunking) and indexed so RAG can find what\'s relevant.'},
       {term:'Prompt caching', def:'Reusing repeated context across calls to pay up to ~90% less for it.'}
     ],

@@ -36,7 +36,7 @@ Each path covers the four blocks — **A. Foundations**, **B. Building**, **C. T
   - 8-bis. Model risk and banking supervision
   - Pre-production gate
 - **Block D — Integration, business and capstone**
-  - 9. Integrating with other systems (MCP)
+  - 9. Integrating with other systems (MCP and A2A)
   - 10. Tools and frameworks
   - 11. Business cases and real-world cost
 - Capstone project
@@ -207,6 +207,7 @@ Hallucinations, bias, and how to measure the quality and safety of an LLM system
 - **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** — The reference risk catalog, including prompt injection via tools/agents.
 - **[Evaluation guides on docs.claude.com](https://docs.claude.com)** — How to define success criteria, build test datasets, and use LLM-as-judge. Evals aren't a topic — they're a habit that runs through everything from topic 3 onward.
 - **[🎥 Why Large Language Models Hallucinate](https://www.youtube.com/watch?v=cfqtFvWOfg0)** — IBM Technology, 2023. Why hallucinations happen and how to reduce them.
+- **[OWASP Top 10 for Agentic Applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)** — OWASP GenAI Security Project, December 2025. The companion to the LLM Top 10 for systems that plan, use tools, keep memory, and talk to other agents: goal hijacking, tool misuse, identity and privilege abuse, and more — built from real incidents. Read it as soon as your agent has more than one tool.
 
 ### 8. Data governance, ethics and the AI Act _(Governance)_
 
@@ -237,6 +238,9 @@ The supervisor doesn't examine you against the AI Act in the abstract, but again
 - **[AEPD — Agentic AI from a data protection perspective](https://www.aepd.es/guias/orientaciones-ia-agentica.pdf)** _(source in ES)_ — Spain's data protection authority, guidance from February 2026 on AI agents and GDPR: what changes when a system decides and acts, not just responds. Very relevant from topic 5 onward.
 - **[EBA — guidelines on ICT risk and outsourcing](https://www.eba.europa.eu/)** — Along with ECB publications on the use of AI in banking.
 - **[Governing AI Agents](https://www.deeplearning.ai/short-courses/governing-ai-agents/)** — DeepLearning.AI with Databricks, taught by Amber Roberts, 2025. The most hands-on resource in this block: applies the four pillars of agent governance (lifecycle, risk, security, observability) to a real dataset in Databricks, with Unity Catalog for least-privilege access and observability. Very aligned with a Data & Analytics role.
+- **[ECB — "Technology is neutral, governance is not": AI adoption in the banking sector](https://www.bankingsupervision.europa.eu/press/speeches/date/2026/html/ssm.sp260224~6c5b64a77a.en.html)** — ECB Banking Supervision speech, February 2026. The supervisor's current stance: over 85% of large euro-area banks already use AI, adoption is accelerating with generative and agentic AI, and AI governance and risk management are a 2026–28 supervisory priority.
+- **[Watch: Agent Payments Protocol (AP2)](https://ap2-protocol.org/)** — Open protocol, launched by Google in 2025 and later moved to the FIDO Alliance, for agents that pay on a customer's behalf using cryptographically signed mandates within user-approved limits. Card networks have parallel schemes (Visa Trusted Agent Protocol, Mastercard Agent Pay). For a bank this is an authentication, fraud, and dispute question: who authorized the payment when the "customer" is software?
+- **[Watch: Personal Agent Protocol (PAP)](https://sierra.ai/blog/introducing-personal-agent-protocol)** — Sierra and Meta, October 2026, early draft. A standard for a customer's personal agent to sign in to a business over OAuth with read-only or write access. Payments are planned as a later extension. Bank angle: strong customer authentication (PSD2) was written for a person approving a transaction, not for an agent acting on their behalf.
 
 ### Pre-production gate _(🚧 Gate)_ 🏦
 
@@ -246,7 +250,7 @@ No agent touches real bank data without passing through here. A minimal checklis
 
 **Pre-production gate checklist:**
 
-- [ ] OWASP LLM Top 10 read and applied to the design (especially prompt injection via tools).
+- [ ] OWASP LLM Top 10 and OWASP Top 10 for Agentic Applications read and applied to the design (especially prompt injection via tools and tool misuse).
 - [ ] Your own evaluation set built (not just "I tried it and it works").
 - [ ] AI Act classification of the use case documented.
 - [ ] Data: DPIA if personal data is involved, DPA with the provider, third-party risk approval.
@@ -259,30 +263,38 @@ No agent touches real bank data without passing through here. A minimal checklis
 
 From notebook to enterprise architecture and business value.
 
-### 9. Integrating with other systems (MCP) _(Integration)_
+### 9. Integrating with other systems (MCP and A2A) _(Integration)_
 
-*Duration: 3–4 days*
+*Duration: 4–5 days*
 
-How an AI system connects to the rest of an organization's stack — the golden rule on data applies here especially if it's against real sources.
+How an AI system connects to the rest of an organization's stack — and to other agents. MCP connects an agent to tools and data; A2A connects agents to each other. The golden rule on data applies here especially if it's against real sources.
 
-**Skip test:** Do you know what MCP solves versus building a custom connector for every system?
+**Skip test:** Do you know what MCP solves versus building a custom connector for every system, and when you would need A2A instead?
 
-**Outcome:** You understand how an AI system connects to the rest of the stack, and why a standard protocol simplifies (and concentrates) integration risk.
+**Outcome:** You understand how an AI system connects to the rest of the stack and to other agents, which open standard covers which link, and why a standard protocol simplifies (and concentrates) integration risk.
 
 - **[MCP: Build Rich-Context AI Apps with Anthropic](https://www.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic)** — DeepLearning.AI with Anthropic, 2025. The open standard for connecting LLMs to external systems without a custom connector per combination.
 - **[Official MCP documentation](https://modelcontextprotocol.io/)** — Includes security best practices: permissions, isolation, trust in third-party servers.
 - **[🎥 Why we built—and donated—the MCP](https://www.youtube.com/watch?v=PLyCki2K0Lg)** — Anthropic, 2025. Why the protocol exists and where it's headed.
+- **[A2A: The Agent2Agent Protocol](https://www.deeplearning.ai/courses/a2a-the-agent2agent-protocol)** — DeepLearning.AI with Google Cloud and IBM Research, 2025, ~1.5 h. Expose agents built with different frameworks (Google ADK, LangGraph, BeeAI) as A2A servers and orchestrate them. Shows how A2A complements MCP. Listed as a PRO course.
+- **[A2A specification](https://a2a-protocol.org/latest/specification/)** — Official spec, v1.0 since March 2026. Start with Agent Cards: how an agent publishes what it can do and how to reach it.
+- **[Agentic AI Foundation (Linux Foundation)](https://aaif.io/)** — Founded December 2025. The neutral home of the main open agent standards — MCP, A2A, AGENTS.md, Agent Skills, and others. The quickest way to see which standards exist and who backs them.
+- **[Optional: AG-UI protocol](https://docs.ag-ui.com/)** — Open protocol (CopilotKit) for streaming an agent's messages, tool calls, and state to a user interface. Completes the picture: MCP = agent↔tools, A2A = agent↔agent, AG-UI = agent↔user. Useful for human-in-the-loop screens.
+- **[Emerging: Personal Agent Protocol (PAP)](https://sierra.ai/blog/introducing-personal-agent-protocol)** — Sierra and Meta, October 2026, early draft. How a customer's own personal agent signs in to a business (OAuth, guest vs. read-only vs. write access) — the business-facing side of agents. Worth following, not yet worth building on.
 
 ### 10. Tools and frameworks _(Reference)_
 
 *Duration: ongoing reference, not a block*
 
-A cheat sheet of what's already used in topics 4, 5, 6, and 9, in one place.
+A cheat sheet of what's already used in topics 4, 5, 6, and 9, plus the main agent SDKs and open standards, in one place.
 
 - LangChain — Orchestration, used in topics 4 and 5.
 - LlamaIndex — RAG-focused, used in topic 4 and in the agentic RAG of topic 5.
 - crewAI — Multi-agent coordination, used in topic 5.
 - **[MCP](https://modelcontextprotocol.io/)** — Integration protocol used in topic 9.
+- **[A2A](https://a2a-protocol.org/)** — Agent-to-agent protocol, covered in topic 9.
+- Agent SDKs — Each provider's own agent framework: Claude Agent SDK (Anthropic), OpenAI Agents SDK, Google ADK, and Microsoft Agent Framework (1.0 in April 2026, replacing AutoGen and Semantic Kernel). The natural next step after the by-hand agent of topic 5.0.
+- **[Agent Skills and AGENTS.md](https://agentskills.io/)** — Open formats for packaging instructions and capabilities for agents: Agent Skills (a folder with a SKILL.md, loaded on demand) and AGENTS.md (https://agents.md, project instructions for coding agents). Both hosted by the Agentic AI Foundation.
 - **[API — Anthropic](https://platform.claude.com/docs)** — Direct reference to go deeper than the courses.
 - **[API — OpenAI](https://platform.openai.com/docs)** — Direct reference to go deeper than the courses.
 - **[API — Google Gemini](https://ai.google.dev/gemini-api/docs)** — Direct reference to go deeper than the courses.
@@ -319,7 +331,7 @@ An end-to-end banking use case with public synthetic consumer-credit data (Home 
 | 4 — RAG | Architecture justification (why not classic RAG) |
 | 5 — Agents | Agent core (application + bureau) |
 | 5.3 — Anti-hype | Design criterion (agent vs. workflow) |
-| 9 — Integration/MCP | Integration (+ previous_application) |
+| 9 — Integration/MCP | Integration (+ previous_application; optional A2A extension) |
 | 7 — Evaluation | Own evaluation set + OWASP review |
 | 8-bis / Gate — Banking | AI Act classification + gate checklist |
 | 11 — Business | One-page business case |
@@ -360,7 +372,9 @@ Terms that come up constantly in this path, explained in one sentence.
 - **Fine-tuning** — Partially retraining a model on your own data. Expensive and almost never the first step.
 - **Evals** — Systematic, repeatable tests of an AI system's quality. No evals, no production.
 - **Prompt injection** — An attack that sneaks malicious instructions into the text the model reads — critical if the agent has tools.
-- **MCP** — A standard protocol for connecting models to external systems (databases, APIs, applications).
+- **MCP** — A standard protocol for connecting models to external systems (databases, APIs, applications). Agent↔tools.
+- **A2A** — Agent2Agent: a standard protocol for agents to discover each other and delegate tasks, even across vendors and frameworks. Agent↔agent.
+- **Agent Card** — A2A's public description of an agent: what it can do, how to reach it, and how to authenticate.
 - **Vector DB / chunking** — How documents are split (chunking) and indexed so RAG can find what's relevant.
 - **Prompt caching** — Reusing repeated context across calls to pay up to ~90% less for it.
 
