@@ -1,15 +1,17 @@
 name: Keep Supabase active
 
-# Supabase's free tier auto-pauses a project after ~7 days with no API
-# activity. This pings the REST API every few days with a trivial read so
-# the project never sits idle long enough to trigger that. Reads the
+# Supabase's free tier pauses a project that doesn't get "sufficient user
+# database activity" over a 7-day window; its docs say a few requests to the
+# database each day is enough. Pinging only every few days was not, so this
+# runs a trivial read several times a day. GitHub often delays or drops
+# scheduled runs, so the extra runs also cover for missed ones. Reads the
 # project URL and anon key straight from js/config.js (already public
 # there) instead of duplicating them, so there's one place to update if
 # they ever change.
 
 on:
   schedule:
-    - cron: '13 4 */3 * *' # ~every 3 days, safely under the 7-day pause window
+    - cron: '13 */6 * * *' # 4 times a day
   workflow_dispatch: {}
 
 jobs:
