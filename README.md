@@ -67,7 +67,9 @@ No further configuration is needed — there's no build step, and `index.html` a
 
 ## Keeping the Supabase project awake
 
-Supabase's free tier auto-pauses a project after about a week with no API activity. `.github/workflows/keep-supabase-active.yml` runs every ~3 days and does a trivial read against `path_progress` to prevent that; it can also be triggered manually from **Actions → Keep Supabase active → Run workflow**. It reads the URL and anon key straight out of `js/config.js`, so there's nothing to configure separately.
+Supabase's free tier pauses a project that doesn't get enough database activity over a 7-day window — its docs say a few requests each day is enough, so a ping every few days isn't. `.github/workflows/keep-supabase-active.yml` runs 4 times a day and does a trivial read against `path_progress` to prevent that; it can also be triggered manually from **Actions → Keep Supabase active → Run workflow**. It reads the URL and anon key straight out of `js/config.js`, so there's nothing to configure separately.
+
+GitHub disables scheduled workflows in a public repo after 60 days without any commits, and emails you when it does. If that happens, re-enable it from the Actions tab.
 
 ## Contributing / repo workflow
 
