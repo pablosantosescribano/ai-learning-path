@@ -301,6 +301,11 @@
   .res-title{font-weight:600; font-size:14.5px; margin-right:2px;}
   .res-title a{text-decoration:none; border-bottom:1px dotted var(--dim);}
   .res-title a:hover{border-bottom-color:var(--text);}
+  .time-pill{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.03em;
+    color:var(--teal); border:1px solid rgba(95,216,200,0.35); border-radius:20px; padding:2px 8px;
+    white-space:nowrap;
+  }
   .res-desc{color:var(--muted); font-size:13.5px; margin-top:7px;}
   .res-url{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dim); margin-top:6px; word-break:break-all;}
   .ic-row{display:flex; align-items:center; gap:4px; margin-left:2px;}
@@ -631,10 +636,10 @@ const MODULES = [
     duration:null,
     objective:'Only resources that require signing up or setting something up are listed here. Everything else is open content — see the "Other resources of interest" section at the end.',
     resources:[
-      {id:'r0-1', title:'DeepLearning.AI — create an account', url:'https://learn.deeplearning.ai', desc:'Free account (email or Google). Notebooks run in the browser, no install needed, with API keys already included.', devices:ALL3, lang:'EN'},
-      {id:'r0-2', title:'Anthropic Console — developer account', url:'https://console.anthropic.com', desc:'Needed for the comparison exercise in topic 5.2: create your own account, with a few cents of testing cost, on at least two of Anthropic, OpenAI and Google.', devices:ALL3, lang:'EN'},
-      {id:'r0-3', title:'OpenAI Platform — developer account', url:'https://platform.openai.com', desc:'One of the accounts needed for the topic 5.2 comparison.', devices:ALL3, lang:'EN'},
-      {id:'r0-4', title:'Google AI Studio (Gemini) — developer account', url:'https://ai.google.dev/', desc:'Generous free tier. One of the accounts needed for the topic 5.2 comparison.', devices:ALL3, lang:'EN'}
+      {id:'r0-1', title:'DeepLearning.AI — create an account', url:'https://learn.deeplearning.ai', desc:'Free account (email or Google). Notebooks run in the browser, no install needed, with API keys already included.', devices:ALL3, lang:'EN', time:'~5 min'},
+      {id:'r0-2', title:'Anthropic Console — developer account', url:'https://console.anthropic.com', desc:'Needed for the comparison exercise in topic 5.2: create your own account, with a few cents of testing cost, on at least two of Anthropic, OpenAI and Google.', devices:ALL3, lang:'EN', time:'~5 min'},
+      {id:'r0-3', title:'OpenAI Platform — developer account', url:'https://platform.openai.com', desc:'One of the accounts needed for the topic 5.2 comparison.', devices:ALL3, lang:'EN', time:'~5 min'},
+      {id:'r0-4', title:'Google AI Studio (Gemini) — developer account', url:'https://ai.google.dev/', desc:'Generous free tier. One of the accounts needed for the topic 5.2 comparison.', devices:ALL3, lang:'EN', time:'~5 min'}
     ]
   },
   {
@@ -644,7 +649,7 @@ const MODULES = [
     skipTest:'Can you read a for loop, a function, and a JSON without effort?',
     result:'You can read and edit the course notebooks without getting stuck on the code.',
     resources:[
-      {id:'r0b-1', title:'Kaggle Learn — Python', url:'https://www.kaggle.com/learn/python', desc:'Free, with a certificate, exercises in the browser.', devices:ALL3, lang:'EN'}
+      {id:'r0b-1', title:'Kaggle Learn — Python', url:'https://www.kaggle.com/learn/python', desc:'Free, with a certificate, exercises in the browser.', devices:ALL3, lang:'EN', time:'~5 h'}
     ]
   },
 
@@ -659,9 +664,9 @@ const MODULES = [
       skipTest:'Can you explain the difference between supervised and unsupervised learning, and what a neural network is?',
       result:'A mental map of AI (types of learning, what a neural network is, where LLMs fit in) before the technical detail of topic 2.',
       resources:[
-        {id:'r1-1', title:'Elements of AI', url:'https://www.elementsofai.com/', desc:'University of Helsinki, free, 2018. The world\'s most popular intro AI course: what AI is, machine learning, neural networks, no coding required. Also available in Spanish.', devices:ALL3, lang:'EN'},
-        {id:'r1-2', title:'For non-technical/manager profiles: AI for Everyone', url:'https://www.deeplearning.ai/courses/ai-for-everyone/', desc:'Andrew Ng. What AI can and can\'t do, in business language — a good alternative if you prefer a non-technical approach.', devices:ALL3, lang:'EN'},
-        {id:'r1-3', title:'🎥 But what is a neural network? | Deep Learning chapter 1', url:'https://www.youtube.com/watch?v=aircAruvnKk', desc:'3Blue1Brown, 2017. The most-recommended visual explanation of how a neural network works.', devices:ALL3, lang:'EN'}
+        {id:'r1-1', title:'Elements of AI', url:'https://www.elementsofai.com/', desc:'University of Helsinki, free, 2018. The world\'s most popular intro AI course: what AI is, machine learning, neural networks, no coding required. Also available in Spanish.', devices:ALL3, lang:'EN', time:'~3–4 h'},
+        {id:'r1-2', title:'For non-technical/manager profiles: AI for Everyone', url:'https://www.deeplearning.ai/courses/ai-for-everyone/', desc:'Andrew Ng. What AI can and can\'t do, in business language — a good alternative if you prefer a non-technical approach.', devices:ALL3, lang:'EN', time:'~3 h'},
+        {id:'r1-3', title:'🎥 But what is a neural network? | Deep Learning chapter 1', url:'https://www.youtube.com/watch?v=aircAruvnKk', desc:'3Blue1Brown, 2017. The most-recommended visual explanation of how a neural network works.', devices:ALL3, lang:'EN', time:'~20 min'}
       ]
     },
     {
@@ -671,10 +676,10 @@ const MODULES = [
       skipTest:'Can you explain what a token is, what the context window is, and why an LLM hallucinates?',
       result:'You understand how an LLM predicts the next token and why that explains hallucinations, context, and cost.',
       resources:[
-        {id:'r2-1', title:'How Transformer LLMs Work', url:'https://www.deeplearning.ai/courses/how-transformer-llms-work', desc:'Jay Alammar and Maarten Grootendorst, 2025. The transformer architecture explained visually, no advanced math needed.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r2-2', title:'Building Effective Agents (reading)', url:'https://www.anthropic.com/engineering/building-effective-agents', desc:'Anthropic, 2024. Lays the groundwork for how an LLM is orchestrated within a system. Reread in topic 5.0.', devices:ALL3, lang:'EN'},
-        {id:'r2-3', title:'🎥 Stanford CS229 | Building Large Language Models', url:'https://www.youtube.com/watch?v=9vM4p9NN0Ts', desc:'Yann Dubois, Stanford, 2024. Pretraining and post-training (SFT/RLHF), and common data, algorithm, and evaluation practices.', devices:ALL3, lang:'EN'},
-        {id:'r2-4', title:'🎥 Transformers, the tech behind LLMs | Chapter 5', url:'https://www.youtube.com/watch?v=wjZofJX0v4M', desc:'3Blue1Brown, 2024. A visual walkthrough of the transformer architecture.', devices:ALL3, lang:'EN'}
+        {id:'r2-1', title:'How Transformer LLMs Work', url:'https://www.deeplearning.ai/courses/how-transformer-llms-work', desc:'Jay Alammar and Maarten Grootendorst, 2025. The transformer architecture explained visually, no advanced math needed.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h40'},
+        {id:'r2-2', title:'Building Effective Agents (reading)', url:'https://www.anthropic.com/engineering/building-effective-agents', desc:'Anthropic, 2024. Lays the groundwork for how an LLM is orchestrated within a system. Reread in topic 5.0.', devices:ALL3, lang:'EN', time:'~15 min'},
+        {id:'r2-3', title:'🎥 Stanford CS229 | Building Large Language Models', url:'https://www.youtube.com/watch?v=9vM4p9NN0Ts', desc:'Yann Dubois, Stanford, 2024. Pretraining and post-training (SFT/RLHF), and common data, algorithm, and evaluation practices.', devices:ALL3, lang:'EN', time:'~1h15'},
+        {id:'r2-4', title:'🎥 Transformers, the tech behind LLMs | Chapter 5', url:'https://www.youtube.com/watch?v=wjZofJX0v4M', desc:'3Blue1Brown, 2024. A visual walkthrough of the transformer architecture.', devices:ALL3, lang:'EN', time:'~25 min'}
       ]
     },
     {
@@ -684,11 +689,11 @@ const MODULES = [
       skipTest:'Do you already use few-shot, chain-of-thought, and structured prompts with good judgment on a daily basis?',
       result:'You master the core prompting patterns and know that managing context (not just the prompt) is the key skill.',
       resources:[
-        {id:'r3-1', title:'ChatGPT Prompt Engineering for Developers', url:'https://www.deeplearning.ai/courses/chatgpt-prompt-eng', desc:'DeepLearning.AI + OpenAI, 2023. Fundamentals: principles, summarizing, inferring, transforming, expanding. Uses older models in the examples, but the principles still hold.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r3-1', title:'ChatGPT Prompt Engineering for Developers', url:'https://www.deeplearning.ai/courses/chatgpt-prompt-eng', desc:'DeepLearning.AI + OpenAI, 2023. Fundamentals: principles, summarizing, inferring, transforming, expanding. Uses older models in the examples, but the principles still hold.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h20'},
         {id:'r3-2', title:'Prompt Engineering Guide', url:'https://www.promptingguide.ai/', desc:'DAIR.AI, an ongoing reference since 2022. A catalog of techniques (chain-of-thought, few-shot, ReAct…) to consult as needed.', devices:ALL3, lang:'EN'},
         {id:'r3-3', title:'Anthropic Academy', url:'https://www.anthropic.com/learn', desc:'Free, up-to-date courses on prompting and evaluation with Claude.', devices:ALL3, lang:'EN'},
-        {id:'r3-4', title:'Reading: context engineering guides', url:'https://www.anthropic.com/engineering', desc:'Anthropic\'s engineering blog. The discipline that replaces plain "prompting" once you\'re working with agents.', devices:ALL3, lang:'EN'},
-        {id:'r3-5', title:'🎥 AI prompt engineering: A deep dive', url:'https://www.youtube.com/watch?v=T9aRN5JkmL8', desc:'Anthropic, 2024. Anthropic\'s own prompt engineering team walks through what actually works in practice.', devices:ALL3, lang:'EN'}
+        {id:'r3-4', title:'Reading: context engineering guides', url:'https://www.anthropic.com/engineering', desc:'Anthropic\'s engineering blog. The discipline that replaces plain "prompting" once you\'re working with agents.', devices:ALL3, lang:'EN', time:'~20 min'},
+        {id:'r3-5', title:'🎥 AI prompt engineering: A deep dive', url:'https://www.youtube.com/watch?v=T9aRN5JkmL8', desc:'Anthropic, 2024. Anthropic\'s own prompt engineering team walks through what actually works in practice.', devices:ALL3, lang:'EN', time:'~45 min'}
       ],
       checkpoint:{
         title:'Design the risk-analysis prompt',
@@ -710,9 +715,9 @@ const MODULES = [
       skipTest:'Can you explain chunking, hybrid search, and groundedness, and have you built a RAG pipeline?',
       result:'You can design and evaluate a basic RAG pipeline over your own data.',
       resources:[
-        {id:'r4-1', title:'Retrieval Augmented Generation (RAG)', url:'https://www.deeplearning.ai/courses/retrieval-augmented-generation', desc:'DeepLearning.AI, 2025, the most current: vector DBs, hybrid search, chunking, cost, and latency.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r4-2', title:'Building and Evaluating Advanced RAG', url:'https://www.deeplearning.ai/courses/building-evaluating-advanced-rag', desc:'With LlamaIndex, 2023. Advanced retrieval techniques and evaluation metrics (context relevance, groundedness).', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r4-3', title:'🎥 What is Retrieval-Augmented Generation (RAG)?', url:'https://www.youtube.com/watch?v=T-D1OfcDW1M', desc:'IBM Technology, 2023. A concise explainer of the RAG framework and why it reduces hallucinations.', devices:ALL3, lang:'EN'}
+        {id:'r4-1', title:'Retrieval Augmented Generation (RAG)', url:'https://www.deeplearning.ai/courses/retrieval-augmented-generation', desc:'DeepLearning.AI, 2025, the most current: vector DBs, hybrid search, chunking, cost, and latency.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h30'},
+        {id:'r4-2', title:'Building and Evaluating Advanced RAG', url:'https://www.deeplearning.ai/courses/building-evaluating-advanced-rag', desc:'With LlamaIndex, 2023. Advanced retrieval techniques and evaluation metrics (context relevance, groundedness).', devices:DESKTOP_ONLY, lang:'EN', time:'~1h'},
+        {id:'r4-3', title:'🎥 What is Retrieval-Augmented Generation (RAG)?', url:'https://www.youtube.com/watch?v=T-D1OfcDW1M', desc:'IBM Technology, 2023. A concise explainer of the RAG framework and why it reduces hallucinations.', devices:ALL3, lang:'EN', time:'~7 min'}
       ],
       checkpoint:{
         title:'Decide whether RAG applies to the credit data',
@@ -727,19 +732,19 @@ const MODULES = [
       skipTest:'Can you explain how an LLM decides to invoke a tool, and have you built at least one agent?',
       result:'You\'ve built an agent with the raw API and with frameworks, you have your own view on the providers, and you know when NOT to use an agent.',
       resources:[
-        {id:'r5-0', title:'5.0 · The agent by hand, first', url:'https://www.anthropic.com/engineering/building-effective-agents', desc:'Before touching frameworks: reread Building Effective Agents and implement the agent + tools loop with the raw API. This is how you learn what frameworks do under the hood.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r5-0', title:'5.0 · The agent by hand, first', url:'https://www.anthropic.com/engineering/building-effective-agents', desc:'Before touching frameworks: reread Building Effective Agents and implement the agent + tools loop with the raw API. This is how you learn what frameworks do under the hood.', devices:DESKTOP_ONLY, lang:'EN', time:'~20 min'},
         {id:'r5-0b', title:'Claude Cookbooks (formerly Anthropic Cookbook)', url:'https://github.com/anthropics/claude-cookbooks', desc:'Practical examples with the raw API, including tool use and agent loops. The repo was renamed from "anthropic-cookbook" to "claude-cookbooks".', devices:DESKTOP_ONLY, lang:'EN'},
         {id:'r5-0c', title:'anthropics/courses (repo)', url:'https://github.com/anthropics/courses', desc:'Official Anthropic courses in notebook format, including one specifically on tool use — complements the Cookbook for the by-hand agent exercise.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r5-1', title:'Agentic AI', url:'https://www.deeplearning.ai/courses/agentic-ai', desc:'Andrew Ng, 2025. The most current and best-reviewed agents course in the catalog. Teaches the four patterns (reflection, tool use, planning, multi-agent collaboration) before touching any specific library.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r5-2', title:'Functions, Tools and Agents with LangChain', url:'https://www.deeplearning.ai/courses/functions-tools-agents-langchain', desc:'2023. How an LLM decides to invoke tools.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r5-3', title:'AI Agents in LangGraph', url:'https://www.deeplearning.ai/courses/ai-agents-in-langgraph', desc:'2024. Orchestration with state graphs.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r5-4', title:'Building Agentic RAG with LlamaIndex', url:'https://www.deeplearning.ai/courses/building-agentic-rag-with-llamaindex', desc:'2024. Combines RAG (topic 4) with agentic reasoning.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r5-5', title:'Optional: Multi AI Agent Systems with crewAI', url:'https://www.deeplearning.ai/courses/multi-ai-agent-systems-with-crewai', desc:'2024. Coordination between multiple agents with specialized roles.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r5-6', title:'Tool use — Anthropic (Claude)', url:'https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview', desc:'5.2 · Hands-on comparison: implement the same agent across all three providers and compare. Anthropic version.', devices:ALL3, lang:'EN'},
-        {id:'r5-7', title:'Function calling — OpenAI (GPT)', url:'https://platform.openai.com/docs/guides/function-calling', desc:'Same comparison, OpenAI version.', devices:ALL3, lang:'EN'},
-        {id:'r5-8', title:'Function calling — Google (Gemini)', url:'https://ai.google.dev/gemini-api/docs/function-calling', desc:'Same comparison, Gemini version.', devices:ALL3, lang:'EN'},
+        {id:'r5-1', title:'Agentic AI', url:'https://www.deeplearning.ai/courses/agentic-ai', desc:'Andrew Ng, 2025. The most current and best-reviewed agents course in the catalog. Teaches the four patterns (reflection, tool use, planning, multi-agent collaboration) before touching any specific library.', devices:DESKTOP_ONLY, lang:'EN', time:'~4 h'},
+        {id:'r5-2', title:'Functions, Tools and Agents with LangChain', url:'https://www.deeplearning.ai/courses/functions-tools-agents-langchain', desc:'2023. How an LLM decides to invoke tools.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h'},
+        {id:'r5-3', title:'AI Agents in LangGraph', url:'https://www.deeplearning.ai/courses/ai-agents-in-langgraph', desc:'2024. Orchestration with state graphs.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h30'},
+        {id:'r5-4', title:'Building Agentic RAG with LlamaIndex', url:'https://www.deeplearning.ai/courses/building-agentic-rag-with-llamaindex', desc:'2024. Combines RAG (topic 4) with agentic reasoning.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h30'},
+        {id:'r5-5', title:'Optional: Multi AI Agent Systems with crewAI', url:'https://www.deeplearning.ai/courses/multi-ai-agent-systems-with-crewai', desc:'2024. Coordination between multiple agents with specialized roles.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h30'},
+        {id:'r5-6', title:'Tool use — Anthropic (Claude)', url:'https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview', desc:'5.2 · Hands-on comparison: implement the same agent across all three providers and compare. Anthropic version.', devices:ALL3, lang:'EN', time:'~15 min'},
+        {id:'r5-7', title:'Function calling — OpenAI (GPT)', url:'https://platform.openai.com/docs/guides/function-calling', desc:'Same comparison, OpenAI version.', devices:ALL3, lang:'EN', time:'~15 min'},
+        {id:'r5-8', title:'Function calling — Google (Gemini)', url:'https://ai.google.dev/gemini-api/docs/function-calling', desc:'Same comparison, Gemini version.', devices:ALL3, lang:'EN', time:'~15 min'},
         {id:'r5-9', title:'Arena', url:'https://arena.ai/', desc:'Formerly LMArena/Chatbot Arena, free, no signup, since 2023. Blind model comparison via human voting.', devices:ALL3, lang:'EN'},
-        {id:'r5-10', title:'🎥 What are AI Agents?', url:'https://www.youtube.com/watch?v=F8NKVhkZZWI', desc:'IBM Technology, 2024. What makes a system "agentic" versus a plain chatbot.', devices:ALL3, lang:'EN'}
+        {id:'r5-10', title:'🎥 What are AI Agents?', url:'https://www.youtube.com/watch?v=F8NKVhkZZWI', desc:'IBM Technology, 2024. What makes a system "agentic" versus a plain chatbot.', devices:ALL3, lang:'EN', time:'~6 min'}
       ],
       checkpoint:{
         title:'Build the first risk-analysis agent',
@@ -772,9 +777,9 @@ const MODULES = [
       skipTest:'Is reading the course summary enough for you to decide "prompting vs. RAG vs. fine-tuning"?',
       result:'You know when to use fine-tuning versus prompt engineering or RAG, and what that means for cost and data.',
       resources:[
-        {id:'r6-1', title:'Fine-tuning & RL for LLMs: Intro to Post-training', url:'https://www.deeplearning.ai/courses/fine-tuning-and-reinforcement-learning-for-llms-intro-to-post-training', desc:'Sharon Zhou, 2025, the most current: fine-tuning, RLHF, LoRA, evaluating fine-tuned models.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r6-2', title:'Shorter alternative: Finetuning Large Language Models', url:'https://www.deeplearning.ai/courses/finetuning-large-language-models', desc:'2023. Basic fundamentals, a shorter course.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r6-3', title:'🎥 Fine Tuning LLM Explained Simply', url:'https://www.youtube.com/watch?v=ezdIOLbUSWg', desc:'codebasics, 2025. A plain-language explanation of what fine-tuning does and when to use it.', devices:ALL3, lang:'EN'}
+        {id:'r6-1', title:'Fine-tuning & RL for LLMs: Intro to Post-training', url:'https://www.deeplearning.ai/courses/fine-tuning-and-reinforcement-learning-for-llms-intro-to-post-training', desc:'Sharon Zhou, 2025, the most current: fine-tuning, RLHF, LoRA, evaluating fine-tuned models.', devices:DESKTOP_ONLY, lang:'EN', time:'~2h'},
+        {id:'r6-2', title:'Shorter alternative: Finetuning Large Language Models', url:'https://www.deeplearning.ai/courses/finetuning-large-language-models', desc:'2023. Basic fundamentals, a shorter course.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h'},
+        {id:'r6-3', title:'🎥 Fine Tuning LLM Explained Simply', url:'https://www.youtube.com/watch?v=ezdIOLbUSWg', desc:'codebasics, 2025. A plain-language explanation of what fine-tuning does and when to use it.', devices:ALL3, lang:'EN', time:'~15 min'}
       ],
       noCheckpointNote:'No project checkpoint here — the risk agent is a good example of a case that does NOT need fine-tuning: good prompting + tool use already solves it. Honest note: in 2026 fine-tuning is rarely done before mastering prompting, RAG, and evals.'
     }
@@ -792,11 +797,11 @@ const MODULES = [
       skipTest:'Do you already have your own criteria for measuring quality and risk before deploying something?',
       result:'Criteria for measuring quality and risk beyond "it works in the demo". You know that an agent with tools is an attack surface.',
       resources:[
-        {id:'r7-1', title:'Red Teaming LLM Applications', url:'https://www.deeplearning.ai/courses/red-teaming-llm-applications', desc:'With Giskard, 2024. Attacking real chatbots: prompt injection, information leaks.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r7-2', title:'OWASP Top 10 for LLM Applications', url:'https://owasp.org/www-project-top-10-for-large-language-model-applications/', desc:'The reference risk catalog, including prompt injection via tools/agents.', devices:ALL3, lang:'EN'},
+        {id:'r7-1', title:'Red Teaming LLM Applications', url:'https://www.deeplearning.ai/courses/red-teaming-llm-applications', desc:'With Giskard, 2024. Attacking real chatbots: prompt injection, information leaks.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h'},
+        {id:'r7-2', title:'OWASP Top 10 for LLM Applications', url:'https://owasp.org/www-project-top-10-for-large-language-model-applications/', desc:'The reference risk catalog, including prompt injection via tools/agents.', devices:ALL3, lang:'EN', time:'~20 min'},
         {id:'r7-3', title:'Evaluation guides on docs.claude.com', url:'https://docs.claude.com', desc:'How to define success criteria, build test datasets, and use LLM-as-judge. Evals aren\'t a topic — they\'re a habit that runs through everything from topic 3 onward.', devices:ALL3, lang:'EN'},
-        {id:'r7-4', title:'🎥 Why Large Language Models Hallucinate', url:'https://www.youtube.com/watch?v=cfqtFvWOfg0', desc:'IBM Technology, 2023. Why hallucinations happen and how to reduce them.', devices:ALL3, lang:'EN'},
-        {id:'r7-5', title:'OWASP Top 10 for Agentic Applications', url:'https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/', desc:'OWASP GenAI Security Project, December 2025. The companion to the LLM Top 10 for systems that plan, use tools, keep memory, and talk to other agents: goal hijacking, tool misuse, identity and privilege abuse, and more — built from real incidents. Read it as soon as your agent has more than one tool.', devices:ALL3, lang:'EN'}
+        {id:'r7-4', title:'🎥 Why Large Language Models Hallucinate', url:'https://www.youtube.com/watch?v=cfqtFvWOfg0', desc:'IBM Technology, 2023. Why hallucinations happen and how to reduce them.', devices:ALL3, lang:'EN', time:'~7 min'},
+        {id:'r7-5', title:'OWASP Top 10 for Agentic Applications', url:'https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/', desc:'OWASP GenAI Security Project, December 2025. The companion to the LLM Top 10 for systems that plan, use tools, keep memory, and talk to other agents: goal hijacking, tool misuse, identity and privilege abuse, and more — built from real incidents. Read it as soon as your agent has more than one tool.', devices:ALL3, lang:'EN', time:'~20 min'}
       ],
       checkpoint:{
         title:'Build a mini evaluation set',
@@ -811,10 +816,10 @@ const MODULES = [
       skipTest:'Do you already know the AI Act risk categories and the basic ethical principles applied to AI?',
       result:'You understand what it means to deploy AI responsibly and how it connects to the data governance you already know.',
       resources:[
-        {id:'r8-1', title:'Ethics of AI', url:'https://ethics-of-ai.mooc.fi/', desc:'University of Helsinki, free, same team as Elements of AI, 2020. Ethical principles applied to AI. Also available in Spanish.', devices:ALL3, lang:'EN'},
-        {id:'r8-2', title:'AI Act — official European Commission page', url:'https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai', desc:'Adopted 2024, continuously updated. Authoritative reference on risk categories, obligations, and timeline.', devices:ALL3, lang:'EN'},
-        {id:'r8-3', title:'Optional: AI Governance Foundations', url:'https://ethicalogic.com/ai-course-access/', desc:'Ethicalogic, free, no signup. Connects the AI Act with the NIST AI RMF and ISO/IEC 42001.', devices:ALL3, lang:'EN'},
-        {id:'r8-4', title:'🎥 The EU\'s AI Act, Explained', url:'https://www.youtube.com/watch?v=i5iZNH2lCGU', desc:'WSJ Tech News Briefing, 2023. An accessible summary of what the AI Act covers.', devices:ALL3, lang:'EN'}
+        {id:'r8-1', title:'Ethics of AI', url:'https://ethics-of-ai.mooc.fi/', desc:'University of Helsinki, free, same team as Elements of AI, 2020. Ethical principles applied to AI. Also available in Spanish.', devices:ALL3, lang:'EN', time:'~3–4 h'},
+        {id:'r8-2', title:'AI Act — official European Commission page', url:'https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai', desc:'Adopted 2024, continuously updated. Authoritative reference on risk categories, obligations, and timeline.', devices:ALL3, lang:'EN', time:'~20 min'},
+        {id:'r8-3', title:'Optional: AI Governance Foundations', url:'https://ethicalogic.com/ai-course-access/', desc:'Ethicalogic, free, no signup. Connects the AI Act with the NIST AI RMF and ISO/IEC 42001.', devices:ALL3, lang:'EN', time:'~2 h'},
+        {id:'r8-4', title:'🎥 The EU\'s AI Act, Explained', url:'https://www.youtube.com/watch?v=i5iZNH2lCGU', desc:'WSJ Tech News Briefing, 2023. An accessible summary of what the AI Act covers.', devices:ALL3, lang:'EN', time:'~12 min'}
       ]
     },
     {
@@ -823,14 +828,14 @@ const MODULES = [
       objective:'The supervisor doesn\'t examine you against the AI Act in the abstract, but against the bank\'s model risk framework. Every agent is a "model" that needs to be inventoried, validated, and documented.',
       result:'You know how to map a generative AI system onto the bank\'s model lifecycle and anticipate what Validation, the DPO, and the supervisor will look at.',
       resources:[
-        {id:'r8b-1', title:'Fed SR 11-7 — Guidance on Model Risk Management', url:'https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm', desc:'Still the global reference for model risk management (MRM).', devices:ALL3, lang:'EN'},
-        {id:'r8b-2', title:'DORA — EU Regulation 2022/2554', url:'https://finance.ec.europa.eu/regulation-and-supervision/financial-services-legislation/implementing-and-delegated-acts/digital-operational-resilience-regulation_en', desc:'Your AI providers are ICT providers: registration, contracts, exit strategy, concentration risk.', devices:ALL3, lang:'EN'},
-        {id:'r8b-3', title:'NIST AI Risk Management Framework', url:'https://www.nist.gov/itl/ai-risk-management-framework', desc:'Includes the specific generative AI profile.', devices:ALL3, lang:'EN'},
-        {id:'r8b-4', title:'AEPD — Agentic AI from a data protection perspective', url:'https://www.aepd.es/guias/orientaciones-ia-agentica.pdf', desc:'Spain\'s data protection authority, guidance from February 2026 on AI agents and GDPR: what changes when a system decides and acts, not just responds. Very relevant from topic 5 onward.', devices:ALL3, lang:'ES'},
-        {id:'r8b-5', title:'EBA — guidelines on ICT risk and outsourcing', url:'https://www.eba.europa.eu/', desc:'Along with ECB publications on the use of AI in banking.', devices:ALL3, lang:'EN'},
-        {id:'r8b-6', title:'Governing AI Agents', url:'https://www.deeplearning.ai/short-courses/governing-ai-agents/', desc:'DeepLearning.AI with Databricks, taught by Amber Roberts, 2025. The most hands-on resource in this block: applies the four pillars of agent governance (lifecycle, risk, security, observability) to a real dataset in Databricks, with Unity Catalog for least-privilege access and observability. Very aligned with a Data & Analytics role.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r8b-7', title:'ECB — "Technology is neutral, governance is not": AI adoption in the banking sector', url:'https://www.bankingsupervision.europa.eu/press/speeches/date/2026/html/ssm.sp260224~6c5b64a77a.en.html', desc:'ECB Banking Supervision speech, February 2026. The supervisor\'s current stance: over 85% of large euro-area banks already use AI, adoption is accelerating with generative and agentic AI, and AI governance and risk management are a 2026–28 supervisory priority.', devices:ALL3, lang:'EN'},
-        {id:'r8b-8', title:'Watch: Agent Payments Protocol (AP2)', url:'https://ap2-protocol.org/', desc:'Open protocol, launched by Google in 2025 and later moved to the FIDO Alliance, for agents that pay on a customer\'s behalf using cryptographically signed mandates within user-approved limits. Card networks have parallel schemes (Visa Trusted Agent Protocol, Mastercard Agent Pay). For a bank this is an authentication, fraud, and dispute question: who authorized the payment when the "customer" is software? Strong customer authentication (PSD2) was written for a person approving a transaction, not for an agent acting on their behalf — the same question behind the Personal Agent Protocol in topic 9.', devices:ALL3, lang:'EN'}
+        {id:'r8b-1', title:'Fed SR 11-7 — Guidance on Model Risk Management', url:'https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm', desc:'Still the global reference for model risk management (MRM).', devices:ALL3, lang:'EN', time:'~30 min'},
+        {id:'r8b-2', title:'DORA — EU Regulation 2022/2554', url:'https://finance.ec.europa.eu/regulation-and-supervision/financial-services-legislation/implementing-and-delegated-acts/digital-operational-resilience-regulation_en', desc:'Your AI providers are ICT providers: registration, contracts, exit strategy, concentration risk.', devices:ALL3, lang:'EN', time:'~25 min'},
+        {id:'r8b-3', title:'NIST AI Risk Management Framework', url:'https://www.nist.gov/itl/ai-risk-management-framework', desc:'Includes the specific generative AI profile.', devices:ALL3, lang:'EN', time:'~20 min'},
+        {id:'r8b-4', title:'AEPD — Agentic AI from a data protection perspective', url:'https://www.aepd.es/guias/orientaciones-ia-agentica.pdf', desc:'Spain\'s data protection authority, guidance from February 2026 on AI agents and GDPR: what changes when a system decides and acts, not just responds. Very relevant from topic 5 onward.', devices:ALL3, lang:'ES', time:'~25 min'},
+        {id:'r8b-5', title:'EBA — guidelines on ICT risk and outsourcing', url:'https://www.eba.europa.eu/', desc:'Along with ECB publications on the use of AI in banking.', devices:ALL3, lang:'EN', time:'~15 min'},
+        {id:'r8b-6', title:'Governing AI Agents', url:'https://www.deeplearning.ai/short-courses/governing-ai-agents/', desc:'DeepLearning.AI with Databricks, taught by Amber Roberts, 2025. The most hands-on resource in this block: applies the four pillars of agent governance (lifecycle, risk, security, observability) to a real dataset in Databricks, with Unity Catalog for least-privilege access and observability. Very aligned with a Data & Analytics role.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h30'},
+        {id:'r8b-7', title:'ECB — "Technology is neutral, governance is not": AI adoption in the banking sector', url:'https://www.bankingsupervision.europa.eu/press/speeches/date/2026/html/ssm.sp260224~6c5b64a77a.en.html', desc:'ECB Banking Supervision speech, February 2026. The supervisor\'s current stance: over 85% of large euro-area banks already use AI, adoption is accelerating with generative and agentic AI, and AI governance and risk management are a 2026–28 supervisory priority.', devices:ALL3, lang:'EN', time:'~10 min'},
+        {id:'r8b-8', title:'Watch: Agent Payments Protocol (AP2)', url:'https://ap2-protocol.org/', desc:'Open protocol, launched by Google in 2025 and later moved to the FIDO Alliance, for agents that pay on a customer\'s behalf using cryptographically signed mandates within user-approved limits. Card networks have parallel schemes (Visa Trusted Agent Protocol, Mastercard Agent Pay). For a bank this is an authentication, fraud, and dispute question: who authorized the payment when the "customer" is software? Strong customer authentication (PSD2) was written for a person approving a transaction, not for an agent acting on their behalf — the same question behind the Personal Agent Protocol in topic 9.', devices:ALL3, lang:'EN', time:'~15 min'}
       ]
     },
     {
@@ -861,14 +866,14 @@ const MODULES = [
       skipTest:'Do you know what MCP solves versus building a custom connector for every system, and when you would need A2A instead?',
       result:'You understand how an AI system connects to the rest of the stack and to other agents, which open standard covers which link, and why a standard protocol simplifies (and concentrates) integration risk.',
       resources:[
-        {id:'r9-1', title:'MCP: Build Rich-Context AI Apps with Anthropic', url:'https://www.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic', desc:'DeepLearning.AI with Anthropic, 2025. The open standard for connecting LLMs to external systems without a custom connector per combination.', devices:DESKTOP_ONLY, lang:'EN'},
+        {id:'r9-1', title:'MCP: Build Rich-Context AI Apps with Anthropic', url:'https://www.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic', desc:'DeepLearning.AI with Anthropic, 2025. The open standard for connecting LLMs to external systems without a custom connector per combination.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h30'},
         {id:'r9-2', title:'Official MCP documentation', url:'https://modelcontextprotocol.io/', desc:'Includes security best practices: permissions, isolation, trust in third-party servers.', devices:ALL3, lang:'EN'},
-        {id:'r9-3', title:'🎥 Why we built—and donated—the MCP', url:'https://www.youtube.com/watch?v=PLyCki2K0Lg', desc:'Anthropic, 2025. Why the protocol exists and where it\'s headed.', devices:ALL3, lang:'EN'},
-        {id:'r9-4', title:'A2A: The Agent2Agent Protocol', url:'https://www.deeplearning.ai/courses/a2a-the-agent2agent-protocol', desc:'DeepLearning.AI with Google Cloud and IBM Research, 2025, ~1.5 h. Expose agents built with different frameworks (Google ADK, LangGraph, BeeAI) as A2A servers and orchestrate them. Shows how A2A complements MCP. Listed as a PRO course.', devices:DESKTOP_ONLY, lang:'EN'},
-        {id:'r9-5', title:'A2A specification', url:'https://a2a-protocol.org/latest/specification/', desc:'Official spec, v1.0 since March 2026. Start with Agent Cards: how an agent publishes what it can do and how to reach it.', devices:ALL3, lang:'EN'},
+        {id:'r9-3', title:'🎥 Why we built—and donated—the MCP', url:'https://www.youtube.com/watch?v=PLyCki2K0Lg', desc:'Anthropic, 2025. Why the protocol exists and where it\'s headed.', devices:ALL3, lang:'EN', time:'~15 min'},
+        {id:'r9-4', title:'A2A: The Agent2Agent Protocol', url:'https://www.deeplearning.ai/courses/a2a-the-agent2agent-protocol', desc:'DeepLearning.AI with Google Cloud and IBM Research, 2025, ~1.5 h. Expose agents built with different frameworks (Google ADK, LangGraph, BeeAI) as A2A servers and orchestrate them. Shows how A2A complements MCP. Listed as a PRO course.', devices:DESKTOP_ONLY, lang:'EN', time:'~1h30'},
+        {id:'r9-5', title:'A2A specification', url:'https://a2a-protocol.org/latest/specification/', desc:'Official spec, v1.0 since March 2026. Start with Agent Cards: how an agent publishes what it can do and how to reach it.', devices:ALL3, lang:'EN', time:'~20 min'},
         {id:'r9-6', title:'Agentic AI Foundation (Linux Foundation)', url:'https://aaif.io/', desc:'Founded December 2025. The neutral home of the main open agent standards — MCP, A2A, AGENTS.md, Agent Skills, and others. The quickest way to see which standards exist and who backs them.', devices:ALL3, lang:'EN'},
         {id:'r9-7', title:'Optional: AG-UI protocol', url:'https://docs.ag-ui.com/', desc:'Open protocol (CopilotKit) for streaming an agent\'s messages, tool calls, and state to a user interface. Completes the picture: MCP = agent↔tools, A2A = agent↔agent, AG-UI = agent↔user. Useful for human-in-the-loop screens.', devices:ALL3, lang:'EN'},
-        {id:'r9-8', title:'Emerging: Personal Agent Protocol (PAP)', url:'https://sierra.ai/blog/introducing-personal-agent-protocol', desc:'Sierra and Meta, October 2026, early draft. How a customer\'s own personal agent signs in to a business (OAuth, guest vs. read-only vs. write access) — the business-facing side of agents. Worth following, not yet worth building on.', devices:ALL3, lang:'EN'}
+        {id:'r9-8', title:'Emerging: Personal Agent Protocol (PAP)', url:'https://sierra.ai/blog/introducing-personal-agent-protocol', desc:'Sierra and Meta, October 2026, early draft. How a customer\'s own personal agent signs in to a business (OAuth, guest vs. read-only vs. write access) — the business-facing side of agents. Worth following, not yet worth building on.', devices:ALL3, lang:'EN', time:'~10 min'}
       ],
       checkpoint:{
         title:'From "upload a file" to "read from a new folder/table"',
@@ -906,10 +911,10 @@ const MODULES = [
       skipTest:'Can you already justify model, orchestrator, cost, and latency for a real project in your organization?',
       result:'Architecture and business judgment: model, orchestrator, governance, cost/latency, and when to build nothing at all.',
       resources:[
-        {id:'r11-1', title:'Full Stack Deep Learning — LLM Bootcamp', url:'https://fullstackdeeplearning.com/llm-bootcamp/', desc:'Free, 2023. System design for LLMs: expensive vs. cheap models, cost, latency, evaluation, monitoring. The design principles hold up; the specific model details don\'t.', devices:ALL3, lang:'EN'},
-        {id:'r11-2', title:'API latency and cost documentation', url:'https://platform.openai.com/docs/guides/latency', desc:'How prompt size, tokens, and model choice affect real production cost.', devices:ALL3, lang:'EN'},
-        {id:'r11-2b', title:'Modern cost: prompt caching, batch API and structured outputs', url:'https://docs.claude.com', desc:'An update on the latency guide: prompt caching and batch API on docs.claude.com can cut the cost of repeated context by ~90% — more current than the 2023 latency guide.', devices:ALL3, lang:'EN'},
-        {id:'r11-3', title:'🎥 LLMOps (LLM Bootcamp)', url:'https://www.youtube.com/watch?v=Fquj2u7ay40', desc:'Full Stack Deep Learning, 2023. Choosing, testing, deploying, and monitoring LLM applications in production.', devices:ALL3, lang:'EN'},
+        {id:'r11-1', title:'Full Stack Deep Learning — LLM Bootcamp', url:'https://fullstackdeeplearning.com/llm-bootcamp/', desc:'Free, 2023. System design for LLMs: expensive vs. cheap models, cost, latency, evaluation, monitoring. The design principles hold up; the specific model details don\'t.', devices:ALL3, lang:'EN', time:'~1h'},
+        {id:'r11-2', title:'API latency and cost documentation', url:'https://platform.openai.com/docs/guides/latency', desc:'How prompt size, tokens, and model choice affect real production cost.', devices:ALL3, lang:'EN', time:'~15 min'},
+        {id:'r11-2b', title:'Modern cost: prompt caching, batch API and structured outputs', url:'https://docs.claude.com', desc:'An update on the latency guide: prompt caching and batch API on docs.claude.com can cut the cost of repeated context by ~90% — more current than the 2023 latency guide.', devices:ALL3, lang:'EN', time:'~15 min'},
+        {id:'r11-3', title:'🎥 LLMOps (LLM Bootcamp)', url:'https://www.youtube.com/watch?v=Fquj2u7ay40', desc:'Full Stack Deep Learning, 2023. Choosing, testing, deploying, and monitoring LLM applications in production.', devices:ALL3, lang:'EN', time:'~1h'},
         {id:'r11-4', title:'Sector context: AI-in-finance reports from the BIS and FSB', url:'https://www.bis.org/', desc:'Free reports on AI adoption in the financial sector.', devices:ALL3, lang:'EN'}
       ],
       checkpoint:{
@@ -1471,6 +1476,7 @@ function resourceRow(r){
     <div class="res-body">
       <div class="res-top">
         <span class="res-title">${r.url ? `<a href="${r.url}" target="_blank" rel="noopener">${r.title}</a>` : r.title}</span>
+        ${r.time ? `<span class="time-pill">${r.time}</span>` : ''}
         ${statusIconHtml(r.id, initialStatus)}
         ${r.lang ? '<span class="ic-sep"></span>'+langIconHtml(r.lang) : ''}
         ${r.url && r.devices ? '<span class="ic-sep"></span>' : ''}
