@@ -51,14 +51,14 @@ Each path covers the four blocks — **A. Foundations**, **B. Building**, **C. T
 
 Only resources that require signing up or setting something up are listed here. Everything else is open content — see the "Other resources of interest" section at the end.
 
-- **[DeepLearning.AI — create an account](https://learn.deeplearning.ai)** — Free account (email or Google). Notebooks run in the browser, no install needed, with API keys already included.
-- **[Anthropic Console — developer account](https://console.anthropic.com)** — Needed for the comparison exercise in topic 5.2: create your own account, with a few cents of testing cost, on at least two of Anthropic, OpenAI and Google.
-- **[OpenAI Platform — developer account](https://platform.openai.com)** — One of the accounts needed for the topic 5.2 comparison.
-- **[Google AI Studio (Gemini) — developer account](https://ai.google.dev/)** — Generous free tier. One of the accounts needed for the topic 5.2 comparison.
+- **[DeepLearning.AI — create an account](https://learn.deeplearning.ai)** · ~5 min — Free account (email or Google). Notebooks run in the browser, no install needed, with API keys already included.
+- **[Anthropic Console — developer account](https://console.anthropic.com)** · ~5 min — Needed for the comparison exercise in topic 5.2: create your own account, with a few cents of testing cost, on at least two of Anthropic, OpenAI and Google.
+- **[OpenAI Platform — developer account](https://platform.openai.com)** · ~5 min — One of the accounts needed for the topic 5.2 comparison.
+- **[Google AI Studio (Gemini) — developer account](https://ai.google.dev/)** · ~5 min — Generous free tier. One of the accounts needed for the topic 5.2 comparison.
 
 ---
 
-## Minimal Python to read notebooks _(New)_
+## Minimal Python to read notebooks _(Skills check)_
 
 *Duration: 5–8 h · optional*
 
@@ -68,7 +68,7 @@ For anyone who doesn't code fluently — without this, topics 4-7 and 9 get hard
 
 **Outcome:** You can read and edit the course notebooks without getting stuck on the code.
 
-- **[Kaggle Learn — Python](https://www.kaggle.com/learn/python)** — Free, with a certificate, exercises in the browser.
+- **[Kaggle Learn — Python](https://www.kaggle.com/learn/python)** · ~5 h — Free, with a certificate, exercises in the browser.
 
 ---
 
@@ -86,9 +86,9 @@ Get the big picture before diving into LLMs: what machine learning is, types of 
 
 **Outcome:** A mental map of AI (types of learning, what a neural network is, where LLMs fit in) before the technical detail of topic 2.
 
-- **[Elements of AI](https://www.elementsofai.com/)** — University of Helsinki, free, 2018. The world's most popular intro AI course: what AI is, machine learning, neural networks, no coding required. Also available in Spanish.
-- **[For non-technical/manager profiles: AI for Everyone](https://www.deeplearning.ai/courses/ai-for-everyone/)** — Andrew Ng. What AI can and can't do, in business language — a good alternative if you prefer a non-technical approach.
-- **[🎥 But what is a neural network? | Deep Learning chapter 1](https://www.youtube.com/watch?v=aircAruvnKk)** — 3Blue1Brown, 2017. The most-recommended visual explanation of how a neural network works.
+- **[Elements of AI](https://www.elementsofai.com/)** · ~3–4 h — University of Helsinki, free, 2018. The world's most popular intro AI course: what AI is, machine learning, neural networks, no coding required. Also available in Spanish.
+- **[For non-technical/manager profiles: AI for Everyone](https://www.deeplearning.ai/courses/ai-for-everyone/)** · ~3 h — Andrew Ng. What AI can and can't do, in business language — a good alternative if you prefer a non-technical approach.
+- **[🎥 But what is a neural network? | Deep Learning chapter 1](https://www.youtube.com/watch?v=aircAruvnKk)** · ~20 min — 3Blue1Brown, 2017. The most-recommended visual explanation of how a neural network works.
 
 ### 2. LLM fundamentals _(LLM Fundamentals)_
 
@@ -100,10 +100,10 @@ How LLMs work under the hood before building anything — transformer architectu
 
 **Outcome:** You understand how an LLM predicts the next token and why that explains hallucinations, context, and cost.
 
-- **[How Transformer LLMs Work](https://www.deeplearning.ai/courses/how-transformer-llms-work)** — Jay Alammar and Maarten Grootendorst, 2025. The transformer architecture explained visually, no advanced math needed.
-- **[Building Effective Agents (reading)](https://www.anthropic.com/engineering/building-effective-agents)** — Anthropic, 2024. Lays the groundwork for how an LLM is orchestrated within a system. Reread in topic 5.0.
-- **[🎥 Stanford CS229 | Building Large Language Models](https://www.youtube.com/watch?v=9vM4p9NN0Ts)** — Yann Dubois, Stanford, 2024. Pretraining and post-training (SFT/RLHF), and common data, algorithm, and evaluation practices.
-- **[🎥 Transformers, the tech behind LLMs | Chapter 5](https://www.youtube.com/watch?v=wjZofJX0v4M)** — 3Blue1Brown, 2024. A visual walkthrough of the transformer architecture.
+- **[How Transformer LLMs Work](https://www.deeplearning.ai/courses/how-transformer-llms-work)** · ~1h40 — Jay Alammar and Maarten Grootendorst, 2025. The transformer architecture explained visually, no advanced math needed.
+- **[Building Effective Agents (reading)](https://www.anthropic.com/engineering/building-effective-agents)** · ~15 min — Anthropic, 2024. Lays the groundwork for how an LLM is orchestrated within a system. Reread in topic 5.0.
+- **[🎥 Stanford CS229 | Building Large Language Models](https://www.youtube.com/watch?v=9vM4p9NN0Ts)** · ~1h15 — Yann Dubois, Stanford, 2024. Pretraining and post-training (SFT/RLHF), and common data, algorithm, and evaluation practices.
+- **[🎥 Transformers, the tech behind LLMs | Chapter 5](https://www.youtube.com/watch?v=wjZofJX0v4M)** · ~25 min — 3Blue1Brown, 2024. A visual walkthrough of the transformer architecture.
 
 ### 3. Prompting and context engineering _(Prompting)_
 
@@ -115,11 +115,11 @@ Practical prompting techniques, reusable patterns, real use cases. Entry point f
 
 **Outcome:** You master the core prompting patterns and know that managing context (not just the prompt) is the key skill.
 
-- **[ChatGPT Prompt Engineering for Developers](https://www.deeplearning.ai/courses/chatgpt-prompt-eng)** — DeepLearning.AI + OpenAI, 2023. Fundamentals: principles, summarizing, inferring, transforming, expanding. Uses older models in the examples, but the principles still hold.
+- **[ChatGPT Prompt Engineering for Developers](https://www.deeplearning.ai/courses/chatgpt-prompt-eng)** · ~1h20 — DeepLearning.AI + OpenAI, 2023. Fundamentals: principles, summarizing, inferring, transforming, expanding. Uses older models in the examples, but the principles still hold.
 - **[Prompt Engineering Guide](https://www.promptingguide.ai/)** — DAIR.AI, an ongoing reference since 2022. A catalog of techniques (chain-of-thought, few-shot, ReAct…) to consult as needed.
 - **[Anthropic Academy](https://www.anthropic.com/learn)** — Free, up-to-date courses on prompting and evaluation with Claude.
-- **[Reading: context engineering guides](https://www.anthropic.com/engineering)** — Anthropic's engineering blog. The discipline that replaces plain "prompting" once you're working with agents.
-- **[🎥 AI prompt engineering: A deep dive](https://www.youtube.com/watch?v=T9aRN5JkmL8)** — Anthropic, 2024. Anthropic's own prompt engineering team walks through what actually works in practice.
+- **[Reading: context engineering guides](https://www.anthropic.com/engineering)** · ~20 min — Anthropic's engineering blog. The discipline that replaces plain "prompting" once you're working with agents.
+- **[🎥 AI prompt engineering: A deep dive](https://www.youtube.com/watch?v=T9aRN5JkmL8)** · ~45 min — Anthropic, 2024. Anthropic's own prompt engineering team walks through what actually works in practice.
 
 ---
 
@@ -137,9 +137,9 @@ Connecting the LLM to your own data — the technical foundation before building
 
 **Outcome:** You can design and evaluate a basic RAG pipeline over your own data.
 
-- **[Retrieval Augmented Generation (RAG)](https://www.deeplearning.ai/courses/retrieval-augmented-generation)** — DeepLearning.AI, 2025, the most current: vector DBs, hybrid search, chunking, cost, and latency.
-- **[Building and Evaluating Advanced RAG](https://www.deeplearning.ai/courses/building-evaluating-advanced-rag)** — With LlamaIndex, 2023. Advanced retrieval techniques and evaluation metrics (context relevance, groundedness).
-- **[🎥 What is Retrieval-Augmented Generation (RAG)?](https://www.youtube.com/watch?v=T-D1OfcDW1M)** — IBM Technology, 2023. A concise explainer of the RAG framework and why it reduces hallucinations.
+- **[Retrieval Augmented Generation (RAG)](https://www.deeplearning.ai/courses/retrieval-augmented-generation)** · ~1h30 — DeepLearning.AI, 2025, the most current: vector DBs, hybrid search, chunking, cost, and latency.
+- **[Building and Evaluating Advanced RAG](https://www.deeplearning.ai/courses/building-evaluating-advanced-rag)** · ~1h — With LlamaIndex, 2023. Advanced retrieval techniques and evaluation metrics (context relevance, groundedness).
+- **[🎥 What is Retrieval-Augmented Generation (RAG)?](https://www.youtube.com/watch?v=T-D1OfcDW1M)** · ~7 min — IBM Technology, 2023. A concise explainer of the RAG framework and why it reduces hallucinations.
 
 ### 5. Agents and function calling / tool use _(Agents)_
 
@@ -151,19 +151,19 @@ Build systems that act (not just respond), and understand how each provider impl
 
 **Outcome:** You've built an agent with the raw API and with frameworks, you have your own view on the providers, and you know when NOT to use an agent.
 
-- **[5.0 · The agent by hand, first](https://www.anthropic.com/engineering/building-effective-agents)** — Before touching frameworks: reread Building Effective Agents and implement the agent + tools loop with the raw API. This is how you learn what frameworks do under the hood.
+- **[5.0 · The agent by hand, first](https://www.anthropic.com/engineering/building-effective-agents)** · ~20 min — Before touching frameworks: reread Building Effective Agents and implement the agent + tools loop with the raw API. This is how you learn what frameworks do under the hood.
 - **[Claude Cookbooks (formerly Anthropic Cookbook)](https://github.com/anthropics/claude-cookbooks)** — Practical examples with the raw API, including tool use and agent loops. The repo was renamed from "anthropic-cookbook" to "claude-cookbooks".
 - **[anthropics/courses (repo)](https://github.com/anthropics/courses)** — Official Anthropic courses in notebook format, including one specifically on tool use — complements the Cookbook for the by-hand agent exercise.
-- **[Agentic AI](https://www.deeplearning.ai/courses/agentic-ai)** — Andrew Ng, 2025. The most current and best-reviewed agents course in the catalog. Teaches the four patterns (reflection, tool use, planning, multi-agent collaboration) before touching any specific library.
-- **[Functions, Tools and Agents with LangChain](https://www.deeplearning.ai/courses/functions-tools-agents-langchain)** — 2023. How an LLM decides to invoke tools.
-- **[AI Agents in LangGraph](https://www.deeplearning.ai/courses/ai-agents-in-langgraph)** — 2024. Orchestration with state graphs.
-- **[Building Agentic RAG with LlamaIndex](https://www.deeplearning.ai/courses/building-agentic-rag-with-llamaindex)** — 2024. Combines RAG (topic 4) with agentic reasoning.
-- **[Optional: Multi AI Agent Systems with crewAI](https://www.deeplearning.ai/courses/multi-ai-agent-systems-with-crewai)** — 2024. Coordination between multiple agents with specialized roles.
-- **[Tool use — Anthropic (Claude)](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)** — 5.2 · Hands-on comparison: implement the same agent across all three providers and compare. Anthropic version.
-- **[Function calling — OpenAI (GPT)](https://platform.openai.com/docs/guides/function-calling)** — Same comparison, OpenAI version.
-- **[Function calling — Google (Gemini)](https://ai.google.dev/gemini-api/docs/function-calling)** — Same comparison, Gemini version.
+- **[Agentic AI](https://www.deeplearning.ai/courses/agentic-ai)** · ~4 h — Andrew Ng, 2025. The most current and best-reviewed agents course in the catalog. Teaches the four patterns (reflection, tool use, planning, multi-agent collaboration) before touching any specific library.
+- **[Functions, Tools and Agents with LangChain](https://www.deeplearning.ai/courses/functions-tools-agents-langchain)** · ~1h — 2023. How an LLM decides to invoke tools.
+- **[AI Agents in LangGraph](https://www.deeplearning.ai/courses/ai-agents-in-langgraph)** · ~1h30 — 2024. Orchestration with state graphs.
+- **[Building Agentic RAG with LlamaIndex](https://www.deeplearning.ai/courses/building-agentic-rag-with-llamaindex)** · ~1h30 — 2024. Combines RAG (topic 4) with agentic reasoning.
+- **[Optional: Multi AI Agent Systems with crewAI](https://www.deeplearning.ai/courses/multi-ai-agent-systems-with-crewai)** · ~1h30 — 2024. Coordination between multiple agents with specialized roles.
+- **[Tool use — Anthropic (Claude)](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)** · ~15 min — 5.2 · Hands-on comparison: implement the same agent across all three providers and compare. Anthropic version.
+- **[Function calling — OpenAI (GPT)](https://platform.openai.com/docs/guides/function-calling)** · ~15 min — Same comparison, OpenAI version.
+- **[Function calling — Google (Gemini)](https://ai.google.dev/gemini-api/docs/function-calling)** · ~15 min — Same comparison, Gemini version.
 - **[Arena](https://arena.ai/)** — Formerly LMArena/Chatbot Arena, free, no signup, since 2023. Blind model comparison via human voting.
-- **[🎥 What are AI Agents?](https://www.youtube.com/watch?v=F8NKVhkZZWI)** — IBM Technology, 2024. What makes a system "agentic" versus a plain chatbot.
+- **[🎥 What are AI Agents?](https://www.youtube.com/watch?v=F8NKVhkZZWI)** · ~6 min — IBM Technology, 2024. What makes a system "agentic" versus a plain chatbot.
 
 ### 5.3. Anti-hype exercise _(Judgment)_
 
@@ -183,9 +183,9 @@ When fine-tuning makes sense versus prompting or RAG, and how it works in practi
 
 **Outcome:** You know when to use fine-tuning versus prompt engineering or RAG, and what that means for cost and data.
 
-- **[Fine-tuning & RL for LLMs: Intro to Post-training](https://www.deeplearning.ai/courses/fine-tuning-and-reinforcement-learning-for-llms-intro-to-post-training)** — Sharon Zhou, 2025, the most current: fine-tuning, RLHF, LoRA, evaluating fine-tuned models.
-- **[Shorter alternative: Finetuning Large Language Models](https://www.deeplearning.ai/courses/finetuning-large-language-models)** — 2023. Basic fundamentals, a shorter course.
-- **[🎥 Fine Tuning LLM Explained Simply](https://www.youtube.com/watch?v=ezdIOLbUSWg)** — codebasics, 2025. A plain-language explanation of what fine-tuning does and when to use it.
+- **[Fine-tuning & RL for LLMs: Intro to Post-training](https://www.deeplearning.ai/courses/fine-tuning-and-reinforcement-learning-for-llms-intro-to-post-training)** · ~2h — Sharon Zhou, 2025, the most current: fine-tuning, RLHF, LoRA, evaluating fine-tuned models.
+- **[Shorter alternative: Finetuning Large Language Models](https://www.deeplearning.ai/courses/finetuning-large-language-models)** · ~1h — 2023. Basic fundamentals, a shorter course.
+- **[🎥 Fine Tuning LLM Explained Simply](https://www.youtube.com/watch?v=ezdIOLbUSWg)** · ~15 min — codebasics, 2025. A plain-language explanation of what fine-tuning does and when to use it.
 
 ---
 
@@ -203,11 +203,11 @@ Hallucinations, bias, and how to measure the quality and safety of an LLM system
 
 **Outcome:** Criteria for measuring quality and risk beyond "it works in the demo". You know that an agent with tools is an attack surface.
 
-- **[Red Teaming LLM Applications](https://www.deeplearning.ai/courses/red-teaming-llm-applications)** — With Giskard, 2024. Attacking real chatbots: prompt injection, information leaks.
-- **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** — The reference risk catalog, including prompt injection via tools/agents.
-- **[Evaluation guides on docs.claude.com](https://docs.claude.com)** — How to define success criteria, build test datasets, and use LLM-as-judge. Evals aren't a topic — they're a habit that runs through everything from topic 3 onward.
-- **[🎥 Why Large Language Models Hallucinate](https://www.youtube.com/watch?v=cfqtFvWOfg0)** — IBM Technology, 2023. Why hallucinations happen and how to reduce them.
-- **[OWASP Top 10 for Agentic Applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)** — OWASP GenAI Security Project, December 2025. The companion to the LLM Top 10 for systems that plan, use tools, keep memory, and talk to other agents: goal hijacking, tool misuse, identity and privilege abuse, and more — built from real incidents. Read it as soon as your agent has more than one tool.
+- **[Red Teaming LLM Applications](https://www.deeplearning.ai/courses/red-teaming-llm-applications)** · ~1h — With Giskard, 2024. Attacking real chatbots: prompt injection, information leaks.
+- **[OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)** · ~20 min — The reference risk catalog, including prompt injection via tools/agents.
+- **[Evaluation guides on docs.claude.com](https://docs.claude.com)** · ~15 min — How to define success criteria, build test datasets, and use LLM-as-judge. Evals aren't a topic — they're a habit that runs through everything from topic 3 onward.
+- **[🎥 Why Large Language Models Hallucinate](https://www.youtube.com/watch?v=cfqtFvWOfg0)** · ~7 min — IBM Technology, 2023. Why hallucinations happen and how to reduce them.
+- **[OWASP Top 10 for Agentic Applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)** · ~20 min — OWASP GenAI Security Project, December 2025. The companion to the LLM Top 10 for systems that plan, use tools, keep memory, and talk to other agents: goal hijacking, tool misuse, identity and privilege abuse, and more — built from real incidents. Read it as soon as your agent has more than one tool.
 
 ### 8. Data governance, ethics and the AI Act _(Governance)_
 
@@ -219,10 +219,10 @@ The ethical, legal, and operational implications of deploying AI within an organ
 
 **Outcome:** You understand what it means to deploy AI responsibly and how it connects to the data governance you already know.
 
-- **[Ethics of AI](https://ethics-of-ai.mooc.fi/)** — University of Helsinki, free, same team as Elements of AI, 2020. Ethical principles applied to AI. Also available in Spanish.
-- **[AI Act — official European Commission page](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai)** — Adopted 2024, continuously updated. Authoritative reference on risk categories, obligations, and timeline.
-- **[Optional: AI Governance Foundations](https://ethicalogic.com/ai-course-access/)** — Ethicalogic, free, no signup. Connects the AI Act with the NIST AI RMF and ISO/IEC 42001.
-- **[🎥 The EU's AI Act, Explained](https://www.youtube.com/watch?v=i5iZNH2lCGU)** — WSJ Tech News Briefing, 2023. An accessible summary of what the AI Act covers.
+- **[Ethics of AI](https://ethics-of-ai.mooc.fi/)** · ~3–4 h — University of Helsinki, free, same team as Elements of AI, 2020. Ethical principles applied to AI. Also available in Spanish.
+- **[AI Act — official European Commission page](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai)** · ~20 min — Adopted 2024, continuously updated. Authoritative reference on risk categories, obligations, and timeline.
+- **[Optional: AI Governance Foundations](https://ethicalogic.com/ai-course-access/)** · ~2 h — Ethicalogic, free, no signup. Connects the AI Act with the NIST AI RMF and ISO/IEC 42001.
+- **[🎥 The EU's AI Act, Explained](https://www.youtube.com/watch?v=i5iZNH2lCGU)** · ~12 min — WSJ Tech News Briefing, 2023. An accessible summary of what the AI Act covers.
 
 ### 8-bis. Model risk and banking supervision _(Banking)_ 🏦
 
@@ -232,14 +232,14 @@ The supervisor doesn't examine you against the AI Act in the abstract, but again
 
 **Outcome:** You know how to map a generative AI system onto the bank's model lifecycle and anticipate what Validation, the DPO, and the supervisor will look at.
 
-- **[Fed SR 11-7 — Guidance on Model Risk Management](https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm)** — Still the global reference for model risk management (MRM).
-- **[DORA — EU Regulation 2022/2554](https://finance.ec.europa.eu/regulation-and-supervision/financial-services-legislation/implementing-and-delegated-acts/digital-operational-resilience-regulation_en)** — Your AI providers are ICT providers: registration, contracts, exit strategy, concentration risk.
-- **[NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)** — Includes the specific generative AI profile.
-- **[AEPD — Agentic AI from a data protection perspective](https://www.aepd.es/guias/orientaciones-ia-agentica.pdf)** _(source in ES)_ — Spain's data protection authority, guidance from February 2026 on AI agents and GDPR: what changes when a system decides and acts, not just responds. Very relevant from topic 5 onward.
-- **[EBA — guidelines on ICT risk and outsourcing](https://www.eba.europa.eu/)** — Along with ECB publications on the use of AI in banking.
-- **[Governing AI Agents](https://www.deeplearning.ai/short-courses/governing-ai-agents/)** — DeepLearning.AI with Databricks, taught by Amber Roberts, 2025. The most hands-on resource in this block: applies the four pillars of agent governance (lifecycle, risk, security, observability) to a real dataset in Databricks, with Unity Catalog for least-privilege access and observability. Very aligned with a Data & Analytics role.
-- **[ECB — "Technology is neutral, governance is not": AI adoption in the banking sector](https://www.bankingsupervision.europa.eu/press/speeches/date/2026/html/ssm.sp260224~6c5b64a77a.en.html)** — ECB Banking Supervision speech, February 2026. The supervisor's current stance: over 85% of large euro-area banks already use AI, adoption is accelerating with generative and agentic AI, and AI governance and risk management are a 2026–28 supervisory priority.
-- **[Watch: Agent Payments Protocol (AP2)](https://ap2-protocol.org/)** — Open protocol, launched by Google in 2025 and later moved to the FIDO Alliance, for agents that pay on a customer's behalf using cryptographically signed mandates within user-approved limits. Card networks have parallel schemes (Visa Trusted Agent Protocol, Mastercard Agent Pay). For a bank this is an authentication, fraud, and dispute question: who authorized the payment when the "customer" is software? Strong customer authentication (PSD2) was written for a person approving a transaction, not for an agent acting on their behalf — the same question behind the Personal Agent Protocol in topic 9.
+- **[Fed SR 11-7 — Guidance on Model Risk Management](https://www.federalreserve.gov/supervisionreg/srletters/sr1107.htm)** · ~30 min — Still the global reference for model risk management (MRM).
+- **[DORA — EU Regulation 2022/2554](https://finance.ec.europa.eu/regulation-and-supervision/financial-services-legislation/implementing-and-delegated-acts/digital-operational-resilience-regulation_en)** · ~25 min — Your AI providers are ICT providers: registration, contracts, exit strategy, concentration risk.
+- **[NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)** · ~20 min — Includes the specific generative AI profile.
+- **[AEPD — Agentic AI from a data protection perspective](https://www.aepd.es/guias/orientaciones-ia-agentica.pdf)** · ~25 min _(source in ES)_ — Spain's data protection authority, guidance from February 2026 on AI agents and GDPR: what changes when a system decides and acts, not just responds. Very relevant from topic 5 onward.
+- **[EBA — guidelines on ICT risk and outsourcing](https://www.eba.europa.eu/)** · ~15 min — Along with ECB publications on the use of AI in banking.
+- **[Governing AI Agents](https://www.deeplearning.ai/short-courses/governing-ai-agents/)** · ~1h30 — DeepLearning.AI with Databricks, taught by Amber Roberts, 2025. The most hands-on resource in this block: applies the four pillars of agent governance (lifecycle, risk, security, observability) to a real dataset in Databricks, with Unity Catalog for least-privilege access and observability. Very aligned with a Data & Analytics role.
+- **[ECB — "Technology is neutral, governance is not": AI adoption in the banking sector](https://www.bankingsupervision.europa.eu/press/speeches/date/2026/html/ssm.sp260224~6c5b64a77a.en.html)** · ~10 min — ECB Banking Supervision speech, February 2026. The supervisor's current stance: over 85% of large euro-area banks already use AI, adoption is accelerating with generative and agentic AI, and AI governance and risk management are a 2026–28 supervisory priority.
+- **[Watch: Agent Payments Protocol (AP2)](https://ap2-protocol.org/)** · ~15 min — Open protocol, launched by Google in 2025 and later moved to the FIDO Alliance, for agents that pay on a customer's behalf using cryptographically signed mandates within user-approved limits. Card networks have parallel schemes (Visa Trusted Agent Protocol, Mastercard Agent Pay). For a bank this is an authentication, fraud, and dispute question: who authorized the payment when the "customer" is software? Strong customer authentication (PSD2) was written for a person approving a transaction, not for an agent acting on their behalf — the same question behind the Personal Agent Protocol in topic 9.
 
 ### Pre-production gate _(🚧 Gate)_ 🏦
 
@@ -272,14 +272,14 @@ How an AI system connects to the rest of an organization's stack — and to othe
 
 **Outcome:** You understand how an AI system connects to the rest of the stack and to other agents, which open standard covers which link, and why a standard protocol simplifies (and concentrates) integration risk.
 
-- **[MCP: Build Rich-Context AI Apps with Anthropic](https://www.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic)** — DeepLearning.AI with Anthropic, 2025. The open standard for connecting LLMs to external systems without a custom connector per combination.
+- **[MCP: Build Rich-Context AI Apps with Anthropic](https://www.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic)** · ~1h30 — DeepLearning.AI with Anthropic, 2025. The open standard for connecting LLMs to external systems without a custom connector per combination.
 - **[Official MCP documentation](https://modelcontextprotocol.io/)** — Includes security best practices: permissions, isolation, trust in third-party servers.
-- **[🎥 Why we built—and donated—the MCP](https://www.youtube.com/watch?v=PLyCki2K0Lg)** — Anthropic, 2025. Why the protocol exists and where it's headed.
-- **[A2A: The Agent2Agent Protocol](https://www.deeplearning.ai/courses/a2a-the-agent2agent-protocol)** — DeepLearning.AI with Google Cloud and IBM Research, 2025, ~1.5 h. Expose agents built with different frameworks (Google ADK, LangGraph, BeeAI) as A2A servers and orchestrate them. Shows how A2A complements MCP. Listed as a PRO course.
-- **[A2A specification](https://a2a-protocol.org/latest/specification/)** — Official spec, v1.0 since March 2026. Start with Agent Cards: how an agent publishes what it can do and how to reach it.
+- **[🎥 Why we built—and donated—the MCP](https://www.youtube.com/watch?v=PLyCki2K0Lg)** · ~15 min — Anthropic, 2025. Why the protocol exists and where it's headed.
+- **[A2A: The Agent2Agent Protocol](https://www.deeplearning.ai/courses/a2a-the-agent2agent-protocol)** · ~1h30 — DeepLearning.AI with Google Cloud and IBM Research, 2025, ~1.5 h. Expose agents built with different frameworks (Google ADK, LangGraph, BeeAI) as A2A servers and orchestrate them. Shows how A2A complements MCP. Listed as a PRO course.
+- **[A2A specification](https://a2a-protocol.org/latest/specification/)** · ~20 min — Official spec, v1.0 since March 2026. Start with Agent Cards: how an agent publishes what it can do and how to reach it.
 - **[Agentic AI Foundation (Linux Foundation)](https://aaif.io/)** — Founded December 2025. The neutral home of the main open agent standards — MCP, A2A, AGENTS.md, Agent Skills, and others. The quickest way to see which standards exist and who backs them.
 - **[Optional: AG-UI protocol](https://docs.ag-ui.com/)** — Open protocol (CopilotKit) for streaming an agent's messages, tool calls, and state to a user interface. Completes the picture: MCP = agent↔tools, A2A = agent↔agent, AG-UI = agent↔user. Useful for human-in-the-loop screens.
-- **[Emerging: Personal Agent Protocol (PAP)](https://sierra.ai/blog/introducing-personal-agent-protocol)** — Sierra and Meta, October 2026, early draft. How a customer's own personal agent signs in to a business (OAuth, guest vs. read-only vs. write access) — the business-facing side of agents. Worth following, not yet worth building on.
+- **[Emerging: Personal Agent Protocol (PAP)](https://sierra.ai/blog/introducing-personal-agent-protocol)** · ~10 min — Sierra and Meta, October 2026, early draft. How a customer's own personal agent signs in to a business (OAuth, guest vs. read-only vs. write access) — the business-facing side of agents. Worth following, not yet worth building on.
 
 ### 10. Tools and frameworks _(Reference)_
 
@@ -308,10 +308,10 @@ From "it works in a notebook" to thinking about production systems for real Data
 
 **Outcome:** Architecture and business judgment: model, orchestrator, governance, cost/latency, and when to build nothing at all.
 
-- **[Full Stack Deep Learning — LLM Bootcamp](https://fullstackdeeplearning.com/llm-bootcamp/)** — Free, 2023. System design for LLMs: expensive vs. cheap models, cost, latency, evaluation, monitoring. The design principles hold up; the specific model details don't.
-- **[API latency and cost documentation](https://platform.openai.com/docs/guides/latency)** — How prompt size, tokens, and model choice affect real production cost.
+- **[Full Stack Deep Learning — LLM Bootcamp](https://fullstackdeeplearning.com/llm-bootcamp/)** · ~1h — Free, 2023. System design for LLMs: expensive vs. cheap models, cost, latency, evaluation, monitoring. The design principles hold up; the specific model details don't.
+- **[API latency and cost documentation](https://platform.openai.com/docs/guides/latency)** · ~15 min — How prompt size, tokens, and model choice affect real production cost.
 - **[Modern cost: prompt caching, batch API and structured outputs](https://docs.claude.com)** — An update on the latency guide: prompt caching and batch API on docs.claude.com can cut the cost of repeated context by ~90% — more current than the 2023 latency guide.
-- **[🎥 LLMOps (LLM Bootcamp)](https://www.youtube.com/watch?v=Fquj2u7ay40)** — Full Stack Deep Learning, 2023. Choosing, testing, deploying, and monitoring LLM applications in production.
+- **[🎥 LLMOps (LLM Bootcamp)](https://www.youtube.com/watch?v=Fquj2u7ay40)** · ~1h — Full Stack Deep Learning, 2023. Choosing, testing, deploying, and monitoring LLM applications in production.
 - **[Sector context: AI-in-finance reports from the BIS and FSB](https://www.bis.org/)** — Free reports on AI adoption in the financial sector.
 
 ---

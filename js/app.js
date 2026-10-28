@@ -288,6 +288,7 @@ function resourceRow(r){
     <div class="res-body">
       <div class="res-top">
         <span class="res-title">${r.url ? `<a href="${r.url}" target="_blank" rel="noopener">${r.title}</a>` : r.title}</span>
+        ${r.time ? `<span class="time-pill">${r.time}</span>` : ''}
         ${statusIconHtml(r.id, initialStatus)}
         ${r.lang ? '<span class="ic-sep"></span>'+langIconHtml(r.lang) : ''}
         ${r.url && r.devices ? '<span class="ic-sep"></span>' : ''}
